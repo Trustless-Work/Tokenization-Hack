@@ -1,0 +1,30 @@
+{
+  "name": "tokenization-trustless-work",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "packageManager": "npm@10.2.3",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.6.1"
+  },
+  "overrides": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}
