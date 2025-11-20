@@ -1,5 +1,5 @@
-import Image from "next/image";
+import { HomeView } from "@/features/home/HomeView";
 
 export default function Home() {
-  return <h1>joel</h1>;
+  return <HomeView />;
 }
