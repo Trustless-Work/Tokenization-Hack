@@ -27,11 +27,14 @@ import {
 } from "@/components/ui/select";
 
 export const ApproveMilestoneDialog = () => {
-  const { form, handleSubmit, isSubmitting } = useApproveMilestone();
+  const [open, setOpen] = React.useState(false);
+  const { form, handleSubmit, isSubmitting } = useApproveMilestone({
+    onSuccess: () => setOpen(false),
+  });
   const { selectedEscrow } = useEscrowContext();
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button type="button" className="cursor-pointer w-full">
           Approve Milestone

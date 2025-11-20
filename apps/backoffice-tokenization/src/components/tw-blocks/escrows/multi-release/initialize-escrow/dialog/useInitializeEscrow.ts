@@ -17,7 +17,11 @@ import {
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { trustlineOptions } from "@/components/tw-blocks/wallet-kit/trustlines";
 
-export function useInitializeEscrow() {
+type UseInitializeEscrowOptions = {
+  onSuccess?: () => void;
+};
+
+export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { getMultiReleaseFormSchema } = useInitializeEscrowSchema();
@@ -161,6 +165,9 @@ export function useInitializeEscrow() {
       toast.success("Escrow initialized successfully");
 
       setSelectedEscrow({ ...finalPayload, contractId: response.contractId });
+
+      // Close dialog if requested
+      options?.onSuccess?.();
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

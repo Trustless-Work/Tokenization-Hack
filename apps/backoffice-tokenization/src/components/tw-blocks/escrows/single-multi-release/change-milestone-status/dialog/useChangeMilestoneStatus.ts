@@ -15,7 +15,11 @@ import {
 } from "@/components/tw-blocks/handle-errors/handle";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 
-export function useChangeMilestoneStatus() {
+type UseChangeMilestoneStatusOptions = {
+  onSuccess?: () => void;
+};
+
+export function useChangeMilestoneStatus(options?: UseChangeMilestoneStatusOptions) {
   const { changeMilestoneStatus } = useEscrowsMutations();
   const { selectedEscrow, updateEscrow } = useEscrowContext();
   const { walletAddress } = useWalletContext();
@@ -78,6 +82,9 @@ export function useChangeMilestoneStatus() {
           return milestone;
         }),
       });
+
+      // Close dialog if requested
+      options?.onSuccess?.();
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

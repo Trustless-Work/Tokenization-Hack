@@ -35,6 +35,7 @@ export const ResolveDisputeDialog = ({
   showSelectMilestone?: boolean;
   milestoneIndex?: number | string;
 }) => {
+  const [open, setOpen] = React.useState(false);
   const {
     form,
     handleSubmit,
@@ -50,7 +51,9 @@ export const ResolveDisputeDialog = ({
     distributedSum,
     isExactMatch,
     difference,
-  } = useResolveDispute();
+  } = useResolveDispute({
+    onSuccess: () => setOpen(false),
+  });
   const { selectedEscrow } = useEscrowContext();
 
   React.useEffect(() => {
@@ -64,7 +67,7 @@ export const ResolveDisputeDialog = ({
   }, [showSelectMilestone, milestoneIndex, form]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button type="button" className="cursor-pointer w-full">
           Resolve Dispute

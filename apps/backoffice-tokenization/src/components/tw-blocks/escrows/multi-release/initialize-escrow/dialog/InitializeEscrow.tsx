@@ -32,6 +32,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 export const InitializeEscrowDialog = () => {
+  const [open, setOpen] = React.useState(false);
   const {
     form,
     isSubmitting,
@@ -41,7 +42,9 @@ export const InitializeEscrowDialog = () => {
     handleAddMilestone,
     handleRemoveMilestone,
     fillTemplateForm,
-  } = useInitializeEscrow();
+  } = useInitializeEscrow({
+    onSuccess: () => setOpen(false),
+  });
 
   const handleMilestoneAmountChange = (
     index: number,
@@ -92,7 +95,7 @@ export const InitializeEscrowDialog = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button type="button" className="cursor-pointer w-full">
           Initialize

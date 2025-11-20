@@ -17,7 +17,11 @@ import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvid
 
 type DistributionInput = { address: string; amount: string | number };
 
-export function useWithdrawRemainingFunds() {
+type UseWithdrawRemainingFundsOptions = {
+  onSuccess?: () => void;
+};
+
+export function useWithdrawRemainingFunds(options?: UseWithdrawRemainingFundsOptions) {
   const { withdrawRemainingFunds } = useEscrowsMutations();
   const { selectedEscrow, updateEscrow } = useEscrowContext();
   const { walletAddress } = useWalletContext();
@@ -133,6 +137,9 @@ export function useWithdrawRemainingFunds() {
         ...selectedEscrow,
         balance: (selectedEscrow?.balance || 0) - sumDistributed || 0,
       });
+
+      // Close dialog if requested
+      options?.onSuccess?.();
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

@@ -18,7 +18,11 @@ import {
 } from "@/components/tw-blocks/handle-errors/handle";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
 
-export function useUpdateEscrow() {
+type UseUpdateEscrowOptions = {
+  onSuccess?: () => void;
+};
+
+export function useUpdateEscrow(options?: UseUpdateEscrowOptions) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { getMultiReleaseFormSchema } = useUpdateEscrowSchema();
@@ -246,6 +250,9 @@ export function useUpdateEscrow() {
 
       setSelectedEscrow(nextSelectedEscrow);
       toast.success("Escrow updated successfully");
+
+      // Close dialog if requested
+      options?.onSuccess?.();
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

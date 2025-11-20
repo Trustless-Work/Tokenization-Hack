@@ -12,7 +12,11 @@ import {
 } from "@/components/tw-blocks/handle-errors/handle";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 
-export function useFundEscrow() {
+type UseFundEscrowOptions = {
+  onSuccess?: () => void;
+};
+
+export function useFundEscrow(options?: UseFundEscrowOptions) {
   const { fundEscrow } = useEscrowsMutations();
   const { selectedEscrow, updateEscrow } = useEscrowContext();
   const { walletAddress } = useWalletContext();
@@ -67,6 +71,9 @@ export function useFundEscrow() {
       toast.success("Escrow funded successfully");
 
       // do something with the response ...
+
+      // Close dialog if requested
+      options?.onSuccess?.();
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

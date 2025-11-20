@@ -17,7 +17,11 @@ import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvid
 
 type DistributionInput = { address: string; amount: string | number };
 
-export function useResolveDispute() {
+type UseResolveDisputeOptions = {
+  onSuccess?: () => void;
+};
+
+export function useResolveDispute(options?: UseResolveDisputeOptions) {
   const { resolveDispute } = useEscrowsMutations();
   const { selectedEscrow, updateEscrow } = useEscrowContext();
   const { walletAddress } = useWalletContext();
@@ -164,6 +168,9 @@ export function useResolveDispute() {
         }),
         balance: (selectedEscrow?.balance || 0) - sumDistributed || 0,
       });
+
+      // Close dialog if requested
+      options?.onSuccess?.();
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

@@ -35,7 +35,10 @@ export const ChangeMilestoneStatusDialog = ({
   showSelectMilestone?: boolean;
   milestoneIndex?: number | string;
 }) => {
-  const { form, handleSubmit, isSubmitting } = useChangeMilestoneStatus();
+  const [open, setOpen] = React.useState(false);
+  const { form, handleSubmit, isSubmitting } = useChangeMilestoneStatus({
+    onSuccess: () => setOpen(false),
+  });
   const { selectedEscrow } = useEscrowContext();
 
   React.useEffect(() => {
@@ -49,7 +52,7 @@ export const ChangeMilestoneStatusDialog = ({
   }, [showSelectMilestone, milestoneIndex, form]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button type="button" className="cursor-pointer w-full">
           Update Status
