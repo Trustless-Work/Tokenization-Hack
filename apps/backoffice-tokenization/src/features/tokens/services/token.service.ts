@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-type DeployTokenResponse = {
+export type DeployTokenResponse = {
   success: boolean;
   tokenFactoryAddress: string;
   tokenSaleAddress: string;
@@ -17,7 +17,7 @@ export class TokenService {
   }
 
   async deployToken(escrowContractId: string): Promise<DeployTokenResponse> {
-    const response = await this.axios.post<DeployTokenResponse>("/api/deploy", {
+    const response = await this.axios.post<DeployTokenResponse>("/deploy", {
       escrowContractId,
     });
 
