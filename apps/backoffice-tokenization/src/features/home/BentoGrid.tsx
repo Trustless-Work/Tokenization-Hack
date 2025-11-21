@@ -286,8 +286,7 @@ const SkeletonFive = () => {
           className="rounded-full h-10 w-10"
         />
         <p className="text-xs text-neutral-500">
-          Manage deployments, configure milestones, and run on-chain releases
-          with full audit logs and role-based controls.
+          Manage deployments, configure milestones, and run on-chain releases.
         </p>
       </motion.div>
       <motion.div

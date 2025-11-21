@@ -5,12 +5,12 @@ import { RainbowButton } from "@/components/ui/rainbow-button";
 
 export const HeroSection = () => {
   return (
-    <div className="flex gap-20 mx-20 justify-between items-center">
-      <div className="flex flex-col py-20 gap-4">
+    <div className="flex w-full gap-20 justify-between items-center">
+      <div className="flex flex-col py-20 gap-4 w-full md:w-1/3">
         <div className="text-xl font-bold tracking-tight md:text-6xl">
-          Project Oversight &
+          Project
           <PointerHighlight>
-            <span>Release Management</span>
+            <span>Oversight</span>
           </PointerHighlight>
         </div>
 
@@ -21,11 +21,11 @@ export const HeroSection = () => {
         </p>
 
         <Link href="/manage-escrows">
-          <RainbowButton variant="outline">Get Unlimited Access</RainbowButton>
+          <RainbowButton variant="outline">Open App</RainbowButton>
         </Link>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 w-full md:w-2/3">
         <BentoGridThirdDemo />
       </div>
     </div>
