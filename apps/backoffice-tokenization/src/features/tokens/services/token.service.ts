@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-type DeployTokenResponse = {
+export type DeployTokenResponse = {
   success: boolean;
   tokenFactoryAddress: string;
   tokenSaleAddress: string;

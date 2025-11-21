@@ -16,13 +16,10 @@ import {
 } from "@/components/tw-blocks/handle-errors/handle";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { trustlineOptions } from "@/components/tw-blocks/wallet-kit/trustlines";
-import { TokenService } from "@/features/tokens/services/token.service";
 
 type UseInitializeEscrowOptions = {
   onSuccess?: () => void;
 };
-
-const tokenService = new TokenService();
 
 export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -164,13 +161,6 @@ export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
           type: "multi-release",
           address: walletAddress || "",
         })) as InitializeMultiReleaseEscrowResponse;
-
-      // Deploy token with token contract
-      const tokenResponse = await tokenService.deployToken(response.contractId);
-
-      if (!tokenResponse.success) {
-        throw new Error("Failed to deploy token");
-      }
 
       toast.success("Escrow initialized successfully");
 
