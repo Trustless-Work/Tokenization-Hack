@@ -30,7 +30,6 @@ import {
   SelectItem as OrderSelectItem,
   SelectValue as OrderSelectValue,
 } from "@/components/ui/select";
-import type { Role } from "@trustless-work/escrow/types";
 
 type FiltersProps = {
   // values
@@ -50,7 +49,6 @@ type FiltersProps = {
   maxAmount: string;
   dateRange: DayPickerDateRange;
   formattedRangeLabel: string;
-  role?: Role;
 
   // setters
   setTitle: (v: string) => void;
@@ -70,7 +68,6 @@ type FiltersProps = {
   setMinAmount: (v: string) => void;
   setMaxAmount: (v: string) => void;
   setDateRange: (r: DayPickerDateRange) => void;
-  setRole: (v: Role | undefined) => void;
 
   // actions
   onClearFilters: () => void;
@@ -95,7 +92,6 @@ export const Filters = ({
   maxAmount,
   dateRange,
   formattedRangeLabel,
-  role,
   isRefreshing,
   orderBy,
   orderDirection,
@@ -108,7 +104,6 @@ export const Filters = ({
   setMinAmount,
   setMaxAmount,
   setDateRange,
-  setRole,
   onClearFilters,
   onRefresh,
   setOrderBy,
@@ -151,8 +146,8 @@ export const Filters = ({
 
       {/* Filters Grid */}
       <div className="space-y-4">
-        {/* Row 1: Search, ID, Role, Amount Range, and Type */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+        {/* Row 1: Search, ID, Amount Range, and Type */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">
               Search
@@ -180,33 +175,6 @@ export const Filters = ({
                 onChange={(e) => setEngagementId(e.target.value)}
                 className="h-9 pl-9 text-sm border-border/60 focus:border-primary/60 bg-background/80 transition-colors w-full"
               />
-            </div>
-          </div>
-
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">
-              Role
-            </label>
-            <div className="w-full">
-              <Select value={role} onValueChange={(v) => setRole(v as Role)}>
-                <SelectTrigger className="h-9 text-sm border-border/60 bg-background/80 w-full">
-                  <SelectValue placeholder="Select role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="approver">Approver</SelectItem>
-                  <SelectItem value="serviceProvider">
-                    Service Provider
-                  </SelectItem>
-                  <SelectItem value="platformAddress">
-                    Platform Address
-                  </SelectItem>
-                  <SelectItem value="releaseSigner">Release Signer</SelectItem>
-                  <SelectItem value="disputeResolver">
-                    Dispute Resolver
-                  </SelectItem>
-                  <SelectItem value="receiver">Receiver</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 

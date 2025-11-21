@@ -6,12 +6,15 @@ import type {
   GetEscrowsFromIndexerResponse as Escrow,
   MultiReleaseMilestone,
   SingleReleaseMilestone,
-  Role,
 } from "@trustless-work/escrow/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   Goal,
   Wallet,
@@ -66,8 +69,6 @@ export const EscrowsByRoleCards = () => {
     dateRange,
     setDateRange,
     formattedRangeLabel,
-    role,
-    setRole,
     onClearFilters,
     handleSortingChange,
   } = useEscrowsByRole();
@@ -79,13 +80,6 @@ export const EscrowsByRoleCards = () => {
   const handleRefresh = React.useCallback(() => {
     void refetch();
   }, [refetch]);
-
-  const setRoleStable = React.useCallback(
-    (v: Role | undefined) => {
-      if (v) setRole(v);
-    },
-    [setRole]
-  );
 
   function allMilestonesReleasedOrResolved(
     milestones: MultiReleaseMilestone[]
@@ -145,7 +139,6 @@ export const EscrowsByRoleCards = () => {
           maxAmount={maxAmount}
           dateRange={dateRange}
           formattedRangeLabel={formattedRangeLabel}
-          role={role}
           setTitle={setTitle}
           setEngagementId={setEngagementId}
           setIsActive={setIsActive}
@@ -155,7 +148,6 @@ export const EscrowsByRoleCards = () => {
           setMinAmount={setMinAmount}
           setMaxAmount={setMaxAmount}
           setDateRange={setDateRange}
-          setRole={setRoleStable}
           onClearFilters={onClearFilters}
           onRefresh={handleRefresh}
           isRefreshing={isFetching}

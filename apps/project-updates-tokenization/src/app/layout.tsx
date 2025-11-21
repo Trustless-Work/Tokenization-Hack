@@ -10,7 +10,6 @@ import { EscrowDialogsProvider } from "@/components/tw-blocks/providers/EscrowDi
 import { EscrowAmountProvider } from "@/components/tw-blocks/providers/EscrowAmountProvider";
 import { Toaster } from "sonner";
 import { WalletProvider } from "@/components/tw-blocks/wallet-kit/WalletProvider";
-import { Header } from "@/components/shared/Header";
 
 const Exo2 = localFont({
   src: "./fonts/Exo2.ttf",
@@ -51,11 +50,7 @@ export default function RootLayout({
                   <EscrowAmountProvider>
                     <div className="relative flex min-h-screen w-full">
                       <div className="flex-1 flex flex-col w-full">
-                        <div className="container mx-auto">
-                          <Header />
-
-                          {children}
-                        </div>
+                        <div className="container mx-auto">{children}</div>
                       </div>
                     </div>
 

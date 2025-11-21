@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { MultiReleaseMilestone } from "@trustless-work/escrow";
 import {
@@ -18,7 +22,6 @@ import {
   BriefcaseBusiness,
   BookOpen,
 } from "lucide-react";
-import { Actions, roleActions } from "./Actions";
 import type { DialogStates } from "@/components/tw-blocks/providers/EscrowDialogsProvider";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
 import { useEscrowAmountContext } from "@/components/tw-blocks/providers/EscrowAmountProvider";
@@ -29,6 +32,7 @@ import {
   formatRole,
 } from "@/components/tw-blocks/helpers/format.helper";
 import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
+import { roleActions } from "./Actions";
 
 interface GeneralInformationProps {
   selectedEscrow: GetEscrowsFromIndexerResponse;
@@ -106,13 +110,6 @@ export const GeneralInformation = ({
               selectedEscrow.balance ?? 0,
               selectedEscrow.trustline?.name
             )}
-          />
-        </div>
-        <div className="flex w-full md:w-1/5">
-          <Actions
-            selectedEscrow={selectedEscrow}
-            userRolesInEscrow={userRolesInEscrow}
-            areAllMilestonesApproved={areAllMilestonesApproved}
           />
         </div>
       </div>

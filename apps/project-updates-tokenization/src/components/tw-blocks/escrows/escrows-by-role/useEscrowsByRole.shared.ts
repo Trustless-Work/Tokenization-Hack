@@ -46,7 +46,9 @@ export function useEscrowsByRole() {
     to: undefined,
   });
   const [role, setRole] =
-    React.useState<GetEscrowsFromIndexerByRoleParams["role"]>("approver");
+    React.useState<GetEscrowsFromIndexerByRoleParams["role"]>(
+      "serviceProvider"
+    );
 
   function useDebouncedValue<T>(value: T, delayMs: number) {
     const [debounced, setDebounced] = React.useState<T>(value);
@@ -79,7 +81,6 @@ export function useEscrowsByRole() {
     const qpMax = qp.get("maxAmount") || "";
     const qpStart = qp.get("startDate");
     const qpEnd = qp.get("endDate");
-    const qpRole = qp.get("role");
 
     setPage(Number.isFinite(qpPage) && qpPage > 0 ? qpPage : 1);
     setOrderBy(
@@ -102,9 +103,7 @@ export function useEscrowsByRole() {
       from: qpStart ? new Date(qpStart) : undefined,
       to: qpEnd ? new Date(qpEnd) : undefined,
     });
-    setRole(
-      (qpRole as GetEscrowsFromIndexerByRoleParams["role"]) || "approver"
-    );
+    setRole("serviceProvider");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -176,8 +175,6 @@ export function useEscrowsByRole() {
       qp.set("startDate", String(debouncedSearchParams.startDate));
     if (debouncedSearchParams.endDate)
       qp.set("endDate", String(debouncedSearchParams.endDate));
-    if (debouncedSearchParams.role)
-      qp.set("role", String(debouncedSearchParams.role));
 
     const newQs = qp.toString();
     if (lastQueryStringRef.current !== newQs) {
@@ -276,7 +273,7 @@ export function useEscrowsByRole() {
     setOrderBy("createdAt");
     setOrderDirection("desc");
     setSorting([]);
-    setRole("approver");
+    setRole("serviceProvider");
   }, []);
 
   const handleSortingChange = React.useCallback(
