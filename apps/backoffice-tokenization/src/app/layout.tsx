@@ -39,7 +39,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(Exo2.variable, "antialiased", spaceGrotesk.className)}
+        className={cn(
+          Exo2.variable,
+          "antialiased dark",
+          spaceGrotesk.className
+        )}
       >
         <ReactQueryClientProvider>
           <TrustlessWorkProvider>
