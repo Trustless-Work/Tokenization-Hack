@@ -12,6 +12,13 @@ interface UploadEvidenceParams {
   document: Express.Multer.File;
 }
 
+export interface EvidenceUploadResult {
+  metadataUrl: string;
+  documentUrl: string;
+  documentHash: string;
+  metadataHash: string;
+}
+
 /**
  * Convert buffer to readable stream
  */
@@ -24,12 +31,13 @@ function bufferToStream(buffer: Buffer): Readable {
 
 /**
  * Upload evidence document to Pinata/IPFS
+ * Returns both the metadata URL (main evidence record) and document URL
  */
 export async function uploadEvidence({
   title,
   description,
   document,
-}: UploadEvidenceParams): Promise<string> {
+}: UploadEvidenceParams): Promise<EvidenceUploadResult> {
   const pinataApiKey = process.env.PINATA_API_KEY;
   const pinataSecretKey = process.env.PINATA_SECRET_KEY;
 
@@ -96,11 +104,16 @@ export async function uploadEvidence({
 
     const jsonUpload = await pinata.pinFileToIPFS(jsonStream, jsonOptions);
 
-    // Return the IPFS URL for the metadata document
-    // This is the main record that contains all the evidence information
-    const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${jsonUpload.IpfsHash}`;
+    // Return both URLs - metadata (main evidence record) and document
+    const metadataUrl = `https://gateway.pinata.cloud/ipfs/${jsonUpload.IpfsHash}`;
+    const documentUrl = `https://gateway.pinata.cloud/ipfs/${fileUpload.IpfsHash}`;
 
-    return ipfsUrl;
+    return {
+      metadataUrl, // Main evidence record with all metadata + document reference
+      documentUrl, // Direct URL to the uploaded document file
+      documentHash: fileUpload.IpfsHash,
+      metadataHash: jsonUpload.IpfsHash,
+    };
   } catch (error) {
     console.error("Pinata upload error:", error);
     throw new Error(

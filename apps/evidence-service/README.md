@@ -5,7 +5,8 @@ A standalone microservice for uploading evidence documents to IPFS/Pinata. This 
 ## Features
 
 - Upload evidence documents (title, description, document file) to IPFS via Pinata
-- Returns unique IPFS URL for each evidence record
+- Returns both metadata URL (evidence record) and document URL (direct file access)
+- Both document file and metadata JSON are stored on IPFS/Pinata
 - Simple REST API interface
 - CORS enabled for cross-origin requests
 
@@ -27,12 +28,21 @@ Upload an evidence document to IPFS.
 ```json
 {
   "success": true,
-  "ipfsUrl": "https://gateway.pinata.cloud/ipfs/Qm...",
+  "metadataUrl": "https://gateway.pinata.cloud/ipfs/Qm...",
+  "documentUrl": "https://gateway.pinata.cloud/ipfs/Qm...",
+  "documentHash": "Qm...",
+  "metadataHash": "Qm...",
   "title": "Evidence Title",
   "description": "Evidence Description",
   "timestamp": "2024-01-01T00:00:00.000Z"
 }
 ```
+
+**Response Fields:**
+- `metadataUrl`: Main evidence record (JSON containing title, description, timestamp, and document reference)
+- `documentUrl`: Direct URL to access the uploaded document file
+- `documentHash`: IPFS hash of the uploaded document
+- `metadataHash`: IPFS hash of the metadata JSON record
 
 ### GET `/health`
 
@@ -109,7 +119,8 @@ const response = await fetch("http://localhost:3001/api/evidence", {
 });
 
 const result = await response.json();
-console.log("IPFS URL:", result.ipfsUrl);
+console.log("Metadata URL:", result.metadataUrl); // Evidence record with all info
+console.log("Document URL:", result.documentUrl); // Direct access to document file
 ```
 
 ### Using axios:
@@ -132,12 +143,37 @@ const response = await axios.post(
   }
 );
 
-console.log("IPFS URL:", response.data.ipfsUrl);
+console.log("Metadata URL:", response.data.metadataUrl); // Evidence record with all info
+console.log("Document URL:", response.data.documentUrl); // Direct access to document file
 ```
 
 ## Integration with Other Apps
 
 This service can be called from any application in the monorepo. Simply make HTTP requests to the evidence service endpoint.
+
+### Using the Example Client
+
+Copy `src/services/evidenceClient.example.ts` to your app and use it:
+
+```typescript
+import { EvidenceService } from "./services/evidenceClient";
+
+const evidenceService = new EvidenceService();
+
+const result = await evidenceService.uploadEvidence({
+  title: "Project Milestone 1",
+  description: "Completed initial development phase",
+  document: fileInput.files[0],
+});
+
+// Access the evidence record
+console.log("Evidence Record:", result.metadataUrl);
+
+// Access the document directly
+console.log("Document File:", result.documentUrl);
+```
+
+### Custom Integration Example
 
 For example, in your Next.js apps, you can create a service file:
 
@@ -147,17 +183,28 @@ import axios from "axios";
 
 const EVIDENCE_SERVICE_URL = process.env.NEXT_PUBLIC_EVIDENCE_SERVICE_URL || "http://localhost:3001";
 
+export interface EvidenceUploadResult {
+  success: boolean;
+  metadataUrl: string; // Evidence record (JSON with all metadata + document reference)
+  documentUrl: string; // Direct URL to the uploaded document file
+  documentHash: string;
+  metadataHash: string;
+  title: string;
+  description: string;
+  timestamp: string;
+}
+
 export async function uploadEvidence(
   title: string,
   description: string,
   document: File
-) {
+): Promise<EvidenceUploadResult> {
   const formData = new FormData();
   formData.append("title", title);
   formData.append("description", description);
   formData.append("document", document);
 
-  const response = await axios.post(
+  const response = await axios.post<EvidenceUploadResult>(
     `${EVIDENCE_SERVICE_URL}/api/evidence`,
     formData,
     {
@@ -169,5 +216,21 @@ export async function uploadEvidence(
 
   return response.data;
 }
+```
+
+### Accessing Evidence Data
+
+Once you have the URLs, you can fetch the evidence data:
+
+```typescript
+// Fetch the evidence record (metadata)
+const metadataResponse = await fetch(result.metadataUrl);
+const evidenceRecord = await metadataResponse.json();
+// Contains: title, description, timestamp, document (with hash, name, type, size)
+
+// Fetch the document file directly
+const documentResponse = await fetch(result.documentUrl);
+const documentBlob = await documentResponse.blob();
+// Use the blob to display or download the document
 ```
 

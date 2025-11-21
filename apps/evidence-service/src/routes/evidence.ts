@@ -35,7 +35,7 @@ router.post("/", upload.single("document"), async (req, res) => {
     }
 
     // Upload to Pinata/IPFS
-    const ipfsUrl = await uploadEvidence({
+    const result = await uploadEvidence({
       title,
       description,
       document: file,
@@ -43,7 +43,10 @@ router.post("/", upload.single("document"), async (req, res) => {
 
     res.json({
       success: true,
-      ipfsUrl,
+      metadataUrl: result.metadataUrl, // Main evidence record (contains all data)
+      documentUrl: result.documentUrl, // Direct URL to the document file
+      documentHash: result.documentHash,
+      metadataHash: result.metadataHash,
       title,
       description,
       timestamp: new Date().toISOString(),
