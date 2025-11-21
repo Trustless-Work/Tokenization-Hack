@@ -359,7 +359,7 @@ export const Card = ({
             layoutId={layout ? `category-${escrow?.description}` : undefined}
             className="text-left font-sans text-xs font-medium text-white md:text-base break-all whitespace-normal"
           >
-            {escrow?.description}
+            {escrow?.description.slice(0,100)}
           </motion.p>
         </div>
         <BlurImage
