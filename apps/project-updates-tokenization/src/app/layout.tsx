@@ -10,6 +10,7 @@ import { EscrowDialogsProvider } from "@/components/tw-blocks/providers/EscrowDi
 import { EscrowAmountProvider } from "@/components/tw-blocks/providers/EscrowAmountProvider";
 import { Toaster } from "sonner";
 import { WalletProvider } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { Header } from "@/components/shared/Header";
 
 const Exo2 = localFont({
   src: "./fonts/Exo2.ttf",
@@ -36,7 +37,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(Exo2.variable, "antialiased", spaceGrotesk.className)}
+        className={cn(
+          Exo2.variable,
+          "antialiased dark",
+          spaceGrotesk.className
+        )}
       >
         <ReactQueryClientProvider>
           <TrustlessWorkProvider>
@@ -44,7 +49,15 @@ export default function RootLayout({
               <EscrowProvider>
                 <EscrowDialogsProvider>
                   <EscrowAmountProvider>
-                    {children}
+                    <div className="relative flex min-h-screen w-full">
+                      <div className="flex-1 flex flex-col w-full">
+                        <div className="container mx-auto">
+                          <Header />
+
+                          {children}
+                        </div>
+                      </div>
+                    </div>
 
                     <Toaster position="top-right" richColors />
                   </EscrowAmountProvider>
