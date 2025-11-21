@@ -17,7 +17,10 @@ export interface UploadEvidenceParams {
 
 export interface UploadEvidenceResponse {
   success: boolean;
-  ipfsUrl: string;
+  metadataUrl: string; // Main evidence record (contains all metadata + document reference)
+  documentUrl: string; // Direct URL to the uploaded document file
+  documentHash: string;
+  metadataHash: string;
   title: string;
   description: string;
   timestamp: string;
@@ -81,5 +84,20 @@ export class EvidenceService {
 //   description: "Completed initial development phase",
 //   document: fileInput.files[0],
 // });
-// console.log("IPFS URL:", result.ipfsUrl);
+// 
+// // Access the evidence record (contains all metadata + document reference)
+// console.log("Evidence Record URL:", result.metadataUrl);
+// 
+// // Access the document file directly
+// console.log("Document File URL:", result.documentUrl);
+// 
+// // Fetch and display the evidence record
+// const metadataResponse = await fetch(result.metadataUrl);
+// const evidenceRecord = await metadataResponse.json();
+// console.log("Evidence Data:", evidenceRecord);
+// 
+// // Fetch the document file
+// const documentResponse = await fetch(result.documentUrl);
+// const documentBlob = await documentResponse.blob();
+// // Use documentBlob to display or download the document
 
