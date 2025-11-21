@@ -1,0 +1,14 @@
+[package]
+name = "vault-contract"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+soroban-sdk = { workspace = true }
+
+[dev-dependencies]
+soroban-sdk = { workspace = true, features = ["testutils"] }
+soroban-token-contract = { path = "../token-factory" }
+
+[lib]
+crate-type = ["cdylib", "rlib"]
