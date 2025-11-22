@@ -8,6 +8,7 @@ import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvid
 
 export type CreateVaultFormValues = {
   price: number;
+  factoryAddress: string;
 };
 
 type UseCreateVaultParams = {
@@ -15,8 +16,6 @@ type UseCreateVaultParams = {
 };
 
 const USDC_ADDRESS = "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA";
-const FACTORY_ADDRESS =
-  "CD4NQKFMZTOJ23SQ2AYJGNXCCLPNJNSU4DZL6Y4Q77VLLG2TPOJEC42W";
 
 export function useCreateVault(params?: UseCreateVaultParams) {
   const { walletAddress } = useWalletContext();
@@ -24,6 +23,7 @@ export function useCreateVault(params?: UseCreateVaultParams) {
   const form = useForm<CreateVaultFormValues>({
     defaultValues: {
       price: 0,
+      factoryAddress: "",
     },
     mode: "onChange",
   });
@@ -44,7 +44,7 @@ export function useCreateVault(params?: UseCreateVaultParams) {
         admin: walletAddress ?? "",
         enabled: false,
         price: values.price,
-        token: FACTORY_ADDRESS,
+        token: values.factoryAddress,
         usdc: USDC_ADDRESS,
       });
 

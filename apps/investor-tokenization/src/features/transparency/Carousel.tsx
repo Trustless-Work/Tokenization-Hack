@@ -1,6 +1,7 @@
 "use client";
 
 import { BalanceProgressBar } from "@/components/tw-blocks/escrows/indicators/balance-progress/bar/BalanceProgress";
+import { Button } from "@/components/ui/button";
 import {
   formatCurrency,
   formatTimestamp,
@@ -9,13 +10,20 @@ import type {
   GetEscrowsFromIndexerResponse as Escrow,
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
+import Link from "next/link";
 
-export const DummyContent = ({ details }: { details?: Escrow }) => {
+export const DummyContent = ({
+  details,
+  tokenFactory,
+}: {
+  details?: Escrow;
+  tokenFactory?: string;
+}) => {
   const milestones = (details?.milestones || []) as MultiReleaseMilestone[];
 
   const totalAmount = milestones.reduce(
     (acc, milestone) => acc + Number(milestone.amount),
-    0,
+    0
   );
 
   return (
@@ -65,6 +73,25 @@ export const DummyContent = ({ details }: { details?: Escrow }) => {
           <p>
             <strong>Contract ID:</strong> {details.contractId}
           </p>
+        </div>
+      )}
+
+      {tokenFactory && (
+        <div className="text-sm text-neutral-500 dark:text-neutral-400">
+          <p>
+            <strong>Token Address:</strong> {tokenFactory}
+          </p>
+          <div className="mt-2">
+            <Link
+              href={`https://stellar.expert/explorer/testnet/contract/${tokenFactory}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="outline" size="sm">
+                View Contract
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
 

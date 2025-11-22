@@ -7,6 +7,7 @@ import {
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { signTransaction } from "@/components/tw-blocks/wallet-kit/wallet-kit";
 import { SendTransactionService } from "@/lib/sendTransactionService";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 
 export type EnableVaultFormValues = {
   vaultContractAddress: string;
@@ -63,6 +64,8 @@ export function useEnableVault(params?: UseEnableVaultParams) {
           submitResponse.message ?? "Transaction submission failed."
         );
       }
+
+      toastSuccessWithTx("Vault enabled successfully", submitResponse.hash);
 
       setResponse(enableResponse);
 

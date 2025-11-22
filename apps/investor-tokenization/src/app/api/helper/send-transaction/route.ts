@@ -28,6 +28,7 @@ export async function POST(request: Request) {
       status: StellarSDK.rpc.Api.GetTransactionStatus.SUCCESS,
       message:
         "The transaction has been successfully sent to the Stellar network.",
+      hash: response.hash,
     });
   } catch (error) {
     console.error("Transaction submission error:", error);

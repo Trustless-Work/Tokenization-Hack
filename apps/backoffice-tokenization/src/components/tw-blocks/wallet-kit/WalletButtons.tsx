@@ -15,6 +15,11 @@ export const WalletButton = () => {
   const { handleConnect, handleDisconnect } = useWallet();
   const { walletAddress, walletName } = useWalletContext();
   const [copied, setCopied] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const shortAddress = React.useMemo(() => {
     if (!walletAddress) return "";
@@ -32,6 +37,15 @@ export const WalletButton = () => {
       console.error("Error copying address to clipboard", _);
     }
   };
+
+  if (!mounted) {
+    return (
+      <Button className="h-10 px-6 gap-2 font-medium cursor-pointer" type="button">
+        <Wallet className="h-4 w-4" />
+        <span className="hidden sm:inline">Connect Wallet</span>
+      </Button>
+    );
+  }
 
   if (walletAddress) {
     return (

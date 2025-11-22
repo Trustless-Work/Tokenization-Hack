@@ -4,6 +4,7 @@ import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsM
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { FundEscrowPayload } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import {
   ErrorResponse,
   handleError,
@@ -53,7 +54,7 @@ export const FundEscrowButton = ({ amount }: FundEscrowButtonProps) => {
        * @param type - The type of the escrow
        * @param address - The address of the escrow
        */
-      await fundEscrow.mutateAsync({
+      const res = await fundEscrow.mutateAsync({
         payload,
         type: selectedEscrow?.type || "multi-release",
         address: walletAddress || "",
@@ -63,7 +64,7 @@ export const FundEscrowButton = ({ amount }: FundEscrowButtonProps) => {
         ...selectedEscrow,
         amount: (selectedEscrow?.amount || 0) + payload.amount,
       });
-      toast.success("Escrow funded successfully");
+      toastSuccessWithTx("Escrow funded successfully", (res as any)?.hash);
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

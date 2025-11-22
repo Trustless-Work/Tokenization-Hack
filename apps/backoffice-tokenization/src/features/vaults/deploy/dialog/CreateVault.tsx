@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 import { useCreateVault } from "./useCreateVault";
-import { toast } from "sonner";
 import { useWatch } from "react-hook-form";
 import { VaultDeploySuccessDialog } from "./VaultDeploySuccessDialog";
 
@@ -51,7 +50,7 @@ export const CreateVaultDialog = () => {
             Create Vault
           </Button>
         </DialogTrigger>
-        <DialogContent className="!w-full sm:!max-w-lg max-h-[95vh] overflow-y-auto">
+        <DialogContent className="w-full! sm:max-w-lg! max-h-[95vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create Vault</DialogTitle>
           </DialogHeader>
@@ -96,6 +95,33 @@ export const CreateVaultDialog = () => {
                           : "—"}
                       </span>
                     </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="factoryAddress"
+                rules={{ required: "Factory address is required" }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center">
+                      Factory Address
+                      <span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormDescription>
+                      The factory address of the token you want to deploy the
+                      vault for.
+                    </FormDescription>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Enter factory address"
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

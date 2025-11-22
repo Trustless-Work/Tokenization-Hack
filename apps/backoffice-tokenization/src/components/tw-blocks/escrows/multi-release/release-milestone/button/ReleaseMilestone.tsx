@@ -7,6 +7,7 @@ import {
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import {
   ErrorResponse,
   handleError,
@@ -53,13 +54,13 @@ export const ReleaseMilestoneButton = ({
        * @param type - The type of the escrow
        * @param address - The address of the escrow
        */
-      await releaseFunds.mutateAsync({
+      const res = await releaseFunds.mutateAsync({
         payload,
         type: "multi-release",
         address: walletAddress || "",
       });
 
-      toast.success("Milestone released successfully");
+      toastSuccessWithTx("Milestone released successfully", (res as any)?.hash);
 
       // Ensure amounts are up to date for the success dialog
       if (selectedEscrow) {

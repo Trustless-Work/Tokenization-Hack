@@ -37,6 +37,8 @@ import { BalanceProgressBar } from "@/components/tw-blocks/escrows/indicators/ba
 import { formatAddress } from "@/components/tw-blocks/helpers/format.helper";
 import { CircleCheckBig } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { Button as ShadButton } from "@/components/ui/button";
+import Link from "next/link";
 
 type InvestFormValues = {
   amount: number;
@@ -58,8 +60,9 @@ export function InvestDialog({
   const [open, setOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [successMessage, setSuccessMessage] = React.useState<string | null>(
-    null,
+    null
   );
+  const [txHash, setTxHash] = React.useState<string | null>(null);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const selected = useSelectedEscrow();
   const queryClient = useQueryClient();
@@ -102,7 +105,7 @@ export function InvestDialog({
 
       if (!buyResponse?.success || !buyResponse?.xdr) {
         throw new Error(
-          buyResponse?.message ?? "Failed to build buy transaction.",
+          buyResponse?.message ?? "Failed to build buy transaction."
         );
       }
 
@@ -118,10 +121,11 @@ export function InvestDialog({
 
       if (submitResponse.status !== "SUCCESS") {
         throw new Error(
-          submitResponse.message ?? "Transaction submission failed.",
+          submitResponse.message ?? "Transaction submission failed."
         );
       }
 
+      setTxHash(submitResponse.hash ?? null);
       // Refresh the escrow balance using TanStack Query
       const balanceQueryKey = ["escrows", [selected.escrowId]] as const;
       const singleEscrowKey = ["escrow", selected.escrowId] as const;
@@ -200,12 +204,24 @@ export function InvestDialog({
               {/* Right Column: Information */}
               <div className="flex flex-col justify-center space-y-4">
                 <h2 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-foreground">
-                  <CircleCheckBig className="w-6 h-6 md:w-10 md:h-10 text-green-600 flex-shrink-0" />{" "}
+                  <CircleCheckBig className="w-6 h-6 md:w-10 md:h-10 text-green-600 shrink-0" />{" "}
                   Investment Successful!
                 </h2>
                 <p className="text-sm md:text-base text-muted-foreground line-clamp-3">
                   Your investment transaction was sent successfully.
                 </p>
+
+                <div className="pt-2">
+                  <Link
+                    href={`https://stellar.expert/explorer/testnet${txHash ? `/tx/${txHash}` : ""}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ShadButton variant="outline" size="sm">
+                      View Transaction
+                    </ShadButton>
+                  </Link>
+                </div>
 
                 {/* Title */}
                 <div>

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { approveMilestoneSchema, type ApproveMilestoneValues } from "./schema";
 import { toast } from "sonner";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import {
   ApproveMilestonePayload,
   MultiReleaseMilestone,
@@ -44,13 +45,16 @@ export function useApproveMilestone(options?: UseApproveMilestoneOptions) {
         approver: walletAddress || "",
       };
 
-      await approveMilestone.mutateAsync({
+      const res = await approveMilestone.mutateAsync({
         payload: finalPayload,
         type: selectedEscrow?.type || "multi-release",
         address: walletAddress || "",
       });
 
-      toast.success("Milestone approved flag updated successfully");
+      toastSuccessWithTx(
+        "Milestone approved flag updated successfully",
+        (res as any)?.hash,
+      );
 
       updateEscrow({
         ...selectedEscrow,

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { type DeployTokenResponse } from "@/features/tokens/services/token.service";
 import { CheckCircle } from "lucide-react";
 import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
+import Link from "next/link";
 
 type TokenizeEscrowSuccessDialogProps = {
   open: boolean;
@@ -26,7 +27,7 @@ export function TokenizeEscrowSuccessDialog(
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!w-full sm:!max-w-xl">
+      <DialogContent className="w-full! sm:max-w-xl!">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-green-700" />
@@ -54,6 +55,18 @@ export function TokenizeEscrowSuccessDialog(
                 </Button>
               ) : null}
             </div>
+            {response?.tokenFactoryAddress ? (
+              <div>
+                <Link
+                  href={`https://stellar.expert/explorer/testnet/contract/${response.tokenFactoryAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  View Transaction
+                </Link>
+              </div>
+            ) : null}
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="tokenSaleAddress">Token Sale Address</Label>
@@ -75,6 +88,18 @@ export function TokenizeEscrowSuccessDialog(
                 </Button>
               ) : null}
             </div>
+            {response?.tokenSaleAddress ? (
+              <div>
+                <Link
+                  href={`https://stellar.expert/explorer/testnet/contract/${response.tokenSaleAddress}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  View Transaction
+                </Link>
+              </div>
+            ) : null}
           </div>
         </div>
       </DialogContent>

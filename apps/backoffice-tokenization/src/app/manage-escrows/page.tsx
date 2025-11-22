@@ -1,3 +1,5 @@
+"use client";
+
 import { Suspense } from "react";
 import { ManageEscrowsView } from "@/features/manage-escrows/ManageEscrowsView";
 

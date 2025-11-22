@@ -23,6 +23,7 @@ import { RainbowButton } from "./rainbow-button";
 import { ClaimROIService } from "@/features/claim-roi/services/claim.service";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { toast } from "sonner";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { InvestDialog } from "@/features/tokens/components/InvestDialog";
 import { SelectedEscrowProvider } from "@/features/tokens/context/SelectedEscrowContext";
 
@@ -37,6 +38,7 @@ interface CarouselProps {
 type Card = {
   escrowId: string;
   tokenSale?: string;
+  tokenFactory?: string;
   vaultContractId?: string;
   src: string;
   content: React.ReactNode;
@@ -333,7 +335,7 @@ export const Card = ({
         beneficiaryAddress: walletAddress,
       });
       if (res?.success) {
-        toast.success("Claim successful");
+        toastSuccessWithTx("Claim successful");
       } else {
         toast.error(res?.message ?? "Claim failed");
       }
@@ -420,6 +422,7 @@ export const Card = ({
                       card.content as React.ReactElement<any>,
                       {
                         details: escrow,
+                        tokenFactory: card.tokenFactory,
                       }
                     )
                   : card.content}

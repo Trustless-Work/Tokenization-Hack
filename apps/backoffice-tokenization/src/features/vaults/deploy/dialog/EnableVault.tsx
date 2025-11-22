@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 import { useEnableVault } from "./useEnableVault";
-import { toast } from "sonner";
+
 
 export const EnableVaultDialog = () => {
   const [open, setOpen] = React.useState(false);
@@ -27,7 +27,6 @@ export const EnableVaultDialog = () => {
     useEnableVault({
       onSuccess: () => {
         setOpen(false);
-        toast.success("Vault enabled successfully");
       },
     });
 

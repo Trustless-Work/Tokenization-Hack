@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { type DeployVaultResponse } from "@/features/vaults/services/vault.service";
 import { CheckCircle } from "lucide-react";
 import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
+import Link from "next/link";
 
 type VaultDeploySuccessDialogProps = {
   open: boolean;
@@ -25,7 +26,7 @@ export function VaultDeploySuccessDialog(props: VaultDeploySuccessDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!w-full sm:!max-w-xl">
+      <DialogContent className="w-full! sm:max-w-xl!">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-green-700" />
@@ -53,6 +54,18 @@ export function VaultDeploySuccessDialog(props: VaultDeploySuccessDialogProps) {
                 </Button>
               ) : null}
             </div>
+            {address ? (
+              <div>
+                <Link
+                  href={`https://stellar.expert/explorer/testnet/contract/${address}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  View Transaction
+                </Link>
+              </div>
+            ) : null}
           </div>
         </div>
       </DialogContent>

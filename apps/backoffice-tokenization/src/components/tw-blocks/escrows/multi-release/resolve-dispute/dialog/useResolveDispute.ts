@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resolveDisputeSchema, type ResolveDisputeValues } from "./schema";
 import { toast } from "sonner";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import {
   MultiReleaseResolveDisputePayload,
   MultiReleaseMilestone,
@@ -138,13 +139,13 @@ export function useResolveDispute(options?: UseResolveDisputeOptions) {
         })) as [{ address: string; amount: number }],
       };
 
-      await resolveDispute.mutateAsync({
+      const res = await resolveDispute.mutateAsync({
         payload: finalPayload,
         type: "multi-release",
         address: walletAddress || "",
       });
 
-      toast.success("Dispute resolved successfully");
+      toastSuccessWithTx("Dispute resolved successfully", (res as any)?.hash);
 
       const sumDistributed = payload.distributions.reduce((acc, d) => {
         const n = Number(d.amount || 0);

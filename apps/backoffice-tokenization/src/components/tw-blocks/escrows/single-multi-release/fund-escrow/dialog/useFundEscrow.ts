@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fundEscrowSchema, type FundEscrowValues } from "./schema";
 import { toast } from "sonner";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { FundEscrowPayload } from "@trustless-work/escrow";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
@@ -57,7 +58,7 @@ export function useFundEscrow(options?: UseFundEscrowOptions) {
        * @param type - The type of the escrow
        * @param address - The address of the escrow
        */
-      await fundEscrow.mutateAsync({
+      const res = await fundEscrow.mutateAsync({
         payload: finalPayload,
         type: selectedEscrow?.type || "multi-release",
         address: walletAddress || "",
@@ -68,7 +69,7 @@ export function useFundEscrow(options?: UseFundEscrowOptions) {
         balance: (selectedEscrow?.balance || 0) + finalPayload.amount,
       });
 
-      toast.success("Escrow funded successfully");
+      toastSuccessWithTx("Escrow funded successfully", (res as any)?.hash);
 
       // do something with the response ...
 

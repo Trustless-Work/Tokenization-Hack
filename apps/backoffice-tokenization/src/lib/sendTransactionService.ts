@@ -7,6 +7,7 @@ export type SendTransactionPayload = {
 export type SendTransactionResponse = {
   status: string;
   message: string;
+  hash?: string;
 };
 
 export class SendTransactionService {

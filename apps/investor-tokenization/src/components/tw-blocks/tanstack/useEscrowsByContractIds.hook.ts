@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { AxiosError } from "axios";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
 import { useGetEscrowFromIndexerByContractIds } from "@trustless-work/escrow";
@@ -58,7 +59,7 @@ export const useGetEscrowsByContractIdsForm = (initialContractId?: string) => {
 
       setResponse(escrowData);
       setSelectedEscrow(escrowData[0]);
-      toast.success("Escrow data fetched successfully");
+      toastSuccessWithTx("Escrow data fetched successfully");
     } catch (error: unknown) {
       const mappedError = handleError(error as AxiosError | WalletError);
       console.error("Error fetching escrow:", mappedError.message);
