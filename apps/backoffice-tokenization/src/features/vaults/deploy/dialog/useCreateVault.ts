@@ -39,11 +39,13 @@ export function useCreateVault(params?: UseCreateVaultParams) {
     setIsSubmitting(true);
 
     try {
+      const priceCalculated = 1 + Number(values.price) / 100;
+
       const vaultService = new VaultService();
       const vaultResponse = await vaultService.deployVault({
         admin: walletAddress ?? "",
         enabled: false,
-        price: values.price,
+        price: priceCalculated,
         token: values.factoryAddress,
         usdc: USDC_ADDRESS,
       });
