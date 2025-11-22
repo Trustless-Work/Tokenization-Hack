@@ -23,7 +23,6 @@ import { RainbowButton } from "./rainbow-button";
 import { ClaimROIService } from "@/features/claim-roi/services/claim.service";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { InvestDialog } from "@/features/tokens/components/InvestDialog";
 import { SelectedEscrowProvider } from "@/features/tokens/context/SelectedEscrowContext";
 
@@ -335,7 +334,7 @@ export const Card = ({
         beneficiaryAddress: walletAddress,
       });
       if (res?.success) {
-        toastSuccessWithTx("Claim successful");
+        toast.success("Claim successful");
       } else {
         toast.error(res?.message ?? "Claim failed");
       }

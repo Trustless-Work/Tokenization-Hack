@@ -9,7 +9,6 @@ import {
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
@@ -225,7 +224,7 @@ export function useUpdateEscrow() {
        * @param type - The type of the escrow
        * @param address - The address of the escrow
        */
-      const res = await updateEscrow.mutateAsync({
+      (await updateEscrow.mutateAsync({
         payload: finalPayload,
         type: "multi-release",
         address: walletAddress || "",
@@ -246,7 +245,7 @@ export function useUpdateEscrow() {
       };
 
       setSelectedEscrow(nextSelectedEscrow);
-      toastSuccessWithTx("Escrow updated successfully", (res as any)?.hash);
+      toast.success("Escrow updated successfully");
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

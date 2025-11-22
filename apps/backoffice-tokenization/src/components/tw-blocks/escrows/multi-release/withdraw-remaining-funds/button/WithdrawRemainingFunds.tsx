@@ -4,7 +4,6 @@ import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsM
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { WithdrawRemainingFundsPayload } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import {
   ErrorResponse,
   handleError,
@@ -44,12 +43,12 @@ export const WithdrawRemainingFundsButton = ({
         distributions: distributions as [{ address: string; amount: number }],
       };
 
-      const res = await withdrawRemainingFunds.mutateAsync({
+      await withdrawRemainingFunds.mutateAsync({
         payload,
         address: walletAddress || "",
       });
 
-      toastSuccessWithTx("Withdraw successful", (res as any)?.hash);
+      toast.success("Withdraw successful");
       const sumDistributed = distributions.reduce(
         (acc, d) => acc + Number(d.amount || 0),
         0

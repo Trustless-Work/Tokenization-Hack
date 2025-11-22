@@ -6,7 +6,6 @@ import {
   type WithdrawRemainingFundsValues,
 } from "./schema";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { WithdrawRemainingFundsPayload } from "@trustless-work/escrow";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
@@ -122,12 +121,12 @@ export function useWithdrawRemainingFunds(options?: UseWithdrawRemainingFundsOpt
         })) as [{ address: string; amount: number }],
       };
 
-      const res = await withdrawRemainingFunds.mutateAsync({
+      await withdrawRemainingFunds.mutateAsync({
         payload: finalPayload,
         address: walletAddress || "",
       });
 
-      toastSuccessWithTx("Withdraw successful", (res as any)?.hash);
+      toast.success("Withdraw successful");
 
       const sumDistributed = payload.distributions.reduce((acc, d) => {
         const n = Number(d.amount || 0);
