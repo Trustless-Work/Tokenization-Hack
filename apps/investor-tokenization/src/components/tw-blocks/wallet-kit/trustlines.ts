@@ -38,6 +38,6 @@ export const trustlineOptions = Array.from(
       .map((trustline) => [
         trustline.address,
         { value: trustline.address, label: trustline.name },
-      ])
-  ).values()
+      ]),
+  ).values(),
 );

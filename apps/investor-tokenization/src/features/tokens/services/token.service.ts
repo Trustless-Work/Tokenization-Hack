@@ -26,7 +26,7 @@ export class TokenService {
   async buyToken(payload: BuyTokenPayload): Promise<DeployTokenResponse> {
     const response = await this.axios.post<DeployTokenResponse>(
       "/token-sale/buy",
-      payload
+      payload,
     );
 
     return response.data;

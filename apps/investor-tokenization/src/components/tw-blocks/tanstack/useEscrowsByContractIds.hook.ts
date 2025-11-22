@@ -16,7 +16,7 @@ export const formSchema = z.object({
     .array(
       z.object({
         value: z.string().min(1, "Contract ID is required"),
-      })
+      }),
     )
     .min(1, "At least one contract ID is required"),
 });
@@ -64,7 +64,7 @@ export const useGetEscrowsByContractIdsForm = (initialContractId?: string) => {
       console.error("Error fetching escrow:", mappedError.message);
       setError(mappedError.message);
       toast.error(
-        mappedError ? mappedError.message : "Failed to fetch escrow data"
+        mappedError ? mappedError.message : "Failed to fetch escrow data",
       );
     } finally {
       setLoading(false);

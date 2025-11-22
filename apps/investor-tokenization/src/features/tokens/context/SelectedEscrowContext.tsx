@@ -11,7 +11,7 @@ export type SelectedEscrowValue = {
 };
 
 const SelectedEscrowContext = createContext<SelectedEscrowValue | undefined>(
-  undefined
+  undefined,
 );
 
 export function SelectedEscrowProvider({
@@ -32,10 +32,8 @@ export function useSelectedEscrow(): SelectedEscrowValue {
   const ctx = useContext(SelectedEscrowContext);
   if (!ctx) {
     throw new Error(
-      "useSelectedEscrow must be used within SelectedEscrowProvider"
+      "useSelectedEscrow must be used within SelectedEscrowProvider",
     );
   }
   return ctx;
 }
-
-

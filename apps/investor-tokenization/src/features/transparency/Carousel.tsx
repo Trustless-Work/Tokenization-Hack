@@ -15,7 +15,7 @@ export const DummyContent = ({ details }: { details?: Escrow }) => {
 
   const totalAmount = milestones.reduce(
     (acc, milestone) => acc + Number(milestone.amount),
-    0
+    0,
   );
 
   return (
