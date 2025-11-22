@@ -1,0 +1,7 @@
+{
+	"version": 2,
+	"installCommand": "NPM_CONFIG_SCRIPT_SHELL=/bin/bash npm install --no-audit --no-fund",
+	"buildCommand": "npm run build"
+}
+
+
