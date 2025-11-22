@@ -54,7 +54,17 @@ export const DummyContent = ({ details }: { details?: Escrow }) => {
       {/* Metadata */}
       {details?.createdAt && (
         <div className="text-sm text-neutral-500 dark:text-neutral-400">
-          <p>Created: {formatTimestamp(details.createdAt)}</p>
+          <p>
+            <strong>Created:</strong> {formatTimestamp(details.createdAt)}
+          </p>
+        </div>
+      )}
+
+      {details?.contractId && (
+        <div className="text-sm text-neutral-500 dark:text-neutral-400">
+          <p>
+            <strong>Contract ID:</strong> {details.contractId}
+          </p>
         </div>
       )}
 
