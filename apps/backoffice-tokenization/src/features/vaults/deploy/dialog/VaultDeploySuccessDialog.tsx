@@ -7,22 +7,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { type DeployTokenResponse } from "@/features/tokens/services/token.service";
+import { type DeployVaultResponse } from "@/features/vaults/services/vault.service";
 import { CheckCircle } from "lucide-react";
 import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
 
-type TokenizeEscrowSuccessDialogProps = {
+type VaultDeploySuccessDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  response: DeployTokenResponse | null;
+  response: DeployVaultResponse | null;
 };
 
-export function TokenizeEscrowSuccessDialog(
-  props: TokenizeEscrowSuccessDialogProps
-) {
+export function VaultDeploySuccessDialog(props: VaultDeploySuccessDialogProps) {
   const { open, onOpenChange, response } = props;
-
   const { copiedKeyId, copyToClipboard } = useCopy();
+
+  const address = response?.vaultContractAddress ?? "";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -30,46 +29,25 @@ export function TokenizeEscrowSuccessDialog(
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-green-700" />
-            Token Deployment Successful
+            Vault Deployment Successful
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="tokenFactoryAddress">Token Factory Address</Label>
+            <Label htmlFor="vaultAddress">Vault Contract Address</Label>
             <div className="flex gap-2">
               <Input
-                id="tokenFactoryAddress"
+                id="vaultAddress"
                 readOnly
-                value={response?.tokenFactoryAddress ?? ""}
+                value={address}
                 className="flex-1"
               />
-              {response?.tokenFactoryAddress ? (
+              {address ? (
                 <Button
                   type="button"
                   variant="outline"
                   className="cursor-pointer"
-                  onClick={() => copyToClipboard(response.tokenFactoryAddress)}
-                >
-                  {copiedKeyId ? "Copied!" : "Copy"}
-                </Button>
-              ) : null}
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="tokenSaleAddress">Token Sale Address</Label>
-            <div className="flex gap-2">
-              <Input
-                id="tokenSaleAddress"
-                readOnly
-                value={response?.tokenSaleAddress ?? ""}
-                className="flex-1"
-              />
-              {response?.tokenSaleAddress ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="cursor-pointer"
-                  onClick={() => copyToClipboard(response.tokenSaleAddress)}
+                  onClick={() => copyToClipboard(address)}
                 >
                   {copiedKeyId ? "Copied!" : "Copy"}
                 </Button>
