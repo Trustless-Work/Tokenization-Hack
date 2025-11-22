@@ -5,6 +5,17 @@ export type DeployVaultResponse = {
   vaultContractAddress: string;
 };
 
+export type EnableVaultResponse = {
+  message: string;
+  success: boolean;
+  xdr: string;
+};
+
+export type EnableVaultPayload = {
+  vaultContractId: string;
+  adminAddress: string;
+};
+
 export class VaultService {
   private readonly apiUrl = process.env.NEXT_PUBLIC_API_URL;
   private readonly axios: AxiosInstance;
@@ -36,6 +47,22 @@ export class VaultService {
         price,
         token,
         usdc,
+      }
+    );
+
+    return response.data;
+  }
+
+  async enableVault({
+    vaultContractId,
+    adminAddress,
+  }: EnableVaultPayload): Promise<EnableVaultResponse> {
+    const response = await this.axios.post<EnableVaultResponse>(
+      "/vault-contract/availability-for-exchange",
+      {
+        vaultContractId,
+        adminAddress,
+        enabled: true,
       }
     );
 
