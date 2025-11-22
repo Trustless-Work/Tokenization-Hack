@@ -4,6 +4,7 @@ import { EscrowsBySignerCards } from "@/components/tw-blocks/escrows/escrows-by-
 import { InitializeEscrowDialog } from "@/components/tw-blocks/escrows/multi-release/initialize-escrow/dialog/InitializeEscrow";
 import { TokenizeEscrowDialog } from "@/features/tokens/deploy/dialog/TokenizeEscrow";
 import { CreateVaultDialog } from "../vaults/deploy/dialog/CreateVault";
+import { EnableVaultDialog } from "../vaults/deploy/dialog/EnableVault";
 
 export const ManageEscrowsView = () => {
   return (
@@ -13,6 +14,8 @@ export const ManageEscrowsView = () => {
           <TokenizeEscrowDialog />
 
           <CreateVaultDialog />
+
+          <EnableVaultDialog />
 
           <div className="ml-auto">
             <InitializeEscrowDialog />
