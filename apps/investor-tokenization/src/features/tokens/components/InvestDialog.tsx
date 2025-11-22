@@ -30,6 +30,13 @@ import { SendTransactionService } from "@/lib/sendTransactionService";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { signTransaction } from "@/components/tw-blocks/wallet-kit/wallet-kit";
 import { useSelectedEscrow } from "@/features/tokens/context/SelectedEscrowContext";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { MultiReleaseMilestone } from "@trustless-work/escrow";
+import { BalanceProgressBar } from "@/components/tw-blocks/escrows/indicators/balance-progress/bar/BalanceProgress";
+import { formatAddress } from "@/components/tw-blocks/helpers/format.helper";
+import { CircleCheckBig } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 
 type InvestFormValues = {
   amount: number;
@@ -55,6 +62,7 @@ export function InvestDialog({
   );
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const selected = useSelectedEscrow();
+  const queryClient = useQueryClient();
 
   const form = useForm<InvestFormValues>({
     defaultValues: { amount: 0 },
@@ -114,6 +122,22 @@ export function InvestDialog({
         );
       }
 
+      // Refresh the escrow balance using TanStack Query
+      const balanceQueryKey = ["escrows", [selected.escrowId]] as const;
+      const singleEscrowKey = ["escrow", selected.escrowId] as const;
+
+      // Balance used by BalanceProgressBar
+      await queryClient.invalidateQueries({ queryKey: balanceQueryKey });
+      await queryClient.refetchQueries({ queryKey: balanceQueryKey });
+
+      // Escrow details (per-card) used by the Carousel modal content
+      await queryClient.invalidateQueries({ queryKey: singleEscrowKey });
+      await queryClient.refetchQueries({ queryKey: singleEscrowKey });
+
+      // Escrows list (bulk fetch) used by the Carousel (partial match)
+      await queryClient.invalidateQueries({ queryKey: ["escrows-by-ids"] });
+      await queryClient.refetchQueries({ queryKey: ["escrows-by-ids"] });
+
       setSuccessMessage("Your investment transaction was sent successfully.");
       form.reset({ amount: 0 });
     } catch (err) {
@@ -127,6 +151,14 @@ export function InvestDialog({
     }
   };
 
+  const totalAmount = React.useMemo(() => {
+    if (!selected.escrow || selected.escrow.type !== "multi-release") return 0;
+
+    const milestones = selected.escrow.milestones as MultiReleaseMilestone[];
+
+    return milestones.reduce((acc, milestone) => acc + milestone.amount, 0);
+  }, [selected.escrow?.milestones]);
+
   const isSubmitDisabled =
     submitting ||
     !form.watch("amount") ||
@@ -138,43 +170,81 @@ export function InvestDialog({
       <DialogTrigger asChild>
         <RainbowButton variant="outline">{triggerLabel}</RainbowButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent
+        className={`${successMessage ? "sm:max-w-4xl" : "sm:max-w-md"} max-h-[80vh] overflow-y-auto`}
+      >
         {successMessage ? (
-          <div className="space-y-4">
-            <DialogHeader>
-              <DialogTitle className="text-green-600 dark:text-green-400">
-                Success
-              </DialogTitle>
-              <DialogDescription className="text-foreground">
-                {successMessage}
-              </DialogDescription>
-            </DialogHeader>
+          <div className="w-full overflow-hidden p-4 md:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 p-4 md:p-6">
+              {/* Left Column: Image */}
+              <div className="flex items-center justify-center">
+                {selected.imageSrc ? (
+                  <img
+                    className="max-h-80 w-auto transition duration-300 object-cover"
+                    src={selected.imageSrc as string}
+                    loading="lazy"
+                    decoding="async"
+                    alt={
+                      selected.escrow?.title || "Background of a beautiful view"
+                    }
+                  />
+                ) : (
+                  <div className="w-full h-48 md:h-64 rounded-lg bg-muted flex items-center justify-center border border-border">
+                    <span className="text-muted-foreground text-sm">
+                      No image
+                    </span>
+                  </div>
+                )}
+              </div>
 
-            {selected?.imageSrc ? (
-              <img
-                src={selected.imageSrc}
-                alt={selected.escrow?.title}
-                className="w-full h-48 object-cover rounded-xl border border-border"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : null}
+              {/* Right Column: Information */}
+              <div className="flex flex-col justify-center space-y-4">
+                <h2 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-foreground">
+                  <CircleCheckBig className="w-6 h-6 md:w-10 md:h-10 text-green-600 flex-shrink-0" />{" "}
+                  Investment Successful!
+                </h2>
+                <p className="text-sm md:text-base text-muted-foreground line-clamp-3">
+                  Your investment transaction was sent successfully.
+                </p>
 
-            <div className="space-y-1">
-              <p className="text-lg font-semibold text-foreground">
-                {selected.escrow?.title ?? "Selected Escrow"}
-              </p>
-              <p className="text-sm text-muted-foreground whitespace-pre-line break-words">
-                {selected.escrow?.description ?? ""}
-              </p>
-            </div>
+                {/* Title */}
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-foreground line-clamp-2">
+                    {selected.escrow?.title || "No title"}
+                  </h3>
+                </div>
 
-            <div className="flex justify-end">
-              <DialogClose asChild>
-                <Button variant="default" onClick={() => setOpen(false)}>
-                  Close
-                </Button>
-              </DialogClose>
+                {/* Description - Truncated */}
+                {selected.escrow?.description && (
+                  <div>
+                    <p className="text-sm md:text-base text-muted-foreground line-clamp-3">
+                      {selected.escrow?.description}
+                    </p>
+                  </div>
+                )}
+
+                {/* Amount and Balance */}
+                <BalanceProgressBar
+                  contractId={selected.escrowId ?? ""}
+                  target={totalAmount ?? 0}
+                  currency={selected.escrow?.trustline?.name ?? "USDC"}
+                />
+
+                {/* Metadata */}
+                <div className="text-xs md:text-sm text-muted-foreground pt-2 border-t border-border">
+                  <p>
+                    <span className="font-bold">ID:</span>{" "}
+                    {formatAddress(selected.escrowId)}
+                  </p>
+
+                  {selected.tokenSaleContractId && (
+                    <p>
+                      <span className="font-bold">Contract Sale:</span>{" "}
+                      {formatAddress(selected.tokenSaleContractId)}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         ) : (
