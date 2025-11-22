@@ -20,6 +20,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useGetEscrowFromIndexerByContractIds } from "@trustless-work/escrow";
 import { GetEscrowsFromIndexerResponse as Escrow } from "@trustless-work/escrow/types";
 import { RainbowButton } from "./rainbow-button";
+import { ClaimROIService } from "@/features/claim-roi/services/claim.service";
+import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { toast } from "sonner";
 import { InvestDialog } from "@/features/tokens/components/InvestDialog";
 import { SelectedEscrowProvider } from "@/features/tokens/context/SelectedEscrowContext";
 
@@ -27,11 +30,14 @@ interface CarouselProps {
   items: ReactNode[];
   initialScroll?: number;
   escrowIds?: string[];
+  hideInvest?: boolean;
+  showClaimAction?: boolean;
 }
 
 type Card = {
   escrowId: string;
   tokenSale?: string;
+  vaultContractId?: string;
   src: string;
   content: React.ReactNode;
 };
@@ -47,18 +53,24 @@ export const CarouselContext = createContext<{
   escrowsById: Record<string, EscrowItem> | null;
   preferBulk: boolean;
   isLoadingEscrows: boolean;
+  hideInvest: boolean;
+  showClaimAction: boolean;
 }>({
   onCardClose: NOOP,
   currentIndex: 0,
   escrowsById: null,
   preferBulk: false,
   isLoadingEscrows: false,
+  hideInvest: false,
+  showClaimAction: false,
 });
 
 export const Carousel = ({
   items,
   initialScroll = 0,
   escrowIds,
+  hideInvest = false,
+  showClaimAction = false,
 }: CarouselProps) => {
   const carouselRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
@@ -147,6 +159,8 @@ export const Carousel = ({
         escrowsById,
         preferBulk: Array.isArray(escrowIds) && escrowIds.length > 0,
         isLoadingEscrows: isEscrowsLoading,
+        hideInvest,
+        showClaimAction,
       }}
     >
       <div className="relative w-full mb-10">
@@ -176,14 +190,14 @@ export const Carousel = ({
         >
           <div
             className={cn(
-              "absolute right-0 z-1000 h-auto w-[5%] overflow-hidden bg-linear-to-l",
+              "absolute right-0 z-1000 h-auto w-[5%] overflow-hidden bg-linear-to-l"
             )}
           ></div>
 
           <div
             className={cn(
               "flex flex-row justify-start gap-4",
-              "max-w-7xl", // remove max-w-4xl if you want the carousel to span the full width of its container
+              "max-w-7xl" // remove max-w-4xl if you want the carousel to span the full width of its container
             )}
           >
             {(() => {
@@ -240,10 +254,18 @@ export const Card = ({
   layout?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
+  const [isClaiming, setIsClaiming] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { onCardClose, escrowsById, preferBulk, isLoadingEscrows } =
-    useContext(CarouselContext);
+  const {
+    onCardClose,
+    escrowsById,
+    preferBulk,
+    isLoadingEscrows,
+    hideInvest,
+    showClaimAction,
+  } = useContext(CarouselContext);
   const { getEscrowByContractIds } = useGetEscrowFromIndexerByContractIds();
+  const { walletAddress } = useWalletContext();
 
   const handleOpen = useCallback(() => {
     setOpen(true);
@@ -294,6 +316,35 @@ export const Card = ({
 
   useOutsideClick(containerRef as React.RefObject<HTMLDivElement>, handleClose);
 
+  const handleClaim = async () => {
+    try {
+      if (!card.vaultContractId) {
+        toast.error("Vault contract ID not available for this card");
+        return;
+      }
+      if (!walletAddress) {
+        toast.error("Connect your wallet to claim");
+        return;
+      }
+      setIsClaiming(true);
+      const svc = new ClaimROIService();
+      const res = await svc.claimROI({
+        vaultContractId: card.vaultContractId,
+        beneficiaryAddress: walletAddress,
+      });
+      if (res?.success) {
+        toast.success("Claim successful");
+      } else {
+        toast.error(res?.message ?? "Claim failed");
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Unexpected error";
+      toast.error(msg);
+    } finally {
+      setIsClaiming(false);
+    }
+  };
+
   return (
     <>
       <AnimatePresence>
@@ -314,20 +365,34 @@ export const Card = ({
               className="relative z-60 mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
             >
               <div className="flex w-full justify-between">
-                {card.tokenSale ? (
-                  <SelectedEscrowProvider
-                    value={{
-                      escrow,
-                      escrowId: card.escrowId,
-                      tokenSaleContractId: card.tokenSale,
-                      imageSrc: card.src,
-                    }}
-                  >
-                    <InvestDialog tokenSaleContractId={card.tokenSale} />
-                  </SelectedEscrowProvider>
-                ) : (
-                  <RainbowButton variant="outline">Invest</RainbowButton>
-                )}
+                <div className="flex items-center gap-2">
+                  {!hideInvest &&
+                    (card.tokenSale ? (
+                      <SelectedEscrowProvider
+                        value={{
+                          escrow,
+                          escrowId: card.escrowId,
+                          tokenSaleContractId: card.tokenSale,
+                          imageSrc: card.src,
+                        }}
+                      >
+                        <InvestDialog tokenSaleContractId={card.tokenSale} />
+                      </SelectedEscrowProvider>
+                    ) : (
+                      <RainbowButton variant="outline">Invest</RainbowButton>
+                    ))}
+
+                  {showClaimAction ? (
+                    <button
+                      type="button"
+                      onClick={handleClaim}
+                      disabled={isClaiming}
+                      className="inline-flex items-center rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-black cursor-pointer"
+                    >
+                      {isClaiming ? "Claiming..." : "Claim ROI"}
+                    </button>
+                  ) : null}
+                </div>
 
                 <button
                   type="button"
@@ -355,7 +420,7 @@ export const Card = ({
                       card.content as React.ReactElement<any>,
                       {
                         details: escrow,
-                      },
+                      }
                     )
                   : card.content}
               </div>
@@ -410,7 +475,7 @@ export const BlurImage = ({
     <img
       className={cn(
         "h-full w-full transition duration-300 object-cover",
-        className,
+        className
       )}
       src={src as string}
       loading="lazy"
