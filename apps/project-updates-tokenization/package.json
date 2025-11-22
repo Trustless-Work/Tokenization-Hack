@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint . --ignore-pattern \"src/components/ui/**\""
   },
   "dependencies": {
     "@creit.tech/stellar-wallets-kit": "^1.8.0",
