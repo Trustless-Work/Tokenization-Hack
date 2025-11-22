@@ -1,6 +1,8 @@
 use soroban_sdk::{contract, contractimpl, token, Address, Env};
 use token::Client as TokenClient;
 
+use crate::error::ContractError;
+
 #[contract]
 pub struct VaultContract;
 
@@ -35,25 +37,27 @@ impl VaultContract {
             .set(&"usdc", &usdc);
     }
 
-    pub fn availability_for_exchange(env: Env, admin: Address, enabled: bool) {
+    pub fn availability_for_exchange(env: Env, admin: Address, enabled: bool) -> Result<(), ContractError> {
         admin.require_auth();
 
         let stored_admin: Address = env
             .storage()
             .instance()
             .get(&"admin")
-            .expect("Admin not found");
+            .ok_or(ContractError::AdminNotFound)?;
 
         if admin != stored_admin {
-            panic!("Only admin can change availability");
+            return Err(ContractError::OnlyAdminCanChangeAvailability);
         }
 
         env.storage()
             .instance()
             .set(&"enabled", &enabled);
+        
+        Ok(())
     }
 
-    pub fn claim(env: Env, beneficiary: Address) {
+    pub fn claim(env: Env, beneficiary: Address) -> Result<(), ContractError> {
         beneficiary.require_auth();
 
         let enabled: bool = env
@@ -63,7 +67,7 @@ impl VaultContract {
             .expect("Enabled flag not found");
 
         if !enabled {
-            panic!("Exchange is currently disabled");
+            return Err(ContractError::ExchangeIsCurrentlyDisabled);
         }
 
         let price: i128 = env
@@ -82,10 +86,10 @@ impl VaultContract {
         let token_balance = token_client.balance(&beneficiary);
 
         if token_balance == 0 {
-            panic!("Beneficiary has no tokens to claim");
+            return Err(ContractError::BeneficiaryHasNoTokensToClaim);
         }
 
-        let usdc_amount = token_balance * price;
+        let usdc_amount = (token_balance * (100 + price)) / 100;
 
         let usdc_address: Address = env
             .storage()
@@ -98,11 +102,13 @@ impl VaultContract {
         let vault_usdc_balance = usdc_client.balance(&env.current_contract_address());
 
         if vault_usdc_balance < usdc_amount {
-            panic!("Vault does not have enough USDC");
+            return Err(ContractError::VaultDoesNotHaveEnoughUSDC);
         }
 
         token_client.transfer(&beneficiary, &env.current_contract_address(), &token_balance);
 
         usdc_client.transfer(&env.current_contract_address(), &beneficiary, &usdc_amount);
+        
+        Ok(())
     }
 }
