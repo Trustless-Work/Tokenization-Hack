@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
   response.headers.set("Access-Control-Allow-Origin", "*");
   response.headers.set(
     "Access-Control-Allow-Methods",
-    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    "GET,POST,PUT,PATCH,DELETE,OPTIONS",
   );
   response.headers.set("Access-Control-Allow-Headers", "*");
   response.headers.set("Access-Control-Max-Age", "86400");

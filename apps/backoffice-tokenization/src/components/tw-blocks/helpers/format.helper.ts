@@ -21,7 +21,7 @@ export function formatTimestamp(ts?: {
 }) {
   if (!ts) return "-";
   const d = new Date(ts._seconds * 1000);
-  return d.toLocaleString();
+  return d.toLocaleString("en-US");
 }
 
 /**

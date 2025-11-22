@@ -58,7 +58,7 @@ export function InvestDialog({
   const [open, setOpen] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [successMessage, setSuccessMessage] = React.useState<string | null>(
-    null
+    null,
   );
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const selected = useSelectedEscrow();
@@ -102,7 +102,7 @@ export function InvestDialog({
 
       if (!buyResponse?.success || !buyResponse?.xdr) {
         throw new Error(
-          buyResponse?.message ?? "Failed to build buy transaction."
+          buyResponse?.message ?? "Failed to build buy transaction.",
         );
       }
 
@@ -118,7 +118,7 @@ export function InvestDialog({
 
       if (submitResponse.status !== "SUCCESS") {
         throw new Error(
-          submitResponse.message ?? "Transaction submission failed."
+          submitResponse.message ?? "Transaction submission failed.",
         );
       }
 

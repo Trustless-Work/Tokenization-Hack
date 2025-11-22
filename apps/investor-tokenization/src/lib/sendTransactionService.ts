@@ -19,11 +19,11 @@ export class SendTransactionService {
   }
 
   async sendTransaction(
-    payload: SendTransactionPayload
+    payload: SendTransactionPayload,
   ): Promise<SendTransactionResponse> {
     const response = await this.axios.post<SendTransactionResponse>(
       "/helper/send-transaction",
-      payload
+      payload,
     );
 
     return response.data;

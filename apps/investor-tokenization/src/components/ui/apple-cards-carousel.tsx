@@ -176,14 +176,14 @@ export const Carousel = ({
         >
           <div
             className={cn(
-              "absolute right-0 z-1000 h-auto w-[5%] overflow-hidden bg-linear-to-l"
+              "absolute right-0 z-1000 h-auto w-[5%] overflow-hidden bg-linear-to-l",
             )}
           ></div>
 
           <div
             className={cn(
               "flex flex-row justify-start gap-4",
-              "max-w-7xl" // remove max-w-4xl if you want the carousel to span the full width of its container
+              "max-w-7xl", // remove max-w-4xl if you want the carousel to span the full width of its container
             )}
           >
             {(() => {
@@ -355,7 +355,7 @@ export const Card = ({
                       card.content as React.ReactElement<any>,
                       {
                         details: escrow,
-                      }
+                      },
                     )
                   : card.content}
               </div>
@@ -410,7 +410,7 @@ export const BlurImage = ({
     <img
       className={cn(
         "h-full w-full transition duration-300 object-cover",
-        className
+        className,
       )}
       src={src as string}
       loading="lazy"

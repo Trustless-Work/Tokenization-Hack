@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         details:
           "tokenSaleContractId, usdcAddress, payerAddress, and beneficiaryAddress are required",
       }),
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
         error: "Invalid amount",
         details: "amount must be a number or string",
       }),
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -62,8 +62,8 @@ export async function POST(request: Request) {
           StellarSDK.nativeToScVal(new StellarSDK.Address(beneficiaryAddress), {
             type: "address",
           }),
-          StellarSDK.nativeToScVal(adjustedAmount, { type: "i128" })
-        )
+          StellarSDK.nativeToScVal(adjustedAmount, { type: "i128" }),
+        ),
       )
       .setTimeout(300)
       .build();
@@ -84,7 +84,7 @@ export async function POST(request: Request) {
         error: "Internal Server Error",
         details: error instanceof Error ? error.message : String(error),
       }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

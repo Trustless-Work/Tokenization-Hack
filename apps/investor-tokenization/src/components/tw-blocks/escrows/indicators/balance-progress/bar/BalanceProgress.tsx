@@ -15,7 +15,7 @@ export const BalanceProgressBar = ({
   currency,
 }: BalanceProgressBarProps) => {
   const isContractProvided = Boolean(
-    contractId && contractId.trim().length > 0
+    contractId && contractId.trim().length > 0,
   );
 
   const { data, isLoading, isError } = useGetMultipleEscrowBalancesQuery({
@@ -38,8 +38,8 @@ export const BalanceProgressBar = ({
           {isLoading
             ? "Loading…"
             : isError
-            ? "-"
-            : formatCurrency(currentBalanceRaw, currency)}
+              ? "-"
+              : formatCurrency(currentBalanceRaw, currency)}
         </p>
         <p>
           <span className="font-bold mr-1">Target:</span>{" "}

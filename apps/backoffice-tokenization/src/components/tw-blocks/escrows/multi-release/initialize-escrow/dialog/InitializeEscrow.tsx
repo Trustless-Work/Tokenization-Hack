@@ -97,7 +97,7 @@ export const InitializeEscrowDialog = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" className="cursor-pointer w-full">
+        <Button type="button" className="cursor-pointer">
           Initialize
         </Button>
       </DialogTrigger>

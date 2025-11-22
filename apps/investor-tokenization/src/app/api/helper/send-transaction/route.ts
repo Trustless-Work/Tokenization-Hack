@@ -7,13 +7,13 @@ export async function POST(request: Request) {
     "https://horizon-testnet.stellar.org",
     {
       allowHttp: true,
-    }
+    },
   );
 
   try {
     const transaction = StellarSDK.TransactionBuilder.fromXDR(
       signedXdr,
-      StellarSDK.Networks.TESTNET
+      StellarSDK.Networks.TESTNET,
     );
 
     const response = await server.submitTransaction(transaction);

@@ -42,7 +42,7 @@ export default function RootLayout({
         className={cn(
           Exo2.variable,
           "antialiased dark",
-          spaceGrotesk.className
+          spaceGrotesk.className,
         )}
       >
         <ReactQueryClientProvider>
