@@ -1,5 +1,6 @@
 "use client";
 
+import { BalanceProgressBar } from "@/components/tw-blocks/escrows/indicators/balance-progress/bar/BalanceProgress";
 import {
   formatCurrency,
   formatTimestamp,
@@ -43,6 +44,12 @@ export const DummyContent = ({ details }: { details?: Escrow }) => {
           </div>
         )}
       </div>
+
+      <BalanceProgressBar
+        contractId={details?.contractId ?? ""}
+        target={totalAmount}
+        currency={details?.trustline?.name ?? "USDC"}
+      />
 
       {/* Metadata */}
       {details?.createdAt && (
