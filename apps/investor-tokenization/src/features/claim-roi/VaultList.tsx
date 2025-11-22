@@ -16,6 +16,13 @@ const data = [
     src: "/escrows/art.jpg",
     content: <DummyContent />,
   },
+    {
+    escrowId: "CAO6ZONKBYQGE7E3OIPJTMSE2J2PKNROSXGGC3VQOO7JF2LXY47XG6QV",
+    tokenSale: "CBW4W4GEGD5MNXCUHGOAJ64IXLFHDMDDD65ITVM3HVIYSK22PGSHIJ5N",
+    tokenFactory: "CC5ESBB3DK2H6IRPHPJMAU5SOAVLWHY2TPJ2XTLJLXVHUZ6ZMW4QCYFA",
+    src: "/escrows/building.png",
+    content: <DummyContent />,
+  },
 ];
 
 export const VaultList = () => {
