@@ -30,14 +30,19 @@ const WalletContext = createContext<WalletContextType | undefined>(undefined);
  * Automatically loads saved wallet information from localStorage on initialization
  */
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const [walletAddress, setWalletAddress] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("walletAddress");
-  });
-  const [walletName, setWalletName] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("walletName");
-  });
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [walletName, setWalletName] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const storedAddress = localStorage.getItem("walletAddress");
+      const storedName = localStorage.getItem("walletName");
+      if (storedAddress) setWalletAddress(storedAddress);
+      if (storedName) setWalletName(storedName);
+    } catch {
+      // ignore read errors
+    }
+  }, []);
 
   /**
    * Set wallet information and save it to localStorage

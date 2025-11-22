@@ -53,18 +53,20 @@ const EscrowContext = createContext<EscrowContextType | undefined>(undefined);
 const LOCAL_STORAGE_KEY = "selectedEscrow";
 
 export const EscrowProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedEscrow, setSelectedEscrowState] = useState<Escrow | null>(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return stored ? (JSON.parse(stored) as Escrow) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [selectedEscrow, setSelectedEscrowState] = useState<Escrow | null>(null);
   const [userRolesInEscrow, setUserRolesInEscrowState] = useState<string[]>([]);
 
   // Initial state is loaded lazily from localStorage to avoid setState in effects
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (stored) {
+        setSelectedEscrowState(JSON.parse(stored) as Escrow);
+      }
+    } catch {
+      // ignore read errors
+    }
+  }, []);
 
   /**
    * Persist the selected escrow to the local storage
