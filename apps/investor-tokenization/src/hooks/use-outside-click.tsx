@@ -5,9 +5,17 @@ export const useOutsideClick = (
   callback: Function
 ) => {
   useEffect(() => {
-    const listener = (event: any) => {
+    const listener = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Element | null;
+
+      // Ignore clicks occurring inside any open dialog rendered via portal
+      // (e.g., Radix/shadcn Dialog), to avoid unintended outside-close.
+      if (target && target.closest('[role="dialog"]')) {
+        return;
+      }
+
       // DO NOTHING if the element being clicked is the target element or their children
-      if (!ref.current || ref.current.contains(event.target)) {
+      if (!ref.current || (target && ref.current.contains(target))) {
         return;
       }
       callback(event);

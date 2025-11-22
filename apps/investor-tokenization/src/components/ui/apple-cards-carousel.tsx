@@ -19,6 +19,9 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useQuery } from "@tanstack/react-query";
 import { useGetEscrowFromIndexerByContractIds } from "@trustless-work/escrow";
 import { GetEscrowsFromIndexerResponse as Escrow } from "@trustless-work/escrow/types";
+import { RainbowButton } from "./rainbow-button";
+import { InvestDialog } from "@/features/tokens/components/InvestDialog";
+import { SelectedEscrowProvider } from "@/features/tokens/context/SelectedEscrowContext";
 
 interface CarouselProps {
   items: ReactNode[];
@@ -28,6 +31,7 @@ interface CarouselProps {
 
 type Card = {
   escrowId: string;
+  tokenSale?: string;
   src: string;
   content: React.ReactNode;
 };
@@ -309,13 +313,30 @@ export const Card = ({
               layoutId={layout ? `card-${escrow?.title}` : undefined}
               className="relative z-60 mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-white p-4 font-sans md:p-10 dark:bg-neutral-900"
             >
-              <button
-                type="button"
-                className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
-                onClick={handleClose}
-              >
-                <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
-              </button>
+              <div className="flex w-full justify-between">
+                {card.tokenSale ? (
+                  <SelectedEscrowProvider
+                    value={{
+                      escrow,
+                      escrowId: card.escrowId,
+                      tokenSaleContractId: card.tokenSale,
+                      imageSrc: card.src,
+                    }}
+                  >
+                    <InvestDialog tokenSaleContractId={card.tokenSale} />
+                  </SelectedEscrowProvider>
+                ) : (
+                  <RainbowButton variant="outline">Invest</RainbowButton>
+                )}
+
+                <button
+                  type="button"
+                  className="sticky top-4 right-0 ml-auto flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white"
+                  onClick={handleClose}
+                >
+                  <IconX className="h-6 w-6 text-neutral-100 dark:text-neutral-900" />
+                </button>
+              </div>
               <motion.p
                 layoutId={layout ? `title-${escrow?.title}` : undefined}
                 className="mt-4 text-2xl font-semibold text-neutral-700 md:text-5xl dark:text-white"
@@ -359,7 +380,7 @@ export const Card = ({
             layoutId={layout ? `category-${escrow?.description}` : undefined}
             className="text-left font-sans text-xs font-medium text-white md:text-base break-all whitespace-normal"
           >
-            {escrow?.description.slice(0,100)}
+            {escrow?.description.slice(0, 100)}
           </motion.p>
         </div>
         <BlurImage
