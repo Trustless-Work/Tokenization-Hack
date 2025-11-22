@@ -25,6 +25,9 @@ import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvid
 import { toast } from "sonner";
 import { InvestDialog } from "@/features/tokens/components/InvestDialog";
 import { SelectedEscrowProvider } from "@/features/tokens/context/SelectedEscrowContext";
+import { signTransaction } from "../tw-blocks/wallet-kit/wallet-kit";
+import { SendTransactionService } from "@/lib/sendTransactionService";
+import { toastSuccessWithTx } from "@/lib/toastWithTx";
 
 interface CarouselProps {
   items: ReactNode[];
@@ -323,21 +326,43 @@ export const Card = ({
         toast.error("Vault contract ID not available for this card");
         return;
       }
+
       if (!walletAddress) {
         toast.error("Connect your wallet to claim");
         return;
       }
+
       setIsClaiming(true);
+
       const svc = new ClaimROIService();
-      const res = await svc.claimROI({
+      const claimResponse = await svc.claimROI({
         vaultContractId: card.vaultContractId,
         beneficiaryAddress: walletAddress,
       });
-      if (res?.success) {
-        toast.success("Claim successful");
-      } else {
-        toast.error(res?.message ?? "Claim failed");
+
+      if (!claimResponse?.success || !claimResponse?.xdr) {
+        throw new Error(
+          claimResponse?.message ?? "Failed to build claim transaction."
+        );
       }
+
+      const signedTxXdr = await signTransaction({
+        unsignedTransaction: claimResponse.xdr ?? "",
+        address: walletAddress ?? "",
+      });
+
+      const sender = new SendTransactionService();
+      const submitResponse = await sender.sendTransaction({
+        signedXdr: signedTxXdr,
+      });
+
+      if (submitResponse.status !== "SUCCESS") {
+        throw new Error(
+          submitResponse.message ?? "Transaction submission failed."
+        );
+      }
+
+      toastSuccessWithTx("ROI claimed successfully", submitResponse.hash);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Unexpected error";
       toast.error(msg);
