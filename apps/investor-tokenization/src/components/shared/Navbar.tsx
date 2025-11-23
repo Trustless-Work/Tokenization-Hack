@@ -1,7 +1,7 @@
 "use client";
 
 import { FloatingDock } from "@/components/ui/floating-dock";
-import { CircleDollarSign, SquaresExclude } from "lucide-react";
+import { CircleDollarSign, SquaresExclude, Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function FloatingDockDemo() {
@@ -13,7 +13,13 @@ export function FloatingDockDemo() {
       ),
       href: "/",
     },
-
+    {
+      title: "My Investments",
+      icon: (
+        <Wallet className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+      ),
+      href: "/investments",
+    },
     {
       title: "Claim ROI",
       icon: (

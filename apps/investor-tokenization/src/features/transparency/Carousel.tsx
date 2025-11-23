@@ -11,6 +11,8 @@ import type {
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
 import Link from "next/link";
+import { useProjectTokenBalances } from "@/features/investments/hooks/useProjectTokenBalances.hook";
+import { Wallet, ExternalLink } from "lucide-react";
 
 export const DummyContent = ({
   details,
@@ -19,6 +21,14 @@ export const DummyContent = ({
   details?: Escrow;
   tokenFactory?: string;
 }) => {
+  const { data: tokenBalances } = useProjectTokenBalances();
+  const escrowId = details?.contractId;
+  const tokenBalanceInfo = escrowId ? tokenBalances?.[escrowId] : undefined;
+  const rawBalance = parseFloat(tokenBalanceInfo?.balance || "0");
+  const tokenDecimals = tokenBalanceInfo?.tokenDecimals || 7;
+  const formattedBalance = rawBalance / Math.pow(10, tokenDecimals);
+  const tokenSymbol = tokenBalanceInfo?.tokenSymbol || "TOKEN";
+  const tokenName = tokenBalanceInfo?.tokenName;
   const milestones = (details?.milestones || []) as MultiReleaseMilestone[];
 
   const totalAmount = milestones.reduce(
@@ -28,6 +38,68 @@ export const DummyContent = ({
 
   return (
     <div className="space-y-6">
+      {/* User Token Balance - Stellar Expert Style Display */}
+      {formattedBalance > 0 && (
+        <div className="rounded-2xl bg-gradient-to-br from-green-500/10 via-green-500/5 to-transparent border-2 border-green-500/20 p-6">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="p-2 rounded-lg bg-green-500/20">
+                <Wallet className="w-5 h-5 text-green-600 dark:text-green-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs uppercase tracking-wide text-green-700 dark:text-green-400 font-semibold mb-1">
+                  {tokenName ? `${tokenName} Balance` : "Your Investment"}
+                </p>
+                {tokenSymbol && (
+                  <p className="text-xs text-green-600 dark:text-green-400">
+                    {tokenSymbol}
+                  </p>
+                )}
+              </div>
+            </div>
+            {tokenBalanceInfo?.tokenFactory && (
+              <Link
+                href={`https://stellar.expert/explorer/testnet/contract/${tokenBalanceInfo.tokenFactory}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </Link>
+            )}
+          </div>
+          <div className="flex items-baseline gap-2 mb-2">
+            <p className="text-3xl font-bold text-green-900 dark:text-green-100">
+              {formattedBalance.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: tokenDecimals,
+              })}
+            </p>
+            {tokenSymbol && (
+              <span className="text-lg text-green-700 dark:text-green-400 font-medium">
+                {tokenSymbol}
+              </span>
+            )}
+          </div>
+          {tokenBalanceInfo?.tokenFactory && (
+            <div className="flex items-center justify-between pt-2 border-t border-green-500/20">
+              <p className="text-xs text-green-600 dark:text-green-400">
+                Raw: {rawBalance.toLocaleString()}
+              </p>
+              <Link
+                href={`https://stellar.expert/explorer/testnet/contract/${tokenBalanceInfo.tokenFactory}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-green-700 dark:text-green-300 hover:underline flex items-center gap-1"
+              >
+                View on Stellar Expert
+                <ExternalLink className="w-3 h-3" />
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Info Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {totalAmount !== undefined && (
