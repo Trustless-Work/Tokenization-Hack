@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Investor Tokenization App
+
+A Next.js application for investors to view and manage their tokenized investments on the Stellar network.
+
+## Features
+
+- **Investment Portfolio**: View all your token investments in one place
+- **Token Balance Display**: See your token balances with proper formatting (similar to Stellar Expert)
+- **Project Overview**: Browse available investment projects
+- **Real-time Updates**: Token balances update automatically
+- **Wallet Integration**: Connect with Stellar wallets (Freighter, Albedo)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+- Stellar wallet (Freighter or Albedo) for testnet
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
+
+## Architecture
+
+### Key Features
+
+- **Token Balance Reading**: Reads balances directly from Soroban contract storage
+- **Investment Tracking**: Tracks user investments across multiple projects
+- **Token Metadata**: Fetches and displays token names, symbols, and decimals
+- **Stellar Expert Integration**: Links to view tokens on Stellar Expert
+
+### Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── token-balance/      # Token balance reading API
+│   │   └── token-metadata/     # Token metadata API
+│   ├── investments/            # Investments page
+│   └── page.tsx                # Home page
+├── features/
+│   ├── investments/            # Investment feature
+│   │   ├── components/         # Investment UI components
+│   │   ├── hooks/              # React hooks for data fetching
+│   │   └── services/           # API service layer
+│   └── transparency/           # Project transparency feature
+└── components/
+    └── tw-blocks/              # Shared UI components
+```
+
+## Documentation
+
+- **[Token Balance System](./TOKEN_BALANCE_SYSTEM.md)** - Detailed documentation on how token balance reading works
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Stellar Soroban Documentation](https://soroban.stellar.org/docs)
+- [Stellar SDK Documentation](https://stellar.github.io/js-stellar-sdk/)
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy is using [Vercel Platform](https://vercel.com/new).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
