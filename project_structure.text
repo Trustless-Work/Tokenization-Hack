@@ -1,18 +1,37 @@
 - .eslintignore
 - .gitignore
+- .turbo
+  - cache
+    - 37fb8f08bf56952b-meta.json
+    - 37fb8f08bf56952b.tar.zst
+    - 901cf68cc659d441-meta.json
+    - 901cf68cc659d441.tar.zst
+    - e725e4e577cbff82-meta.json
+    - e725e4e577cbff82.tar.zst
+    - f93bd405607d159f-meta.json
+    - f93bd405607d159f.tar.zst
+  - cookies
+    - 1.cookie
+    - 2.cookie
+    - 3.cookie
+    - 4.cookie
+  - daemon
+    - c132fdc208dbf52f-turbo.log.2025-12-05
 - LICENSE
 - README.md
 - apps
   - backoffice-tokenization
     - .env
     - .gitignore
+    - .turbo
+      - turbo-build.log
     - .twblocks.json
     - README.md
     - components.json
     - eslint.config.mjs
     - next-env.d.ts
+    - next.config.mjs
     - next.config.ts
-    - package-lock.json
     - package.json
     - postcss.config.mjs
     - public
@@ -220,7 +239,28 @@
     - tsconfig.json
   - evidence-service
     - .gitignore
+    - .turbo
+      - turbo-build.log
     - README.md
+    - dist
+      - index.d.ts
+      - index.d.ts.map
+      - index.js
+      - index.js.map
+      - routes
+        - evidence.d.ts
+        - evidence.d.ts.map
+        - evidence.js
+        - evidence.js.map
+      - services
+        - evidenceClient.example.d.ts
+        - evidenceClient.example.d.ts.map
+        - evidenceClient.example.js
+        - evidenceClient.example.js.map
+        - pinataService.d.ts
+        - pinataService.d.ts.map
+        - pinataService.js
+        - pinataService.js.map
     - package.json
     - src
       - index.ts
@@ -233,6 +273,8 @@
   - investor-tokenization
     - .env
     - .gitignore
+    - .turbo
+      - turbo-build.log
     - .twblocks.json
     - README.md
     - components.json
@@ -388,6 +430,8 @@
   - project-updates-tokenization
     - .env
     - .gitignore
+    - .turbo
+      - turbo-build.log
     - .twblocks.json
     - README.md
     - components.json

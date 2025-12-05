@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@trustless-work/ui": ["packages/ui/src"],
+      "@trustless-work/ui/*": ["packages/ui/src/*"],
+
+      "@trustless-work/wallet": ["packages/wallet/src"],
+      "@trustless-work/wallet/*": ["packages/wallet/src/*"],
+
+      "@trustless-work/soroban": ["packages/soroban/src"],
+      "@trustless-work/soroban/*": ["packages/soroban/src/*"],
+
+      "@trustless-work/blocks": ["packages/blocks/src"],
+      "@trustless-work/blocks/*": ["packages/blocks/src/*"]
+    }
+  }
+}
