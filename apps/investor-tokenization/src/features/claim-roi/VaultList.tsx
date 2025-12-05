@@ -1,5 +1,7 @@
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { DummyContent } from "@/features/transparency/Carousel";
+import VaultCard from "./VaultCard";
+
 
 const data = [
   {
@@ -26,8 +28,8 @@ const data = [
 ];
 
 export const VaultList = () => {
-  const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
+  const cards = data.map((vault, index) => (
+    <VaultCard key={vault.vaultContractId} vault={vault} index={index} />
   ));
 
   return (
