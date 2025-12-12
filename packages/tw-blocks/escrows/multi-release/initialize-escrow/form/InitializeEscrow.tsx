@@ -6,23 +6,23 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+} from "@trustless-work/ui";
+import { Input } from "@trustless-work/ui";
+import { Button } from "@trustless-work/ui";
+import { Card } from "@trustless-work/ui";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+} from "@trustless-work/ui";
+import { Textarea } from "@trustless-work/ui";
 import { useInitializeEscrow } from "./useInitializeEscrow";
 import { Trash2, DollarSign, Percent, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { trustlineOptions } from "@/components/tw-blocks/wallet-kit/trustlines";
-import { Separator } from "@/components/ui/separator";
+import { trustlineOptions } from "../../../../wallet-kit/trustlines";
+import { Separator } from "@trustless-work/ui";
 
 export const InitializeEscrowForm = () => {
   const {

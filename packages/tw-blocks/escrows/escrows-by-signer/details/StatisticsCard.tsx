@@ -4,10 +4,10 @@ import React from "react";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { formatText } from "@/components/tw-blocks/helpers/format.helper";
+import { Button } from "@trustless-work/ui";
+import { Card, CardContent } from "@trustless-work/ui";
+import { Badge } from "@trustless-work/ui";
+import { formatText } from "../../../helpers/format.helper";
 
 interface StatisticsCardProps {
   title: string;

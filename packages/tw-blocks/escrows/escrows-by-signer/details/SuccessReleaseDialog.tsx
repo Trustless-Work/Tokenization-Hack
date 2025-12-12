@@ -7,10 +7,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@trustless-work/ui";
 import { EntityCard } from "./EntityCard";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
-import { useEscrowAmountContext } from "@/components/tw-blocks/providers/EscrowAmountProvider";
+import { useEscrowContext } from "../../../providers/EscrowProvider";
+import { useEscrowAmountContext } from "../../../providers/EscrowAmountProvider";
 import { CircleCheckBig } from "lucide-react";
 import { MultiReleaseMilestone } from "@trustless-work/escrow";
 

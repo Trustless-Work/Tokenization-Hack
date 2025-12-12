@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "@trustless-work/ui";
+import { Card, CardContent } from "@trustless-work/ui";
+import { Badge } from "@trustless-work/ui";
+import { Separator } from "@trustless-work/ui";
 import Link from "next/link";
 import {
   formatAddress,
   formatRole,
-} from "@/components/tw-blocks/helpers/format.helper";
+} from "../../../helpers/format.helper";
 
 interface EntityCardProps {
   entity?: string;

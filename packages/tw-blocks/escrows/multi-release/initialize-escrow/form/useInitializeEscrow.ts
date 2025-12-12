@@ -8,14 +8,14 @@ import {
   InitializeMultiReleaseEscrowResponse,
 } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
-import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
+import { useWalletContext } from "../../../../wallet-kit/WalletProvider";
+import { useEscrowsMutations } from "../../../../tanstack/useEscrowsMutations";
 import {
   ErrorResponse,
   handleError,
-} from "@/components/tw-blocks/handle-errors/handle";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
-import { trustlineOptions } from "@/components/tw-blocks/wallet-kit/trustlines";
+} from "../../../../handle-errors/handle";
+import { useEscrowContext } from "../../../../providers/EscrowProvider";
+import { trustlineOptions } from "../../../../wallet-kit/trustlines";
 
 export function useInitializeEscrow() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);

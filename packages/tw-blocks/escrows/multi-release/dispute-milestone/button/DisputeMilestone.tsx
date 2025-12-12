@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { Button } from "@trustless-work/ui";
+import { useEscrowsMutations } from "../../../../tanstack/useEscrowsMutations";
+import { useWalletContext } from "../../../../wallet-kit/WalletProvider";
 import {
   MultiReleaseStartDisputePayload,
   MultiReleaseMilestone,
@@ -10,8 +10,8 @@ import { toast } from "sonner";
 import {
   ErrorResponse,
   handleError,
-} from "@/components/tw-blocks/handle-errors/handle";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+} from "../../../../handle-errors/handle";
+import { useEscrowContext } from "../../../../providers/EscrowProvider";
 import { Loader2 } from "lucide-react";
 
 type DisputeMilestoneButtonProps = {
