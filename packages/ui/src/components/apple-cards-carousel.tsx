@@ -13,7 +13,7 @@ import {
   IconArrowNarrowRight,
   IconX,
 } from "@tabler/icons-react";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useQuery } from "@tanstack/react-query";
@@ -21,7 +21,7 @@ import { useGetEscrowFromIndexerByContractIds } from "@trustless-work/escrow";
 import { GetEscrowsFromIndexerResponse as Escrow } from "@trustless-work/escrow/types";
 import { RainbowButton } from "./ui/rainbow-button";
 import { ClaimROIService } from "@/features/claim-roi/services/claim.service";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { useWalletContext } from "../components/tw-blocks/wallet-kit/WalletProvider";
 import { toast } from "sonner";
 import { InvestDialog } from "@/features/tokens/components/InvestDialog";
 import { SelectedEscrowProvider } from "@/features/tokens/context/SelectedEscrowContext";

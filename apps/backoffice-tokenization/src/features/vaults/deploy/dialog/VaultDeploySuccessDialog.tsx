@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { type DeployVaultResponse } from "@/features/vaults/services/vault.service";
 import { CheckCircle } from "lucide-react";
-import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
+import { useCopy } from "@trustless-work/tw-blocks/helpers/useCopy";
 import Link from "next/link";
 
 type VaultDeploySuccessDialogProps = {

@@ -1,16 +1,18 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    "baseUrl": "src",
-    "jsx": "react-jsx",
-    "types": ["react", "react-dom"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "skipLibCheck": true
+    "outDir": "dist",
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2019",
+    "baseUrl": "src",
+    "skipLibCheck": true,
+    "incremental": false
   },
-  "include": ["src"]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules"]
 }

@@ -2,7 +2,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { useWalletContext } from "@trustless-work/tw-blocks/wallet-kit/WalletProvider";
 import { getVaultInfo } from "../services/vaultInfo.service";
 
 export const useVaultInfo = (vaultContractId: string) => {

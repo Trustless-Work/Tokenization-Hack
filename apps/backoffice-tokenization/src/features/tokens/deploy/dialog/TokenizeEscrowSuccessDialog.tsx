@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { type DeployTokenResponse } from "@/features/tokens/services/token.service";
 import { CheckCircle } from "lucide-react";
-import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
+import { useCopy } from "@trustless-work/tw-blocks/helpers/useCopy";
 import Link from "next/link";
 
 type TokenizeEscrowSuccessDialogProps = {

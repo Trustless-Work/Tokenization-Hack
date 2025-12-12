@@ -1,7 +1,7 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 import React from "react";
-import { BentoGrid, BentoGridItem } from "@trustless-work/ui";
+import { BentoGrid, BentoGridItem } from "../components/bento-grid";
 import {
   IconBoxAlignRightFilled,
   IconClipboardCopy,

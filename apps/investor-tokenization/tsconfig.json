@@ -19,7 +19,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@trustless-work/ui": ["../../packages/ui/src"],
+      "@trustless-work/soroban": ["../../packages/soroban/src"],
+      "@trustless-work/tw-blocks": ["../../packages/tw-blocks/"],
+      "@trustless-work/tw-blocks/*": ["../../packages/tw-blocks/*"]
     }
   },
   "include": [

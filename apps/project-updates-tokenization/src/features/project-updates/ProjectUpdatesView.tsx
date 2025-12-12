@@ -1,5 +1,5 @@
 import { Header } from "@/components/shared/Header";
-import { EscrowsByRoleCards } from "@/components/tw-blocks/escrows/escrows-by-role/cards/EscrowsCards";
+import { EscrowsByRoleCards } from "@trustless-work/tw-blocks/escrows/escrows-by-role/cards/EscrowsCards";
 
 export const ProjectUpdatesView = () => {
   return (

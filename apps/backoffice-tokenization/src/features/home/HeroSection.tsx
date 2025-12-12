@@ -1,7 +1,7 @@
-import { PointerHighlight } from "@/components/ui/pointer-highlight";
-import { BentoGridThirdDemo } from "./BentoGrid";
+import { PointerHighlight } from "@trustless-work/ui";
+import { BentoGridThirdDemo } from "@trustless-work/ui";
 import Link from "next/link";
-import { RainbowButton } from "@/components/ui/rainbow-button";
+import { RainbowButton } from "@trustless-work/ui";
 
 export const HeroSection = () => {
   return (

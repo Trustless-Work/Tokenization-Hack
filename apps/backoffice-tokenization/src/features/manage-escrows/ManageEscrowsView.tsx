@@ -1,7 +1,7 @@
 "use client";
 
-import { EscrowsBySignerCards } from "@/components/tw-blocks/escrows/escrows-by-signer/cards/EscrowsCards";
-import { InitializeEscrowDialog } from "@/components/tw-blocks/escrows/multi-release/initialize-escrow/dialog/InitializeEscrow";
+import { EscrowsBySignerCards } from "@trustless-work/tw-blocks/escrows/escrows-by-signer/cards/EscrowsCards";
+import { InitializeEscrowDialog } from "@trustless-work/tw-blocks/escrows/multi-release/initialize-escrow/dialog/InitializeEscrow";
 import { TokenizeEscrowDialog } from "@/features/tokens/deploy/dialog/TokenizeEscrow";
 import { CreateVaultDialog } from "../vaults/deploy/dialog/CreateVault";
 import { EnableVaultDialog } from "../vaults/deploy/dialog/EnableVault";

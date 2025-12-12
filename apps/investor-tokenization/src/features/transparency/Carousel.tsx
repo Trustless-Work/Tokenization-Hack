@@ -1,11 +1,11 @@
 "use client";
 
-import { BalanceProgressBar } from "@/components/tw-blocks/escrows/indicators/balance-progress/bar/BalanceProgress";
+import { BalanceProgressBar } from "@trustless-work/tw-blocks/indicators/BalanceProgress";
 import { Button } from "@/components/ui/button";
 import {
   formatCurrency,
   formatTimestamp,
-} from "@/components/tw-blocks/helpers/format.helper";
+} from "@trustless-work/tw-blocks/helpers/format.helper";
 import type {
   GetEscrowsFromIndexerResponse as Escrow,
   MultiReleaseMilestone,

@@ -44,3 +44,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# build outputs
+dist/
+packages/*/dist/
+
+# turbo cache
+.turbo/
+
+# OS junk
+.DS_Store

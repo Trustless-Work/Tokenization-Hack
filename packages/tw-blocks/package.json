@@ -1,0 +1,15 @@
+{
+  "name": "@trustless-work/tw-blocks",
+  "version": "0.1.0",
+  "main": "index.ts",
+  "types": "index.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@trustless-work/ui": "*",
+    "@tanstack/react-query": "^5.75.0",
+    "@stellar/stellar-sdk": "^14.3.3",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}

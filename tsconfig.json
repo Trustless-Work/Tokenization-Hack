@@ -10,8 +10,11 @@
       "@trustless-work/soroban": ["packages/soroban/src"],
       "@trustless-work/soroban/*": ["packages/soroban/src/*"],
 
-      "@trustless-work/blocks": ["packages/blocks/src"],
-      "@trustless-work/blocks/*": ["packages/blocks/src/*"]
+      "@trustless-work/tw-blocks": ["packages/tw-blocks/"],
+      "@trustless-work/tw-blocks/*": ["packages/tw-blocks/*"]
     }
-  }
+  },
+
+  "include": [],
+  "files": []
 }

@@ -2,10 +2,16 @@
 - .gitignore
 - .turbo
   - cache
+    - 24d6d9e4d23c88e1-meta.json
+    - 24d6d9e4d23c88e1.tar.zst
     - 37fb8f08bf56952b-meta.json
     - 37fb8f08bf56952b.tar.zst
     - 901cf68cc659d441-meta.json
     - 901cf68cc659d441.tar.zst
+    - c69dec2d5d896908-meta.json
+    - c69dec2d5d896908.tar.zst
+    - d6ac9c87dbc0f5c3-meta.json
+    - d6ac9c87dbc0f5c3.tar.zst
     - e725e4e577cbff82-meta.json
     - e725e4e577cbff82.tar.zst
     - f93bd405607d159f-meta.json
@@ -14,7 +20,6 @@
     - 1.cookie
     - 2.cookie
     - 3.cookie
-    - 4.cookie
   - daemon
     - c132fdc208dbf52f-turbo.log.2025-12-05
 - LICENSE
@@ -56,131 +61,8 @@
       - components
         - shared
           - Header.tsx
-        - tw-blocks
-          - escrows
-            - escrows-by-signer
-              - cards
-                - EscrowsCards.tsx
-                - Filters.tsx
-              - details
-                - Actions.tsx
-                - Entities.tsx
-                - EntityCard.tsx
-                - EscrowDetailDialog.tsx
-                - GeneralInformation.tsx
-                - MilestoneCard.tsx
-                - MilestoneDetailDialog.tsx
-                - Milestones.tsx
-                - StatisticsCard.tsx
-                - SuccessReleaseDialog.tsx
-                - useDetailsEscrow.ts
-              - useEscrowsBySigner.shared.ts
-            - multi-release
-              - dispute-milestone
-                - button
-                  - DisputeMilestone.tsx
-              - initialize-escrow
-                - dialog
-                  - InitializeEscrow.tsx
-                  - schema.ts
-                  - useInitializeEscrow.ts
-                - form
-                  - InitializeEscrow.tsx
-                  - schema.ts
-                  - useInitializeEscrow.ts
-              - release-milestone
-                - button
-                  - ReleaseMilestone.tsx
-              - resolve-dispute
-                - button
-                  - ResolveDispute.tsx
-                - dialog
-                  - ResolveDispute.tsx
-                  - schema.ts
-                  - useResolveDispute.ts
-                - form
-                  - ResolveDispute.tsx
-                  - schema.ts
-                  - useResolveDispute.ts
-              - update-escrow
-                - dialog
-                  - UpdateEscrow.tsx
-                  - schema.ts
-                  - useUpdateEscrow.ts
-                - form
-                  - UpdateEscrow.tsx
-                  - schema.ts
-                  - useUpdateEscrow.ts
-              - withdraw-remaining-funds
-                - button
-                  - WithdrawRemainingFunds.tsx
-                - dialog
-                  - WithdrawRemainingFunds.tsx
-                  - schema.ts
-                  - useWithdrawRemainingFunds.ts
-                - form
-                  - WithdrawRemainingFunds.tsx
-                  - schema.ts
-                  - useWithdrawRemainingFunds.ts
-            - single-multi-release
-              - approve-milestone
-                - button
-                  - ApproveMilestone.tsx
-                - dialog
-                  - ApproveMilestone.tsx
-                  - schema.ts
-                  - useApproveMilestone.ts
-                - form
-                  - ApproveMilestone.tsx
-                  - schema.ts
-                  - useApproveMilestone.ts
-              - change-milestone-status
-                - button
-                  - ChangeMilestoneStatus.tsx
-                - dialog
-                  - ChangeMilestoneStatus.tsx
-                  - schema.ts
-                  - useChangeMilestoneStatus.ts
-                - form
-                  - ChangeMilestoneStatus.tsx
-                  - schema.ts
-                  - useChangeMilestoneStatus.ts
-              - fund-escrow
-                - button
-                  - FundEscrow.tsx
-                - dialog
-                  - FundEscrow.tsx
-                  - schema.ts
-                  - useFundEscrow.ts
-                - form
-                  - FundEscrow.tsx
-                  - schema.ts
-                  - useFundEscrow.ts
-          - handle-errors
-            - errors.enum.ts
-            - handle.ts
-          - helpers
-            - format.helper.ts
-            - useCopy.ts
-          - providers
-            - EscrowAmountProvider.tsx
-            - EscrowDialogsProvider.tsx
-            - EscrowProvider.tsx
-            - ReactQueryClientProvider.tsx
-            - TrustlessWork.tsx
-          - tanstack
-            - useEscrowsByRoleQuery.ts
-            - useEscrowsBySignerQuery.ts
-            - useEscrowsMutations.ts
-            - useGetMultipleEscrowBalances.ts
-          - wallet-kit
-            - WalletButtons.tsx
-            - WalletProvider.tsx
-            - trustlines.ts
-            - useWallet.ts
-            - validators.ts
-            - wallet-kit.ts
         - ui
+          - apple-cards-carousel.tsx
           - avatar.tsx
           - badge.tsx
           - bento-grid.tsx
@@ -192,13 +74,12 @@
           - checkbox.tsx
           - dialog.tsx
           - empty.tsx
+          - floating-dock.tsx
           - form.tsx
           - input.tsx
           - label.tsx
-          - pointer-highlight.tsx
           - popover.tsx
           - progress.tsx
-          - rainbow-button.tsx
           - select.tsx
           - separator.tsx
           - sheet.tsx
@@ -333,34 +214,6 @@
         - shared
           - Header.tsx
           - Navbar.tsx
-        - tw-blocks
-          - escrows
-            - indicators
-              - balance-progress
-                - bar
-                  - BalanceProgress.tsx
-          - handle-errors
-            - errors.enum.ts
-            - handle.ts
-          - helpers
-            - format.helper.ts
-            - useCopy.ts
-          - providers
-            - EscrowAmountProvider.tsx
-            - EscrowDialogsProvider.tsx
-            - EscrowProvider.tsx
-            - ReactQueryClientProvider.tsx
-            - TrustlessWork.tsx
-          - tanstack
-            - useEscrowsByContractIds.hook.ts
-            - useGetMultipleEscrowBalances.ts
-          - wallet-kit
-            - WalletButtons.tsx
-            - WalletProvider.tsx
-            - trustlines.ts
-            - useWallet.ts
-            - validators.ts
-            - wallet-kit.ts
         - ui
           - apple-cards-carousel.tsx
           - avatar.tsx
@@ -462,61 +315,6 @@
       - components
         - shared
           - Header.tsx
-        - tw-blocks
-          - escrows
-            - escrows-by-role
-              - cards
-                - EscrowsCards.tsx
-                - Filters.tsx
-              - details
-                - Actions.tsx
-                - Entities.tsx
-                - EntityCard.tsx
-                - EscrowDetailDialog.tsx
-                - GeneralInformation.tsx
-                - MilestoneCard.tsx
-                - MilestoneDetailDialog.tsx
-                - Milestones.tsx
-                - StatisticsCard.tsx
-                - SuccessReleaseDialog.tsx
-                - useDetailsEscrow.ts
-              - useEscrowsByRole.shared.ts
-            - single-multi-release
-              - change-milestone-status
-                - button
-                  - ChangeMilestoneStatus.tsx
-                - dialog
-                  - ChangeMilestoneStatus.tsx
-                  - schema.ts
-                  - useChangeMilestoneStatus.ts
-                - form
-                  - ChangeMilestoneStatus.tsx
-                  - schema.ts
-                  - useChangeMilestoneStatus.ts
-          - handle-errors
-            - errors.enum.ts
-            - handle.ts
-          - helpers
-            - format.helper.ts
-            - useCopy.ts
-          - providers
-            - EscrowAmountProvider.tsx
-            - EscrowDialogsProvider.tsx
-            - EscrowProvider.tsx
-            - ReactQueryClientProvider.tsx
-            - TrustlessWork.tsx
-          - tanstack
-            - useEscrowsByRoleQuery.ts
-            - useEscrowsBySignerQuery.ts
-            - useEscrowsMutations.ts
-            - useGetMultipleEscrowBalances.ts
-          - wallet-kit
-            - WalletButtons.tsx
-            - WalletProvider.tsx
-            - trustlines.ts
-            - useWallet.ts
-            - validators.ts
-            - wallet-kit.ts
         - ui
           - avatar.tsx
           - badge.tsx
@@ -668,5 +466,335 @@
             - test_vault_deployment_and_availability.1.json
 - package-lock.json
 - package.json
+- packages
+  - soroban
+    - package.json
+    - tsconfig.json
+  - tw-blocks
+    - escrows
+      - escrows-by-role
+        - cards
+          - EscrowsCards.tsx
+          - Filters.tsx
+        - details
+          - Actions.tsx
+          - Entities.tsx
+          - EntityCard.tsx
+          - EscrowDetailDialog.tsx
+          - GeneralInformation.tsx
+          - MilestoneCard.tsx
+          - MilestoneDetailDialog.tsx
+          - Milestones.tsx
+          - StatisticsCard.tsx
+          - SuccessReleaseDialog.tsx
+          - useDetailsEscrow.ts
+        - useEscrowsByRole.shared.ts
+      - escrows-by-signer
+        - cards
+          - EscrowsCards.tsx
+          - Filters.tsx
+        - details
+          - Actions.tsx
+          - Entities.tsx
+          - EntityCard.tsx
+          - EscrowDetailDialog.tsx
+          - GeneralInformation.tsx
+          - MilestoneCard.tsx
+          - MilestoneDetailDialog.tsx
+          - Milestones.tsx
+          - StatisticsCard.tsx
+          - SuccessReleaseDialog.tsx
+          - useDetailsEscrow.ts
+        - useEscrowsBySigner.shared.ts
+      - multi-release
+        - dispute-milestone
+          - button
+            - DisputeMilestone.tsx
+        - initialize-escrow
+          - dialog
+            - InitializeEscrow.tsx
+            - schema.ts
+            - useInitializeEscrow.ts
+          - form
+            - InitializeEscrow.tsx
+            - schema.ts
+            - useInitializeEscrow.ts
+        - release-milestone
+          - button
+            - ReleaseMilestone.tsx
+        - resolve-dispute
+          - button
+            - ResolveDispute.tsx
+          - dialog
+            - ResolveDispute.tsx
+            - schema.ts
+            - useResolveDispute.ts
+          - form
+            - ResolveDispute.tsx
+            - schema.ts
+            - useResolveDispute.ts
+        - update-escrow
+          - dialog
+            - UpdateEscrow.tsx
+            - schema.ts
+            - useUpdateEscrow.ts
+          - form
+            - UpdateEscrow.tsx
+            - schema.ts
+            - useUpdateEscrow.ts
+        - withdraw-remaining-funds
+          - button
+            - WithdrawRemainingFunds.tsx
+          - dialog
+            - WithdrawRemainingFunds.tsx
+            - schema.ts
+            - useWithdrawRemainingFunds.ts
+          - form
+            - WithdrawRemainingFunds.tsx
+            - schema.ts
+            - useWithdrawRemainingFunds.ts
+      - single-multi-release
+        - approve-milestone
+          - button
+            - ApproveMilestone.tsx
+          - dialog
+            - ApproveMilestone.tsx
+            - schema.ts
+            - useApproveMilestone.ts
+          - form
+            - ApproveMilestone.tsx
+            - schema.ts
+            - useApproveMilestone.ts
+        - change-milestone-status
+          - button
+            - ChangeMilestoneStatus.tsx
+          - dialog
+            - ChangeMilestoneStatus.tsx
+            - schema.ts
+            - useChangeMilestoneStatus.ts
+          - form
+            - ChangeMilestoneStatus.tsx
+            - schema.ts
+            - useChangeMilestoneStatus.ts
+        - fund-escrow
+          - button
+            - FundEscrow.tsx
+          - dialog
+            - FundEscrow.tsx
+            - schema.ts
+            - useFundEscrow.ts
+          - form
+            - FundEscrow.tsx
+            - schema.ts
+            - useFundEscrow.ts
+    - handle-errors
+      - errors.enum.ts
+      - handle.ts
+    - helpers
+      - format.helper.ts
+      - useCopy.ts
+    - index.ts
+    - indicators
+      - BalanceProgress.tsx
+    - package.json
+    - providers
+      - EscrowAmountProvider.tsx
+      - EscrowDialogsProvider.tsx
+      - EscrowProvider.tsx
+      - ReactQueryClientProvider.tsx
+      - TrustlessWork.tsx
+    - tanstack
+      - useEscrowsByRoleQuery.ts
+      - useEscrowsBySignerQuery.ts
+      - useEscrowsMutations.ts
+      - useGetMultipleEscrowBalances.ts
+    - tsconfig.json
+    - wallet-kit
+      - WalletButtons.tsx
+      - WalletProvider.tsx
+      - trustlines.ts
+      - useWallet.ts
+      - validators.ts
+      - wallet-kit.ts
+  - ui
+    - package.json
+    - src
+      - components
+        - apple-cards-carousel.tsx
+        - avatar.tsx
+        - badge.tsx
+        - bento-grid.tsx
+        - calendar-05.tsx
+        - calendar.tsx
+        - card.tsx
+        - chart.tsx
+        - checkbox.tsx
+        - dialog.tsx
+        - empty.tsx
+        - floating-dock.tsx
+        - form.tsx
+        - input.tsx
+        - label.tsx
+        - popover.tsx
+        - progress.tsx
+        - select.tsx
+        - separator.tsx
+        - sheet.tsx
+        - sonner.tsx
+        - table.tsx
+        - tabs.tsx
+        - textarea.tsx
+        - tooltip.tsx
+        - ui
+          - button.tsx
+      - composites
+        - BentoGrid.tsx
+        - RainbowButton.tsx
+        - pointer-highlight.tsx
+      - icons
+      - index.ts
+      - lib
+        - utils.ts
+      - themes
+        - dark.ts
+        - index.ts
+        - light.ts
+      - tokens
+        - colors.ts
+        - radius.ts
+        - shadows.ts
+        - spacing.ts
+        - typography.ts
+      - tw-blocks
+        - escrows
+          - escrows-by-signer
+            - cards
+              - EscrowsCards.tsx
+              - Filters.tsx
+            - details
+              - Actions.tsx
+              - Entities.tsx
+              - EntityCard.tsx
+              - EscrowDetailDialog.tsx
+              - GeneralInformation.tsx
+              - MilestoneCard.tsx
+              - MilestoneDetailDialog.tsx
+              - Milestones.tsx
+              - StatisticsCard.tsx
+              - SuccessReleaseDialog.tsx
+              - useDetailsEscrow.ts
+            - useEscrowsBySigner.shared.ts
+          - multi-release
+            - dispute-milestone
+              - button
+                - DisputeMilestone.tsx
+            - initialize-escrow
+              - dialog
+                - InitializeEscrow.tsx
+                - schema.ts
+                - useInitializeEscrow.ts
+              - form
+                - InitializeEscrow.tsx
+                - schema.ts
+                - useInitializeEscrow.ts
+            - release-milestone
+              - button
+                - ReleaseMilestone.tsx
+            - resolve-dispute
+              - button
+                - ResolveDispute.tsx
+              - dialog
+                - ResolveDispute.tsx
+                - schema.ts
+                - useResolveDispute.ts
+              - form
+                - ResolveDispute.tsx
+                - schema.ts
+                - useResolveDispute.ts
+            - update-escrow
+              - dialog
+                - UpdateEscrow.tsx
+                - schema.ts
+                - useUpdateEscrow.ts
+              - form
+                - UpdateEscrow.tsx
+                - schema.ts
+                - useUpdateEscrow.ts
+            - withdraw-remaining-funds
+              - button
+                - WithdrawRemainingFunds.tsx
+              - dialog
+                - WithdrawRemainingFunds.tsx
+                - schema.ts
+                - useWithdrawRemainingFunds.ts
+              - form
+                - WithdrawRemainingFunds.tsx
+                - schema.ts
+                - useWithdrawRemainingFunds.ts
+          - single-multi-release
+            - approve-milestone
+              - button
+                - ApproveMilestone.tsx
+              - dialog
+                - ApproveMilestone.tsx
+                - schema.ts
+                - useApproveMilestone.ts
+              - form
+                - ApproveMilestone.tsx
+                - schema.ts
+                - useApproveMilestone.ts
+            - change-milestone-status
+              - button
+                - ChangeMilestoneStatus.tsx
+              - dialog
+                - ChangeMilestoneStatus.tsx
+                - schema.ts
+                - useChangeMilestoneStatus.ts
+              - form
+                - ChangeMilestoneStatus.tsx
+                - schema.ts
+                - useChangeMilestoneStatus.ts
+            - fund-escrow
+              - button
+                - FundEscrow.tsx
+              - dialog
+                - FundEscrow.tsx
+                - schema.ts
+                - useFundEscrow.ts
+              - form
+                - FundEscrow.tsx
+                - schema.ts
+                - useFundEscrow.ts
+        - handle-errors
+          - errors.enum.ts
+          - handle.ts
+        - helpers
+          - format.helper.ts
+          - useCopy.ts
+        - providers
+          - EscrowAmountProvider.tsx
+          - EscrowDialogsProvider.tsx
+          - EscrowProvider.tsx
+          - ReactQueryClientProvider.tsx
+          - TrustlessWork.tsx
+        - tanstack
+          - useEscrowsByRoleQuery.ts
+          - useEscrowsBySignerQuery.ts
+          - useEscrowsMutations.ts
+          - useGetMultipleEscrowBalances.ts
+        - wallet-kit
+          - WalletButtons.tsx
+          - WalletProvider.tsx
+          - trustlines.ts
+          - useWallet.ts
+          - validators.ts
+          - wallet-kit.ts
+      - utils
+    - tsconfig.json
+    - tsup.config.ts
+  - wallet
+    - package.json
+    - tsconfig.json
 - project_structure.text
+- tsconfig.json
 - turbo.json
