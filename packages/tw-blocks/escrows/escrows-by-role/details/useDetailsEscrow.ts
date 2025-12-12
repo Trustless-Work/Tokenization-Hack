@@ -3,9 +3,9 @@ import {
   GetEscrowsFromIndexerResponse as Escrow,
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
-import { useEscrowAmountContext } from "@/components/tw-blocks/providers/EscrowAmountProvider";
+import { useWalletContext } from "../../../wallet-kit/WalletProvider";
+import { useEscrowContext } from "../../../providers/EscrowProvider";
+import { useEscrowAmountContext } from "../../../providers/EscrowAmountProvider";
 
 interface EscrowDetailDialogProps {
   setIsDialogOpen: (value: boolean) => void;

@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import { Card } from "@/components/ui/card";
+import { Card } from "@trustless-work/ui";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from "@/components/ui/tooltip";
+} from "@trustless-work/ui";
 import { cn } from "@/lib/utils";
 import { MultiReleaseMilestone } from "@trustless-work/escrow";
 import {
@@ -22,16 +22,16 @@ import {
   BriefcaseBusiness,
   BookOpen,
 } from "lucide-react";
-import type { DialogStates } from "@/components/tw-blocks/providers/EscrowDialogsProvider";
+import type { DialogStates } from "../../../providers/EscrowDialogsProvider";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
-import { useEscrowAmountContext } from "@/components/tw-blocks/providers/EscrowAmountProvider";
+import { useEscrowAmountContext } from "../../../providers/EscrowAmountProvider";
 import { StatisticsCard } from "./StatisticsCard";
 import {
   formatAddress,
   formatCurrency,
   formatRole,
-} from "@/components/tw-blocks/helpers/format.helper";
-import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
+} from "../../../helpers/format.helper";
+import { useCopy } from "../../../helpers/useCopy";
 import { roleActions } from "./Actions";
 
 interface GeneralInformationProps {

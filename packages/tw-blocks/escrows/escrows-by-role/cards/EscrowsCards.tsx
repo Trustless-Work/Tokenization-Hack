@@ -9,12 +9,12 @@ import type {
 } from "@trustless-work/escrow/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@trustless-work/ui";
 import { Badge } from "@trustless-work/ui";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@trustless-work/ui";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@trustless-work/ui";
 import {
   Goal,
   Wallet,
@@ -25,8 +25,8 @@ import {
 } from "lucide-react";
 import { useEscrowsByRole } from "../useEscrowsByRole.shared";
 import { Filters } from "./Filters";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
-import { useEscrowDialogs } from "@/components/tw-blocks/providers/EscrowDialogsProvider";
+import { useEscrowContext } from "../../../providers/EscrowProvider";
+import { useEscrowDialogs } from "../../../providers/EscrowDialogsProvider";
 import {
   formatCurrency,
   formatTimestamp,

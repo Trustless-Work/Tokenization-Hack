@@ -1,17 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "outDir": "dist",
     "jsx": "react-jsx",
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2019",
     "baseUrl": ".",
     "paths": {
+      "@trustless-work/ui": ["../ui/src"],
       "@trustless-work/ui/*": ["../ui/src/*"]
     }
   },
-  "include": ["./**/*.ts", "./**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }
