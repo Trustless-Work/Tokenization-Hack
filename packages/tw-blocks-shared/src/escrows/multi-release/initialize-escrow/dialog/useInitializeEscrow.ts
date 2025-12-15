@@ -14,6 +14,7 @@ import {
   ErrorResponse,
   handleError,
 } from "@/components/tw-blocks/handle-errors/handle";
+import { trustlines } from "@/components/tw-blocks/wallet-kit/trustlines";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { trustlineOptions } from "@/components/tw-blocks/wallet-kit/trustlines";
 
@@ -126,6 +127,15 @@ export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
     try {
       setIsSubmitting(true);
 
+      const trustline = trustlines.find(
+        (tl) => tl.address === payload.trustline.address
+      );
+
+      if (!trustline) {
+        toast.error("Trustline not found");
+        return;
+      }
+
       /**
        * Create the final payload for the initialize escrow mutation
        *
@@ -146,6 +156,10 @@ export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
               ? Number(milestone.amount)
               : milestone.amount,
         })),
+        trustline: {
+          address: trustline?.address || "",
+          symbol: trustline?.name || "",
+        },
       };
 
       /**

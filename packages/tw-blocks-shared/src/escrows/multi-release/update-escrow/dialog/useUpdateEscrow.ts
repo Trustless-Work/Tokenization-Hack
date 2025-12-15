@@ -17,6 +17,7 @@ import {
   handleError,
 } from "@/components/tw-blocks/handle-errors/handle";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
+import { trustlines } from "@/components/tw-blocks/wallet-kit/trustlines";
 
 export function useUpdateEscrow() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -184,6 +185,15 @@ export function useUpdateEscrow() {
     try {
       setIsSubmitting(true);
 
+      const trustline = trustlines.find(
+        (tl) => tl.address === payload.trustline.address
+      );
+
+      if (!trustline) {
+        toast.error("Trustline not found");
+        return;
+      }
+
       /**
        * Create the final payload for the update escrow mutation
        *
@@ -203,6 +213,7 @@ export function useUpdateEscrow() {
               : payload.platformFee,
           trustline: {
             address: payload.trustline.address,
+            symbol: selectedEscrow?.trustline?.name || "",
           },
           roles: payload.roles,
           milestones: payload.milestones.map((milestone, index) => ({
