@@ -7,7 +7,6 @@ import {
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import {
   ErrorResponse,
   handleError,
@@ -49,13 +48,11 @@ export const DisputeMilestoneButton = ({
        * @param type - The type of the escrow
        * @param address - The address of the escrow
        */
-      const res = await startDispute.mutateAsync({
+      await startDispute.mutateAsync({
         payload,
         type: "multi-release",
         address: walletAddress || "",
       });
-
-      toastSuccessWithTx("Milestone disputed successfully", (res as any)?.hash);
 
       updateEscrow({
         ...selectedEscrow,

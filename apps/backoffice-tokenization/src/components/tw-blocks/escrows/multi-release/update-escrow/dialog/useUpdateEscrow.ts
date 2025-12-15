@@ -9,7 +9,6 @@ import {
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
@@ -19,11 +18,7 @@ import {
 } from "@/components/tw-blocks/handle-errors/handle";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
 
-type UseUpdateEscrowOptions = {
-  onSuccess?: () => void;
-};
-
-export function useUpdateEscrow(options?: UseUpdateEscrowOptions) {
+export function useUpdateEscrow() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { getMultiReleaseFormSchema } = useUpdateEscrowSchema();
@@ -229,7 +224,7 @@ export function useUpdateEscrow(options?: UseUpdateEscrowOptions) {
        * @param type - The type of the escrow
        * @param address - The address of the escrow
        */
-      const res = (await updateEscrow.mutateAsync({
+      (await updateEscrow.mutateAsync({
         payload: finalPayload,
         type: "multi-release",
         address: walletAddress || "",
@@ -250,10 +245,7 @@ export function useUpdateEscrow(options?: UseUpdateEscrowOptions) {
       };
 
       setSelectedEscrow(nextSelectedEscrow);
-      toastSuccessWithTx("Escrow updated successfully", (res as any)?.hash);
-
-      // Close dialog if requested
-      options?.onSuccess?.();
+      toast.success("Escrow updated successfully");
     } catch (error) {
       toast.error(handleError(error as ErrorResponse).message);
     } finally {

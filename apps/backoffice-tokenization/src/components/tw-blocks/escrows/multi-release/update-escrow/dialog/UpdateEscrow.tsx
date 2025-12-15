@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/dialog";
 
 export const UpdateEscrowDialog = () => {
-  const [open, setOpen] = React.useState(false);
   const {
     form,
     isSubmitting,
@@ -44,12 +43,10 @@ export const UpdateEscrowDialog = () => {
     handleMilestoneAmountChange,
     isEscrowLocked,
     initialMilestonesCount,
-  } = useUpdateEscrow({
-    onSuccess: () => setOpen(false),
-  });
+  } = useUpdateEscrow();
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button type="button" className="cursor-pointer w-full">
           Update

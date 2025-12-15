@@ -1,5 +1,7 @@
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
 import { DummyContent } from "@/features/transparency/Carousel";
+import VaultCard from "./VaultCard";
+
 
 const data = [
   {
@@ -16,11 +18,18 @@ const data = [
     src: "/escrows/art.jpg",
     content: <DummyContent />,
   },
+    {
+    escrowId: "CAO6ZONKBYQGE7E3OIPJTMSE2J2PKNROSXGGC3VQOO7JF2LXY47XG6QV",
+    tokenSale: "CBW4W4GEGD5MNXCUHGOAJ64IXLFHDMDDD65ITVM3HVIYSK22PGSHIJ5N",
+    vaultContractId: "CC7RJ4EACM5HMYKIMYJ5OPYDOYING7AAHE5ACHZK3F7QSXIMIWRU5GFC",
+    src: "/escrows/building.png",
+    content: <DummyContent />,
+  },
 ];
 
 export const VaultList = () => {
-  const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
+  const cards = data.map((vault, index) => (
+    <VaultCard key={vault.vaultContractId} vault={vault} index={index} />
   ));
 
   return (

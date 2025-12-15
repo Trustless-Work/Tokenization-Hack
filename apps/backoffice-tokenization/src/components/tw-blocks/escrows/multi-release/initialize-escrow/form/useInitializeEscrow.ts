@@ -8,7 +8,6 @@ import {
   InitializeMultiReleaseEscrowResponse,
 } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
 import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
 import {
@@ -158,8 +157,6 @@ export function useInitializeEscrow() {
           type: "multi-release",
           address: walletAddress || "",
         })) as InitializeMultiReleaseEscrowResponse;
-
-      toastSuccessWithTx("Escrow initialized successfully", (response as any)?.hash);
 
       setSelectedEscrow({ ...finalPayload, contractId: response.contractId });
     } catch (error) {

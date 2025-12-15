@@ -6,7 +6,6 @@ import {
   type ChangeMilestoneStatusValues,
 } from "./schema";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import { ChangeMilestoneStatusPayload } from "@trustless-work/escrow";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
@@ -58,16 +57,13 @@ export function useChangeMilestoneStatus() {
        * @param type - The type of the escrow
        * @param address - The address of the escrow
        */
-      const res = await changeMilestoneStatus.mutateAsync({
+      await changeMilestoneStatus.mutateAsync({
         payload: finalPayload,
         type: selectedEscrow?.type || "multi-release",
         address: walletAddress || "",
       });
 
-      toastSuccessWithTx(
-        "Milestone status updated successfully",
-        (res as any)?.hash,
-      );
+      toast.success("Milestone status updated successfully");
 
       updateEscrow({
         ...selectedEscrow,

@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resolveDisputeSchema, type ResolveDisputeValues } from "./schema";
 import { toast } from "sonner";
-import { toastSuccessWithTx } from "@/lib/toastWithTx";
 import {
   MultiReleaseResolveDisputePayload,
   MultiReleaseMilestone,
+  SendTransactionResponse,
 } from "@trustless-work/escrow";
 import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
 import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
@@ -135,13 +135,11 @@ export function useResolveDispute() {
         })) as [{ address: string; amount: number }],
       };
 
-      const res = await resolveDispute.mutateAsync({
+      await resolveDispute.mutateAsync({
         payload: finalPayload,
         type: "multi-release",
         address: walletAddress || "",
       });
-
-      toastSuccessWithTx("Dispute resolved successfully", (res as any)?.hash);
 
       const sumDistributed = payload.distributions.reduce((acc, d) => {
         const n = Number(d.amount || 0);

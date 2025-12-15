@@ -1,5 +1,6 @@
 import * as StellarSDK from "@stellar/stellar-sdk";
 import { NextResponse } from "next/server";
+import { extractContractError } from "@/lib/contractErrorHandler";
 
 const RPC_URL = "https://soroban-testnet.stellar.org";
 
@@ -49,10 +50,11 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Claim transaction build error:", error);
+    const { message, details } = extractContractError(error);
     return new Response(
       JSON.stringify({
-        error: "Internal Server Error",
-        details: error instanceof Error ? error.message : String(error),
+        error: message,
+        details: details,
       }),
       { status: 500 },
     );
