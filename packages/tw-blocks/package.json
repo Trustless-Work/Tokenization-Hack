@@ -9,7 +9,14 @@
     "@trustless-work/ui": "*",
     "@tanstack/react-query": "^5.75.0",
     "@stellar/stellar-sdk": "^14.3.3",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "@trustless-work/blocks": "^1.0.9",
+    "@trustless-work/escrow": "^3.0.2",
+    "@creit.tech/stellar-wallets-kit": "^1.8.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.554.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   }
 }
