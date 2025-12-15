@@ -4,10 +4,10 @@ import React from "react";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { formatText } from "@/components/tw-blocks/helpers/format.helper";
+import { Button } from "@tokenization/ui/button";
+import { Card, CardContent } from "@tokenization/ui/card";
+import { Badge } from "@tokenization/ui/badge";
+import { formatText } from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
 
 interface StatisticsCardProps {
   title: string;

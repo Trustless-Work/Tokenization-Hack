@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Progress } from "@/components/ui/progress";
-import { useGetMultipleEscrowBalancesQuery } from "@/components/tw-blocks/tanstack/useGetMultipleEscrowBalances";
-import { formatCurrency } from "@/components/tw-blocks/helpers/format.helper";
+import { Progress } from "@tokenization/ui/progress";
+import { useGetMultipleEscrowBalancesQuery } from "@tokenization/tw-blocks-shared/src/tanstack/useGetMultipleEscrowBalances";
+import { formatCurrency } from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
 
 type BalanceProgressBarProps = {
   contractId: string;

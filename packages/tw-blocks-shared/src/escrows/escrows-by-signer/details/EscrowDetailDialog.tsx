@@ -7,18 +7,18 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@tokenization/ui/dialog";
 import useEscrowDetailDialog from "./useDetailsEscrow";
 import Link from "next/link";
-import { Card } from "@/components/ui/card";
+import { Card } from "@tokenization/ui/card";
 import { Info, Users, ListChecks } from "lucide-react";
-import { useEscrowDialogs } from "@/components/tw-blocks/providers/EscrowDialogsProvider";
+import { useEscrowDialogs } from "@tokenization/tw-blocks-shared/src/providers/EscrowDialogsProvider";
 import type { GetEscrowsFromIndexerResponse as Escrow } from "@trustless-work/escrow/types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tokenization/ui/tabs";
 import { Milestones } from "./Milestones";
 import { Entities } from "./Entities";
 import { GeneralInformation } from "./GeneralInformation";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
 import { SuccessReleaseDialog } from "./SuccessReleaseDialog";
 
 /**

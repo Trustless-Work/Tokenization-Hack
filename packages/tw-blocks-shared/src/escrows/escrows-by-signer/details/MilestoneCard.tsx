@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@tokenization/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
 import {
   FileCheck2,
   Eye,
@@ -16,10 +16,10 @@ import {
   MultiReleaseMilestone,
   SingleReleaseMilestone,
 } from "@trustless-work/escrow";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@tokenization/ui/badge";
 import { ChangeMilestoneStatusDialog } from "../../single-multi-release/change-milestone-status/dialog/ChangeMilestoneStatus";
 import { ApproveMilestoneButton } from "../../single-multi-release/approve-milestone/button/ApproveMilestone";
-import { formatCurrency } from "@/components/tw-blocks/helpers/format.helper";
+import { formatCurrency } from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
 import { ReleaseMilestoneButton } from "../../multi-release/release-milestone/button/ReleaseMilestone";
 import { DisputeMilestoneButton } from "../../multi-release/dispute-milestone/button/DisputeMilestone";
 import { ResolveDisputeDialog } from "../../multi-release/resolve-dispute/dialog/ResolveDispute";

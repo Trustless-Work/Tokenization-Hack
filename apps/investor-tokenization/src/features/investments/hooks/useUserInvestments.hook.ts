@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 import { useGetEscrowFromIndexerByContractIds } from "@trustless-work/escrow";
 import type { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
 import { InvestmentService } from "../services/investment.service";

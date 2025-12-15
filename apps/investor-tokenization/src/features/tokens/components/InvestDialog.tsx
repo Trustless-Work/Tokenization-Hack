@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog";
+} from "@tokenization/ui/dialog";
 import {
   Form,
   FormField,
@@ -18,26 +18,26 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { RainbowButton } from "@/components/ui/rainbow-button";
+} from "@tokenization/ui/form";
+import { Input } from "@tokenization/ui/input";
+import { Button } from "@tokenization/ui/button";
+import { RainbowButton } from "@tokenization/ui/rainbow-button";
 import {
   TokenService,
   type BuyTokenPayload,
 } from "@/features/tokens/services/token.service";
 import { SendTransactionService } from "@/lib/sendTransactionService";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
-import { signTransaction } from "@/components/tw-blocks/wallet-kit/wallet-kit";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
+import { signTransaction } from "@tokenization/tw-blocks-shared/src/wallet-kit/wallet-kit";
 import { useSelectedEscrow } from "@/features/tokens/context/SelectedEscrowContext";
-import { Card } from "@/components/ui/card";
+import { Card } from "@tokenization/ui/card";
 import { cn } from "@/lib/utils";
 import { MultiReleaseMilestone } from "@trustless-work/escrow";
-import { BalanceProgressBar } from "@/components/tw-blocks/escrows/indicators/balance-progress/bar/BalanceProgress";
-import { formatAddress } from "@/components/tw-blocks/helpers/format.helper";
+import { BalanceProgressBar } from "@tokenization/tw-blocks-shared/src/escrows/indicators/balance-progress/bar/BalanceProgress";
+import { formatAddress } from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
 import { CircleCheckBig } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button as ShadButton } from "@/components/ui/button";
+import { Button as ShadButton } from "@tokenization/ui/button";
 import Link from "next/link";
 
 type InvestFormValues = {

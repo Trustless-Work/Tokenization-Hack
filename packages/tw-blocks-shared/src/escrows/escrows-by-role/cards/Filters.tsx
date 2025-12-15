@@ -1,18 +1,18 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@tokenization/ui/button";
+import { Input } from "@tokenization/ui/input";
+import { Checkbox } from "@tokenization/ui/checkbox";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+} from "@tokenization/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@tokenization/ui/popover";
+import { Calendar } from "@tokenization/ui/calendar";
 import type { DateRange as DayPickerDateRange } from "react-day-picker";
 import {
   RefreshCcw,
@@ -29,7 +29,7 @@ import {
   SelectContent as OrderSelectContent,
   SelectItem as OrderSelectItem,
   SelectValue as OrderSelectValue,
-} from "@/components/ui/select";
+} from "@tokenization/ui/select";
 
 type FiltersProps = {
   // values

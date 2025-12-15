@@ -6,23 +6,23 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+} from "@tokenization/ui/form";
+import { Input } from "@tokenization/ui/input";
+import { Button } from "@tokenization/ui/button";
+import { Card } from "@tokenization/ui/card";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+} from "@tokenization/ui/select";
+import { Textarea } from "@tokenization/ui/textarea";
 import { useInitializeEscrow } from "./useInitializeEscrow";
 import { Trash2, DollarSign, Percent, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { trustlineOptions } from "@/components/tw-blocks/wallet-kit/trustlines";
-import { Separator } from "@/components/ui/separator";
+import { trustlineOptions } from "@tokenization/tw-blocks-shared/src/wallet-kit/trustlines";
+import { Separator } from "@tokenization/ui/separator";
 
 export const InitializeEscrowForm = () => {
   const {

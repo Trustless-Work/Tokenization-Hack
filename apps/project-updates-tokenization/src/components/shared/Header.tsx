@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { WalletButton } from "../tw-blocks/wallet-kit/WalletButtons";
 import Image from "next/image";
-import { RainbowButton } from "../ui/rainbow-button";
+import { RainbowButton } from "@tokenization/ui/rainbow-button";
+import { WalletButton } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletButtons";
 
 export const HeaderHome = () => {
   return (

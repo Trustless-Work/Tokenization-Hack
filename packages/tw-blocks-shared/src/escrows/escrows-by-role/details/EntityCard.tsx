@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "@tokenization/ui/avatar";
+import { Card, CardContent } from "@tokenization/ui/card";
+import { Badge } from "@tokenization/ui/badge";
+import { Separator } from "@tokenization/ui/separator";
 import Link from "next/link";
 import {
   formatAddress,
   formatRole,
-} from "@/components/tw-blocks/helpers/format.helper";
+} from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
 
 interface EntityCardProps {
   entity?: string;

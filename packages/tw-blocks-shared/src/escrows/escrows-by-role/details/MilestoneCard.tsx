@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@tokenization/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
 import {
   FileCheck2,
   Eye,
@@ -16,9 +16,9 @@ import {
   MultiReleaseMilestone,
   SingleReleaseMilestone,
 } from "@trustless-work/escrow";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@tokenization/ui/badge";
 import { ChangeMilestoneStatusDialog } from "../../single-multi-release/change-milestone-status/dialog/ChangeMilestoneStatus";
-import { formatCurrency } from "@/components/tw-blocks/helpers/format.helper";
+import { formatCurrency } from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
 
 interface MilestoneCardProps {
   milestone: SingleReleaseMilestone | MultiReleaseMilestone;

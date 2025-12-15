@@ -5,7 +5,7 @@ import {
   MultiReleaseMilestone,
 } from "@trustless-work/escrow/types";
 import { EntityCard } from "./EntityCard";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@tokenization/ui/separator";
 
 interface EntitiesProps {
   selectedEscrow: Escrow;

@@ -6,25 +6,25 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+} from "@tokenization/ui/form";
+import { Button } from "@tokenization/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@tokenization/ui/dialog";
 import { Loader2 } from "lucide-react";
 import { useApproveMilestone } from "./useApproveMilestone";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@tokenization/ui/select";
 
 export const ApproveMilestoneDialog = () => {
   const [open, setOpen] = React.useState(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import { FloatingDock } from "@/components/ui/floating-dock";
+import { FloatingDock } from "@tokenization/ui/floating-dock";
 import { CircleDollarSign, SquaresExclude, Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 

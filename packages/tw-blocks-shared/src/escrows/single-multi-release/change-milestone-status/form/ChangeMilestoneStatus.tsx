@@ -6,20 +6,20 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+} from "@tokenization/ui/form";
+import { Input } from "@tokenization/ui/input";
+import { Textarea } from "@tokenization/ui/textarea";
+import { Button } from "@tokenization/ui/button";
 import { useChangeMilestoneStatus } from "./useChangeMilestoneStatus";
 import { Loader2 } from "lucide-react";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@tokenization/ui/select";
 
 export const ChangeMilestoneStatusForm = () => {
   const { form, handleSubmit, isSubmitting } = useChangeMilestoneStatus();

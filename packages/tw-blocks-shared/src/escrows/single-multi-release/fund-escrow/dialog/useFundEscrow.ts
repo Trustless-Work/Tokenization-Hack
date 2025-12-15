@@ -4,13 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { fundEscrowSchema, type FundEscrowValues } from "./schema";
 import { toast } from "sonner";
 import { FundEscrowPayload } from "@trustless-work/escrow";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
-import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
+import { useEscrowsMutations } from "@tokenization/tw-blocks-shared/src/tanstack/useEscrowsMutations";
 import {
   ErrorResponse,
   handleError,
-} from "@/components/tw-blocks/handle-errors/handle";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+} from "@tokenization/tw-blocks-shared/src/handle-errors/handle";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 
 type UseFundEscrowOptions = {
   onSuccess?: () => void;

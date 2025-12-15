@@ -1,14 +1,14 @@
 import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { Button } from "@tokenization/ui/button";
+import { useEscrowsMutations } from "@tokenization/tw-blocks-shared/src/tanstack/useEscrowsMutations";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 import { FundEscrowPayload } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
 import {
   ErrorResponse,
   handleError,
-} from "@/components/tw-blocks/handle-errors/handle";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+} from "@tokenization/tw-blocks-shared/src/handle-errors/handle";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
 import { Loader2 } from "lucide-react";
 
 type FundEscrowButtonProps = {

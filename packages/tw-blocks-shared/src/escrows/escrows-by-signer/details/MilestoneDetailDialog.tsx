@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@tokenization/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@tokenization/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
+import { Badge } from "@tokenization/ui/badge";
 import {
   FileCheck2,
   User,
@@ -27,8 +27,8 @@ import {
   SingleReleaseMilestone,
 } from "@trustless-work/escrow";
 import Link from "next/link";
-import { formatCurrency } from "@/components/tw-blocks/helpers/format.helper";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+import { formatCurrency } from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
 import { EntityCard } from "./EntityCard";
 
 interface MilestoneDetailDialogProps {

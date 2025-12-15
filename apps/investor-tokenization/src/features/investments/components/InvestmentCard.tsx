@@ -1,13 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { BalanceProgressBar } from "@/components/tw-blocks/escrows/indicators/balance-progress/bar/BalanceProgress";
+import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
+import { Badge } from "@tokenization/ui/badge";
+import { BalanceProgressBar } from "@tokenization/tw-blocks-shared/src/escrows/indicators/balance-progress/bar/BalanceProgress";
 import {
   formatCurrency,
   formatTimestamp,
   formatAddress,
-} from "@/components/tw-blocks/helpers/format.helper";
+} from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
 import { MultiReleaseMilestone } from "@trustless-work/escrow";
 import { Calendar, Wallet, ExternalLink } from "lucide-react";

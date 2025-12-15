@@ -1,20 +1,20 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@tokenization/ui/button";
 import type {
   GetEscrowsFromIndexerResponse as Escrow,
   MultiReleaseMilestone,
   SingleReleaseMilestone,
 } from "@trustless-work/escrow/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
+import { Badge } from "@tokenization/ui/badge";
+import { Separator } from "@tokenization/ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@tokenization/ui/tooltip";
 import {
   Goal,
   Wallet,
@@ -25,8 +25,8 @@ import {
 } from "lucide-react";
 import { useEscrowsByRole } from "../useEscrowsByRole.shared";
 import { Filters } from "./Filters";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
-import { useEscrowDialogs } from "@/components/tw-blocks/providers/EscrowDialogsProvider";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
+import { useEscrowDialogs } from "@tokenization/tw-blocks-shared/src/providers/EscrowDialogsProvider";
 import {
   formatCurrency,
   formatTimestamp,

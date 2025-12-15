@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Card } from "@/components/ui/card";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Card } from "@tokenization/ui/card";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@tokenization/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { MultiReleaseMilestone } from "@trustless-work/escrow";
 import {
@@ -19,16 +19,16 @@ import {
   BookOpen,
 } from "lucide-react";
 import { Actions, roleActions } from "./Actions";
-import type { DialogStates } from "@/components/tw-blocks/providers/EscrowDialogsProvider";
+import type { DialogStates } from "@tokenization/tw-blocks-shared/src/providers/EscrowDialogsProvider";
 import { GetEscrowsFromIndexerResponse } from "@trustless-work/escrow/types";
-import { useEscrowAmountContext } from "@/components/tw-blocks/providers/EscrowAmountProvider";
+import { useEscrowAmountContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowAmountProvider";
 import { StatisticsCard } from "./StatisticsCard";
 import {
   formatAddress,
   formatCurrency,
   formatRole,
-} from "@/components/tw-blocks/helpers/format.helper";
-import { useCopy } from "@/components/tw-blocks/helpers/useCopy";
+} from "@tokenization/tw-blocks-shared/src/helpers/format.helper";
+import { useCopy } from "@tokenization/tw-blocks-shared/src/helpers/useCopy";
 
 interface GeneralInformationProps {
   selectedEscrow: GetEscrowsFromIndexerResponse;

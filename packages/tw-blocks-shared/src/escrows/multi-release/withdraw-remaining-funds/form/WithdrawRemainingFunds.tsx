@@ -6,11 +6,11 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@tokenization/ui/form";
+import { Input } from "@tokenization/ui/input";
+import { Button } from "@tokenization/ui/button";
 import { useWithdrawRemainingFunds } from "./useWithdrawRemainingFunds";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
 import { Loader2, Trash2 } from "lucide-react";
 import { formatCurrency } from "../../../../helpers/format.helper";
 

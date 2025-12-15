@@ -6,11 +6,11 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@tokenization/ui/form";
+import { Input } from "@tokenization/ui/input";
+import { Button } from "@tokenization/ui/button";
 import { useResolveDispute } from "./useResolveDispute";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
 import { Loader2, Trash2 } from "lucide-react";
 import {
   Select,
@@ -18,7 +18,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@tokenization/ui/select";
 import { formatCurrency } from "../../../../helpers/format.helper";
 
 export const ResolveDisputeForm = ({

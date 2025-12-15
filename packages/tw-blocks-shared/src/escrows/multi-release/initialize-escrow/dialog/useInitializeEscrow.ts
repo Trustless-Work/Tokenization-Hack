@@ -8,15 +8,15 @@ import {
   InitializeMultiReleaseEscrowResponse,
 } from "@trustless-work/escrow/types";
 import { toast } from "sonner";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
-import { useEscrowsMutations } from "@/components/tw-blocks/tanstack/useEscrowsMutations";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
+import { useEscrowsMutations } from "@tokenization/tw-blocks-shared/src/tanstack/useEscrowsMutations";
 import {
   ErrorResponse,
   handleError,
-} from "@/components/tw-blocks/handle-errors/handle";
-import { trustlines } from "@/components/tw-blocks/wallet-kit/trustlines";
-import { useEscrowContext } from "@/components/tw-blocks/providers/EscrowProvider";
-import { trustlineOptions } from "@/components/tw-blocks/wallet-kit/trustlines";
+} from "@tokenization/tw-blocks-shared/src/handle-errors/handle";
+import { trustlines } from "@tokenization/tw-blocks-shared/src/wallet-kit/trustlines";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
+import { trustlineOptions } from "@tokenization/tw-blocks-shared/src/wallet-kit/trustlines";
 
 type UseInitializeEscrowOptions = {
   onSuccess?: () => void;

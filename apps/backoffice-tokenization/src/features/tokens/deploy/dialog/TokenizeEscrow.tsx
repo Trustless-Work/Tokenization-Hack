@@ -6,16 +6,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@tokenization/ui/form";
+import { Input } from "@tokenization/ui/input";
+import { Button } from "@tokenization/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@tokenization/ui/dialog";
 import { Loader2 } from "lucide-react";
 import { TokenizeEscrowSuccessDialog } from "./TokenizeEscrowSuccessDialog";
 import { useTokenizeEscrow } from "./useTokenizeEscrow";
