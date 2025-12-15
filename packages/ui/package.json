@@ -1,0 +1,39 @@
+{
+  "name": "@tokenization/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./button": "./src/button.tsx",
+    "./card": "./src/card.tsx",
+    "./badge": "./src/badge.tsx",
+    "./input": "./src/input.tsx",
+    "./label": "./src/label.tsx",
+    "./avatar": "./src/avatar.tsx",
+    "./bento-grid": "./src/bento-grid.tsx",
+    "./calendar": "./src/calendar.tsx",
+    "./calendar-05": "./src/calendar-05.tsx",
+    "./chart": "./src/chart.tsx",
+    "./checkbox": "./src/checkbox.tsx",
+    "./dialog": "./src/dialog.tsx",
+    "./empty": "./src/empty.tsx",
+    "./floating-dock": "./src/floating-dock.tsx",
+    "./form": "./src/form.tsx",
+    "./glowing-effect": "./src/glowing-effect.tsx",
+    "./pointer-highlight": "./src/pointer-highlight.tsx",
+    "./popover": "./src/popover.tsx",
+    "./progress": "./src/progress.tsx",
+    "./rainbow-button": "./src/rainbow-button.tsx",
+    "./select": "./src/select.tsx",
+    "./separator": "./src/separator.tsx",
+    "./sheet": "./src/sheet.tsx",
+    "./sonner": "./src/sonner.tsx",
+    "./table": "./src/table.tsx",
+    "./tabs": "./src/tabs.tsx",
+    "./textarea": "./src/textarea.tsx",
+    "./tooltip": "./src/tooltip.tsx"
+  }
+}
+
+

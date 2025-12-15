@@ -1,0 +1,11 @@
+{
+  "name": "@tokenization/shared",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./lib/utils": "./src/lib/utils.ts",
+    "./lib/sendTransactionService": "./src/lib/sendTransactionService.ts"
+  }
+}
