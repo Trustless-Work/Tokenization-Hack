@@ -1,6 +1,1 @@
-export enum ApiErrorTypes {
-  NOT_FOUND = "NOT_FOUND",
-  UNAUTHORIZED = "UNAUTHORIZED",
-  UNKNOWN_ERROR = "UNKNOWN_ERROR",
-  WALLET_ERROR = "WALLET_ERROR",
-}
+export * from "@tokenization/tw-blocks-shared/src/handle-errors/errors.enum";
