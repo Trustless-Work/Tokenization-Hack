@@ -4,6 +4,7 @@
 /* Tailwind v4: include workspace packages in content scanning */
 @source "../../../../packages/ui/src/**/*.{ts,tsx}";
 @source "../../../../packages/shared/src/**/*.{ts,tsx}";
+@source "../../../../packages/tw-blocks-shared/src/**/*.{ts,tsx}";
 
 @custom-variant dark (&:is(.dark *));
 
