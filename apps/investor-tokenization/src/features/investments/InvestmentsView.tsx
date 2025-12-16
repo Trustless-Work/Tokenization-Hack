@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import { useUserInvestments } from "./hooks/useUserInvestments.hook";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 import { InvestmentCard } from "./components/InvestmentCard";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@tokenization/ui/card";
+import { Button } from "@tokenization/ui/button";
 import { Wallet, TrendingUp, DollarSign } from "lucide-react";
-import { useWallet } from "@/components/tw-blocks/wallet-kit/useWallet";
+import { useWallet } from "@tokenization/tw-blocks-shared/src/wallet-kit/useWallet";
 
 export const InvestmentsView = () => {
   const { walletAddress } = useWalletContext();

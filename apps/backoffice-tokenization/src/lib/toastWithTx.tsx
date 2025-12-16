@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button } from "@tokenization/ui/button";
 import Link from "next/link";
 
 const EXPLORER_BASE = "https://stellar.expert/explorer/testnet";

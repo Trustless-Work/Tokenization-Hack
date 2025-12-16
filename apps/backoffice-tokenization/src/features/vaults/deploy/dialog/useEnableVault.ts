@@ -4,8 +4,8 @@ import {
   VaultService,
   type EnableVaultResponse,
 } from "@/features/vaults/services/vault.service";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
-import { signTransaction } from "@/components/tw-blocks/wallet-kit/wallet-kit";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
+import { signTransaction } from "@tokenization/tw-blocks-shared/src/wallet-kit/wallet-kit";
 import { SendTransactionService } from "@/lib/sendTransactionService";
 import { toastSuccessWithTx } from "@/lib/toastWithTx";
 

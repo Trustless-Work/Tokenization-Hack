@@ -4,7 +4,7 @@ import {
   VaultService,
   type DeployVaultResponse,
 } from "@/features/vaults/services/vault.service";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 
 export type CreateVaultFormValues = {
   price: number;

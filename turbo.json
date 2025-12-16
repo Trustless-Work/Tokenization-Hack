@@ -4,9 +4,19 @@
     "dev": {
       "cache": false
     },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "dist/**/*.js", "dist/**/*.d.ts"]
+    },
+    "start": {
+      "cache": false,
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
     }
   }
 }

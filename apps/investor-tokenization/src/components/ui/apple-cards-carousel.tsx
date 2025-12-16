@@ -19,13 +19,13 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useQuery } from "@tanstack/react-query";
 import { useGetEscrowFromIndexerByContractIds } from "@trustless-work/escrow";
 import { GetEscrowsFromIndexerResponse as Escrow } from "@trustless-work/escrow/types";
-import { RainbowButton } from "./rainbow-button";
+import { RainbowButton } from "@tokenization/ui/rainbow-button";
 import { ClaimROIService } from "@/features/claim-roi/services/claim.service";
-import { useWalletContext } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 import { toast } from "sonner";
 import { InvestDialog } from "@/features/tokens/components/InvestDialog";
 import { SelectedEscrowProvider } from "@/features/tokens/context/SelectedEscrowContext";
-import { signTransaction } from "../tw-blocks/wallet-kit/wallet-kit";
+import { signTransaction } from "@tokenization/tw-blocks-shared/src/wallet-kit/wallet-kit";
 import { SendTransactionService } from "@/lib/sendTransactionService";
 import { toastSuccessWithTx } from "@/lib/toastWithTx";
 

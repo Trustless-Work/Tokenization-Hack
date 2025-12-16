@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { WalletButton } from "../tw-blocks/wallet-kit/WalletButtons";
+import { WalletButton } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletButtons";
 import Image from "next/image";
 
 export const Header = () => {

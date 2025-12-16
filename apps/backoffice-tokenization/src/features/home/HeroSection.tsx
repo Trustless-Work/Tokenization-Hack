@@ -1,7 +1,7 @@
-import { PointerHighlight } from "@/components/ui/pointer-highlight";
+import { PointerHighlight } from "@tokenization/ui/pointer-highlight";
 import { BentoGridThirdDemo } from "./BentoGrid";
 import Link from "next/link";
-import { RainbowButton } from "@/components/ui/rainbow-button";
+import { RainbowButton } from "@tokenization/ui/rainbow-button";
 
 export const HeroSection = () => {
   return (

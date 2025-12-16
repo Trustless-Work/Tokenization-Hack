@@ -1,0 +1,203 @@
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useInitializeEscrowSchema } from "./schema";
+import { z } from "zod";
+import {
+  InitializeMultiReleaseEscrowPayload,
+  InitializeMultiReleaseEscrowResponse,
+} from "@trustless-work/escrow/types";
+import { toast } from "sonner";
+import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
+import { useEscrowsMutations } from "@tokenization/tw-blocks-shared/src/tanstack/useEscrowsMutations";
+import {
+  ErrorResponse,
+  handleError,
+} from "@tokenization/tw-blocks-shared/src/handle-errors/handle";
+import { trustlines } from "@tokenization/tw-blocks-shared/src/wallet-kit/trustlines";
+import { useEscrowContext } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
+import { trustlineOptions } from "@tokenization/tw-blocks-shared/src/wallet-kit/trustlines";
+
+type UseInitializeEscrowOptions = {
+  onSuccess?: () => void;
+};
+
+export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const { getMultiReleaseFormSchema } = useInitializeEscrowSchema();
+  const formSchema = getMultiReleaseFormSchema();
+  const { setSelectedEscrow } = useEscrowContext();
+
+  const { walletAddress } = useWalletContext();
+  const { deployEscrow } = useEscrowsMutations();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      engagementId: "",
+      title: "",
+      description: "",
+      platformFee: undefined,
+      trustline: {
+        address: "",
+      },
+      roles: {
+        approver: "",
+        serviceProvider: "",
+        platformAddress: "",
+        releaseSigner: "",
+        disputeResolver: "",
+      },
+      milestones: [{ receiver: "", description: "", amount: "" }],
+    },
+    mode: "onChange",
+  });
+
+  const milestones = form.watch("milestones");
+  const isAnyMilestoneEmpty = milestones.some(
+    (milestone) =>
+      milestone.description === "" ||
+      milestone.receiver === "" ||
+      milestone.amount === ""
+  );
+
+  const handleAddMilestone = () => {
+    const currentMilestones = form.getValues("milestones");
+    const updatedMilestones = [
+      ...currentMilestones,
+      { receiver: "", description: "", amount: "" },
+    ];
+    form.setValue("milestones", updatedMilestones);
+  };
+
+  const handleRemoveMilestone = (index: number) => {
+    const currentMilestones = form.getValues("milestones");
+    const updatedMilestones = currentMilestones.filter((_, i) => i !== index);
+    form.setValue("milestones", updatedMilestones);
+  };
+
+  const fillTemplateForm = () => {
+    const usdc = trustlineOptions.find((t) => t.label === "USDC");
+
+    const templateData: z.infer<typeof formSchema> = {
+      engagementId: "ENG-001",
+      title: "Design Landing Page",
+      description: "Landing for the new product of the company.",
+      platformFee: 5,
+      trustline: {
+        address: usdc?.value || "",
+        symbol: usdc?.label || "",
+      },
+      roles: {
+        approver: walletAddress || "",
+        serviceProvider: walletAddress || "",
+        platformAddress: walletAddress || "",
+        releaseSigner: walletAddress || "",
+        disputeResolver: walletAddress || "",
+      },
+      milestones: [
+        {
+          receiver: walletAddress || "",
+          description: "Design the wireframe",
+          amount: 2,
+        },
+        {
+          receiver: walletAddress || "",
+          description: "Develop the wireframe",
+          amount: 2,
+        },
+        {
+          receiver: walletAddress || "",
+          description: "Deploy the wireframe",
+          amount: 2,
+        },
+      ],
+    };
+
+    // Set form values
+    Object.entries(templateData).forEach(([key, value]) => {
+      form.setValue(key as keyof z.infer<typeof formSchema>, value);
+    });
+
+    // Explicitly set the trustline field
+    form.setValue("trustline.address", usdc?.value || "");
+    form.setValue("trustline.symbol", usdc?.label || "");
+  };
+
+  const handleSubmit = form.handleSubmit(async (payload) => {
+    try {
+      setIsSubmitting(true);
+
+      const trustline = trustlines.find(
+        (tl) => tl.address === payload.trustline.address
+      );
+
+      if (!trustline) {
+        toast.error("Trustline not found");
+        return;
+      }
+
+      /**
+       * Create the final payload for the initialize escrow mutation
+       *
+       * @param payload - The payload from the form
+       * @returns The final payload for the initialize escrow mutation
+       */
+      const finalPayload: InitializeMultiReleaseEscrowPayload = {
+        ...payload,
+        platformFee:
+          typeof payload.platformFee === "string"
+            ? Number(payload.platformFee)
+            : payload.platformFee,
+        signer: walletAddress || "",
+        milestones: payload.milestones.map((milestone) => ({
+          ...milestone,
+          amount:
+            typeof milestone.amount === "string"
+              ? Number(milestone.amount)
+              : milestone.amount,
+        })),
+        trustline: {
+          address: trustline?.address || "",
+          symbol: trustline?.name || "",
+        },
+      };
+
+      /**
+       * Call the initialize escrow mutation
+       *
+       * @param payload - The final payload for the initialize escrow mutation
+       * @param type - The type of the escrow
+       * @param address - The address of the escrow
+       */
+      const response: InitializeMultiReleaseEscrowResponse =
+        (await deployEscrow.mutateAsync({
+          payload: finalPayload,
+          type: "multi-release",
+          address: walletAddress || "",
+        })) as InitializeMultiReleaseEscrowResponse;
+
+      setSelectedEscrow({ ...finalPayload, contractId: response.contractId });
+
+      // Close dialog if requested
+      options?.onSuccess?.();
+    } catch (error) {
+      toast.error(handleError(error as ErrorResponse).message);
+    } finally {
+      setIsSubmitting(false);
+      form.reset();
+    }
+  });
+
+  return {
+    form,
+    isSubmitting,
+    milestones,
+    isAnyMilestoneEmpty,
+    fillTemplateForm,
+    handleSubmit,
+    handleAddMilestone,
+    handleRemoveMilestone,
+  };
+}

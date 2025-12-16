@@ -4,12 +4,12 @@ import { cn } from "@/lib/utils";
 import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 
-import { ReactQueryClientProvider } from "@/components/tw-blocks/providers/ReactQueryClientProvider";
-import { TrustlessWorkProvider } from "@/components/tw-blocks/providers/TrustlessWork";
+import { ReactQueryClientProvider } from "@tokenization/tw-blocks-shared/src/providers/ReactQueryClientProvider";
+import { TrustlessWorkProvider } from "@tokenization/tw-blocks-shared/src/providers/TrustlessWork";
 import { Toaster } from "sonner";
 import { Header } from "@/components/shared/Header";
-import { EscrowProvider } from "@/components/tw-blocks/providers/EscrowProvider";
-import { WalletProvider } from "@/components/tw-blocks/wallet-kit/WalletProvider";
+import { EscrowProvider } from "@tokenization/tw-blocks-shared/src/providers/EscrowProvider";
+import { WalletProvider } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 import { ReactNode } from "react";
 import { FloatingDockDemo } from "@/components/shared/Navbar";
 // Use these imports to wrap your application (<ReactQueryClientProvider>, <TrustlessWorkProvider>, <WalletProvider> y <EscrowProvider>)
