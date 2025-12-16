@@ -1,5 +1,3 @@
-
-````mdx
 # Tokenization Lego on Stellar + Trustless Work
 
 This repository is an **open-source template** showing how to build a full tokenization stack using:
