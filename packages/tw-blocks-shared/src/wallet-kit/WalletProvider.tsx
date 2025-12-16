@@ -30,14 +30,18 @@ const WalletContext = createContext<WalletContextType | undefined>(undefined);
  * Automatically loads saved wallet information from localStorage on initialization
  */
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
-  const [walletAddress, setWalletAddress] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("walletAddress");
-  });
-  const [walletName, setWalletName] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("walletName");
-  });
+  // IMPORTANT (SSR/Hydration):
+  // Don't read localStorage during the initial render. Server render always
+  // has no access to it, and reading it on the first client render causes
+  // hydration mismatches (server HTML != client HTML).
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [walletName, setWalletName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setWalletAddress(localStorage.getItem("walletAddress"));
+    setWalletName(localStorage.getItem("walletName"));
+  }, []);
 
   /**
    * Set wallet information and save it to localStorage
@@ -49,8 +53,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const setWalletInfo = (address: string, name: string) => {
     setWalletAddress(address);
     setWalletName(name);
-    localStorage.setItem("walletAddress", address);
-    localStorage.setItem("walletName", name);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("walletAddress", address);
+      localStorage.setItem("walletName", name);
+    }
   };
 
   /**
@@ -60,8 +66,10 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const clearWalletInfo = () => {
     setWalletAddress(null);
     setWalletName(null);
-    localStorage.removeItem("walletAddress");
-    localStorage.removeItem("walletName");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("walletAddress");
+      localStorage.removeItem("walletName");
+    }
   };
 
   return (

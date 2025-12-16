@@ -87,6 +87,7 @@ export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
       platformFee: 5,
       trustline: {
         address: usdc?.value || "",
+        symbol: usdc?.label || "",
       },
       roles: {
         approver: walletAddress || "",
@@ -121,6 +122,7 @@ export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
 
     // Explicitly set the trustline field
     form.setValue("trustline.address", usdc?.value || "");
+    form.setValue("trustline.symbol", usdc?.label || "");
   };
 
   const handleSubmit = form.handleSubmit(async (payload) => {

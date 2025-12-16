@@ -252,6 +252,10 @@ export function useUpdateEscrow() {
             (selectedEscrow.trustline?.address as string) ||
             "",
           address: finalPayload.escrow.trustline.address,
+          symbol:
+            selectedEscrow.trustline?.symbol ||
+            selectedEscrow.trustline?.name ||
+            "",
         },
       };
 

@@ -109,6 +109,17 @@ export const Filters = ({
   setOrderBy,
   setOrderDirection,
 }: FiltersProps) => {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Avoid hydration mismatch: during SSR `isRefreshing` is often false,
+  // but on the first client render React Query may already be fetching.
+  const refreshDisabled = mounted ? isRefreshing : false;
+  const refreshIconClass = `w-3 h-3 ${mounted && isRefreshing ? "animate-spin" : ""}`;
+
   return (
     <div className="w-full bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 shadow-sm">
       {/* Header Section */}
@@ -124,11 +135,9 @@ export const Filters = ({
             size="sm"
             className="h-8 px-3 text-xs font-medium border-border/60 bg-background/80 hover:bg-muted/80 transition-colors cursor-pointer"
             onClick={onRefresh}
-            disabled={isRefreshing}
+            disabled={refreshDisabled}
           >
-            <RefreshCcw
-              className={`w-3 h-3 ${isRefreshing ? "animate-spin" : ""}`}
-            />
+            <RefreshCcw className={refreshIconClass} />
             <span className="hidden xs:inline">Refresh</span>
           </Button>
 
