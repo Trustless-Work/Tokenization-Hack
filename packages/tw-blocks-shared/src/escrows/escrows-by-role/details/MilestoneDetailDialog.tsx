@@ -7,7 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@tokenization/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@tokenization/ui/card";
 import { Badge } from "@tokenization/ui/badge";
 import {
   FileCheck2,
@@ -178,7 +183,7 @@ export const MilestoneDetailDialog = ({
               <span className="font-bold text-foreground">
                 {formatCurrency(
                   selectedMilestone.milestone.amount,
-                  selectedEscrow?.trustline?.name ?? "USDC"
+                  selectedEscrow?.trustline?.symbol ?? "USDC"
                 )}
               </span>
             </div>

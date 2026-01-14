@@ -154,7 +154,7 @@ export function useInitializeEscrow() {
         })),
         trustline: {
           address: trustline?.address || "",
-          symbol: trustline?.name || "",
+          symbol: trustline?.symbol || "",
         },
       };
 

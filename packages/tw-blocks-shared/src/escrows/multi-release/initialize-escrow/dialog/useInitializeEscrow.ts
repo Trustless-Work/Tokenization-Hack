@@ -160,7 +160,7 @@ export function useInitializeEscrow(options?: UseInitializeEscrowOptions) {
         })),
         trustline: {
           address: trustline?.address || "",
-          symbol: trustline?.name || "",
+          symbol: trustline?.symbol || "",
         },
       };
 

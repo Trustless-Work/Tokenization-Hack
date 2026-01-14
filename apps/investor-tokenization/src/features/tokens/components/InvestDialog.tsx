@@ -243,7 +243,7 @@ export function InvestDialog({
                 <BalanceProgressBar
                   contractId={selected.escrowId ?? ""}
                   target={totalAmount ?? 0}
-                  currency={selected.escrow?.trustline?.name ?? "USDC"}
+                  currency={selected.escrow?.trustline?.symbol ?? "USDC"}
                 />
 
                 {/* Metadata */}

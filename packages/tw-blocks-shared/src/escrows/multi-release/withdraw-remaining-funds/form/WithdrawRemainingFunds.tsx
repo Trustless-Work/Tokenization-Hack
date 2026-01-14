@@ -125,7 +125,7 @@ export const WithdrawRemainingFundsForm = () => {
               <span className="font-bold">Total Balance: </span>
               {formatCurrency(
                 selectedEscrow?.balance || 0,
-                selectedEscrow?.trustline.name || ""
+                selectedEscrow?.trustline.symbol || ""
               )}
             </p>
           </div>

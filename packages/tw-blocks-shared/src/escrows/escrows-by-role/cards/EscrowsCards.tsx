@@ -7,7 +7,12 @@ import type {
   MultiReleaseMilestone,
   SingleReleaseMilestone,
 } from "@trustless-work/escrow/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@tokenization/ui/card";
 import { Badge } from "@tokenization/ui/badge";
 import { Separator } from "@tokenization/ui/separator";
 import {
@@ -285,7 +290,7 @@ export const EscrowsByRoleCards = () => {
                               {escrow.type === "single-release"
                                 ? formatCurrency(
                                     escrow.amount,
-                                    escrow.trustline.name
+                                    escrow.trustline.symbol
                                   )
                                 : formatCurrency(
                                     escrow.milestones.reduce(
@@ -295,7 +300,7 @@ export const EscrowsByRoleCards = () => {
                                           .amount,
                                       0
                                     ),
-                                    escrow.trustline.name
+                                    escrow.trustline.symbol
                                   )}
                             </span>
                           </div>
@@ -308,7 +313,7 @@ export const EscrowsByRoleCards = () => {
                               <span className="font-medium text-green-800 dark:text-green-600">
                                 {formatCurrency(
                                   escrow.balance,
-                                  escrow.trustline.name
+                                  escrow.trustline.symbol
                                 )}
                               </span>
                             </div>
@@ -354,7 +359,7 @@ export const EscrowsByRoleCards = () => {
                                             <span className="text-muted-foreground">
                                               {formatCurrency(
                                                 milestone.amount,
-                                                escrow.trustline.name
+                                                escrow.trustline.symbol
                                               )}
                                             </span>
 

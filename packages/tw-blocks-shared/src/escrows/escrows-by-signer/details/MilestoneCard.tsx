@@ -1,7 +1,12 @@
 "use client";
 import React from "react";
 import { Button } from "@tokenization/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@tokenization/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@tokenization/ui/card";
 import {
   FileCheck2,
   Eye,
@@ -199,7 +204,10 @@ const MilestoneCardComponent = ({
         {"amount" in milestone && (
           <div className="flex items-center gap-2 py-2">
             <span className="text-2xl font-bold text-foreground">
-              {formatCurrency(milestone.amount, selectedEscrow.trustline?.name)}
+              {formatCurrency(
+                milestone.amount,
+                selectedEscrow.trustline?.symbol
+              )}
             </span>
           </div>
         )}

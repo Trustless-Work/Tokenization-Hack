@@ -100,7 +100,10 @@ export const GeneralInformation = ({
           <StatisticsCard
             title="Amount"
             icon={CircleDollarSign}
-            value={formatCurrency(totalAmount, selectedEscrow.trustline?.name)}
+            value={formatCurrency(
+              totalAmount,
+              selectedEscrow.trustline?.symbol
+            )}
           />
 
           <StatisticsCard
@@ -108,7 +111,7 @@ export const GeneralInformation = ({
             icon={Wallet}
             value={formatCurrency(
               selectedEscrow.balance ?? 0,
-              selectedEscrow.trustline?.name
+              selectedEscrow.trustline?.symbol
             )}
           />
         </div>
@@ -133,7 +136,7 @@ export const GeneralInformation = ({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">
-                        {selectedEscrow.trustline?.name || "No Trustline"} |
+                        {selectedEscrow.trustline?.symbol || "No Trustline"} |
                         Escrow ID
                       </span>
                       <button
@@ -234,7 +237,7 @@ export const GeneralInformation = ({
                         <span className="font-medium">
                           {formatCurrency(
                             selectedEscrow.amount,
-                            selectedEscrow.trustline?.name
+                            selectedEscrow.trustline?.symbol
                           )}
                         </span>
                       </div>
@@ -253,7 +256,7 @@ export const GeneralInformation = ({
                           <span className="font-medium">
                             {formatCurrency(
                               Number(receiverAmount.toFixed(2)),
-                              selectedEscrow.trustline?.name
+                              selectedEscrow.trustline?.symbol
                             )}
                           </span>
                         </div>
@@ -273,7 +276,7 @@ export const GeneralInformation = ({
                           <span className="font-medium">
                             {formatCurrency(
                               Number(platformFeeAmount.toFixed(2)),
-                              selectedEscrow.trustline?.name
+                              selectedEscrow.trustline?.symbol
                             )}
                           </span>
                         </div>
@@ -294,7 +297,7 @@ export const GeneralInformation = ({
                         <span className="font-medium">
                           {formatCurrency(
                             Number(trustlessWorkAmount.toFixed(2)),
-                            selectedEscrow.trustline?.name
+                            selectedEscrow.trustline?.symbol
                           )}
                         </span>
                       </div>

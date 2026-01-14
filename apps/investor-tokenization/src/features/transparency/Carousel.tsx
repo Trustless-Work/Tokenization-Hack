@@ -108,7 +108,10 @@ export const DummyContent = ({
               Total Amount
             </p>
             <p className="text-2xl font-bold text-neutral-900 dark:text-white">
-              {formatCurrency(totalAmount, details?.trustline?.name ?? "USDC")}
+              {formatCurrency(
+                totalAmount,
+                details?.trustline?.symbol ?? "USDC"
+              )}
             </p>
           </div>
         )}
@@ -128,7 +131,7 @@ export const DummyContent = ({
       <BalanceProgressBar
         contractId={details?.contractId ?? ""}
         target={totalAmount}
-        currency={details?.trustline?.name ?? "USDC"}
+        currency={details?.trustline?.symbol ?? "USDC"}
       />
 
       {/* Metadata */}
