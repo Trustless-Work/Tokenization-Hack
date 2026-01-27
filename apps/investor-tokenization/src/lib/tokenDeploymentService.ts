@@ -1,4 +1,3 @@
-import * as StellarSDK from "@stellar/stellar-sdk";
 import fs from "fs";
 import path from "path";
 import { SorobanClient } from "./sorobanClient";
@@ -11,6 +10,8 @@ const tokenFactoryPath = path.join(
 
 export type TokenDeploymentParams = {
   escrowContractId: string;
+  tokenName: string;
+  tokenSymbol: string;
 };
 
 export type TokenDeploymentResult = {
@@ -20,21 +21,22 @@ export type TokenDeploymentResult = {
 
 export const deployTokenContracts = async (
   client: SorobanClient,
-  { escrowContractId }: TokenDeploymentParams,
+  { escrowContractId, tokenName, tokenSymbol }: TokenDeploymentParams,
 ): Promise<TokenDeploymentResult> => {
   const tokenFactoryWasm = fs.readFileSync(tokenFactoryPath);
   const tokenSaleWasm = fs.readFileSync(tokenSalePath);
 
-  // Upload WASM files
-  const tokenFactoryWasmHash = await client.uploadContractWasm(
-    tokenFactoryWasm,
-    "TokenFactory WASM upload",
-  );
-
-  const tokenSaleWasmHash = await client.uploadContractWasm(
-    tokenSaleWasm,
-    "TokenSale WASM upload",
-  );
+  // Upload WASM files in parallel for better performance
+  const [tokenFactoryWasmHash, tokenSaleWasmHash] = await Promise.all([
+    client.uploadContractWasm(
+      tokenFactoryWasm,
+      "TokenFactory WASM upload",
+    ),
+    client.uploadContractWasm(
+      tokenSaleWasm,
+      "TokenSale WASM upload",
+    ),
+  ]);
 
   // NOTE: There's a circular dependency:
   // - Token needs Token Sale address for mint_authority
@@ -66,10 +68,10 @@ export const deployTokenContracts = async (
   const tokenFactoryAddress = await client.createContract(
     tokenFactoryWasmHash,
     [
-      StellarSDK.nativeToScVal("TRUST", { type: "string" }), // name
-      StellarSDK.nativeToScVal("TKN", { type: "string" }), // symbol
-      StellarSDK.nativeToScVal(escrowContractId, { type: "string" }), // escrow_id
-      StellarSDK.nativeToScVal(7, { type: "u32" }), // decimal
+      client.nativeString(tokenName), // name (user-provided)
+      client.nativeString(tokenSymbol), // symbol (user-provided)
+      client.nativeString(escrowContractId), // escrow_id
+      client.nativeU32(7), // decimal
       client.nativeAddress(tokenSaleAddress), // mint_authority (Token Sale contract)
     ],
     "TokenFactory contract creation",
