@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -66,6 +67,76 @@ export const TokenizeEscrowDialog = () => {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="tokenName"
+                rules={{ required: "Token name is required" }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center">
+                      Token Name<span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g., Trustless Work Token"
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="tokenSymbol"
+                rules={{ 
+                  required: "Token symbol is required",
+                  maxLength: {
+                    value: 12,
+                    message: "Symbol must be 12 characters or less"
+                  },
+                  pattern: {
+                    value: /^[A-Z0-9]+$/,
+                    message: "Symbol must contain only uppercase letters and numbers"
+                  }
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center">
+                      Token Symbol/Ticker<span className="text-destructive ml-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g., TRUST"
+                        autoComplete="off"
+                        maxLength={12}
+                        {...field}
+                        onChange={(e) => {
+                          // Convert to uppercase automatically
+                          field.onChange(e.target.value.toUpperCase());
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Maximum 12 characters. Uppercase letters and numbers only.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="rounded-lg border bg-muted/50 p-4">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Note:</strong> This token represents Escrow{" "}
+                  <span className="font-mono text-xs">
+                    {form.watch("escrowId") || "[Escrow ID]"}
+                  </span>{" "}
+                  and can only be minted by its Token Sale contract.
+                </p>
+              </div>
 
               {error ? (
                 <p className="text-sm text-destructive" role="alert">
