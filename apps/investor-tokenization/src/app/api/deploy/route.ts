@@ -7,13 +7,13 @@ const SOURCE_SECRET = process.env.SOURCE_SECRET || "";
 
 export async function POST(request: Request) {
   const data = await request.json();
-  const { escrowContractId } = data ?? {};
+  const { escrowContractId, tokenName, tokenSymbol } = data ?? {};
 
-  if (!escrowContractId) {
+  if (!escrowContractId || !tokenName || !tokenSymbol) {
     return new Response(
       JSON.stringify({
         error: "Missing required fields",
-        details: "escrowContract is required",
+        details: "escrowContractId, tokenName, and tokenSymbol are required",
       }),
       { status: 400 },
     );
@@ -28,6 +28,8 @@ export async function POST(request: Request) {
     const { tokenFactoryAddress, tokenSaleAddress } =
       await deployTokenContracts(sorobanClient, {
         escrowContractId,
+        tokenName,
+        tokenSymbol,
       });
 
     return NextResponse.json({
