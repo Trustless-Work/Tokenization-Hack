@@ -114,20 +114,36 @@ Apps run independently (different ports).
 
 ## ⚙️ Environment Variables
 
-Each app uses a `.env` file including:
+Each app has its own `.env.example` file with the required environment variables:
 
-```
-NEXT_PUBLIC_SOROBAN_RPC_URL=
-NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE=
-NEXT_PUBLIC_ESCROW_CONTRACT_ID=
-NEXT_PUBLIC_TOKEN_FACTORY_CONTRACT_ID=
-NEXT_PUBLIC_TOKEN_SALE_CONTRACT_ID=
-NEXT_PUBLIC_VAULT_CONTRACT_ID=
-NEXT_PUBLIC_TRUSTLESS_WORK_API_URL=
-NEXT_PUBLIC_TRUSTLESS_WORK_API_KEY=
-```
+- **`apps/investor-tokenization/.env.example`** - For the investor tokenization app
+- **`apps/backoffice-tokenization/.env.example`** - For the backoffice tokenization app
+- **`apps/evidence-service/.env.example`** - For the evidence service (IPFS/Pinata)
+- **`apps/project-updates-tokenization/.env.example`** - For the project updates app
 
-Copy each example `.env`, adjust to your network/contracts.
+To set up each app:
+
+1. Copy the `.env.example` file to `.env.local` (or `.env`) in the app directory:
+   ```bash
+   cd apps/<app-name>
+   cp .env.example .env.local
+   ```
+
+2. Fill in the required values in `.env.local`
+
+**Common variables across apps:**
+- `NEXT_PUBLIC_SOROBAN_RPC_URL` - Soroban RPC endpoint
+- `NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE` - Stellar network passphrase
+- `NEXT_PUBLIC_ESCROW_CONTRACT_ID` - Deployed escrow contract address
+- `NEXT_PUBLIC_TOKEN_FACTORY_CONTRACT_ID` - Token factory contract address
+- `NEXT_PUBLIC_TOKEN_SALE_CONTRACT_ID` - Token sale contract address
+- `NEXT_PUBLIC_VAULT_CONTRACT_ID` - Vault contract address
+- `NEXT_PUBLIC_API_KEY` - Trustless Work API key
+- `NEXT_PUBLIC_TRUSTLESS_WORK_API_URL` - Trustless Work API URL
+
+**App-specific variables:**
+- **investor-tokenization**: `SOURCE_SECRET` (server-side, for contract deployment)
+- **evidence-service**: `PINATA_API_KEY`, `PINATA_SECRET_KEY` (for IPFS uploads)
 
 ---
 
