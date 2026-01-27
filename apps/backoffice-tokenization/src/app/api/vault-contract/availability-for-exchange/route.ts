@@ -1,12 +1,16 @@
 import * as StellarSDK from "@stellar/stellar-sdk";
 import { NextResponse } from "next/server";
-import { extractContractError } from "@/lib/contractErrorHandler";
+import { extractContractError } from "../../../../lib/contractErrorHandler";
 
 const RPC_URL = "https://soroban-testnet.stellar.org";
 
 export async function POST(request: Request) {
+  console.log("POST /api/vault-contract/availability-for-exchange called");
+  
   const data = await request.json();
   const { vaultContractId, adminAddress, enabled } = data ?? {};
+
+  console.log("Request data:", { vaultContractId, adminAddress, enabled });
 
   if (!vaultContractId || !adminAddress || typeof enabled !== "boolean") {
     return new Response(
