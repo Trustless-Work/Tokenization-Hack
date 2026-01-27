@@ -1,5 +1,18 @@
-import * as StellarSDK from "@stellar/stellar-sdk";
-import crypto from "crypto";
+import {
+  Keypair,
+  TransactionBuilder,
+  Address,
+  Contract,
+  rpc,
+  scValToNative,
+  nativeToScVal,
+  xdr,
+  Networks,
+  Operation,
+  hash,
+  Account,
+} from "@stellar/stellar-sdk";
+import { randomBytes } from "crypto";
 
 export type SorobanClientConfig = {
   rpcUrl: string;
@@ -10,10 +23,12 @@ export type SorobanClientConfig = {
   pollDelayMs?: number;
 };
 
-export type AccountLike = ConstructorParameters<
-  typeof StellarSDK.TransactionBuilder
->[0];
-export type ScVal = StellarSDK.xdr.ScVal;
+// Type definitions using proper SDK types
+export type AccountLike = Account;
+export type ScVal = xdr.ScVal;
+
+// BASE_FEE constant from SDK (default minimum fee)
+const BASE_FEE = "100";
 
 type RequiredConfig = Required<
   Pick<
@@ -23,20 +38,20 @@ type RequiredConfig = Required<
 >;
 
 export class SorobanClient {
-  private readonly server: StellarSDK.rpc.Server;
-  private readonly keypair: StellarSDK.Keypair;
+  private readonly server: rpc.Server;
+  private readonly keypair: Keypair;
   private readonly config: RequiredConfig;
 
   constructor({
     rpcUrl,
     sourceSecret,
-    fee = StellarSDK.BASE_FEE,
+    fee = BASE_FEE,
     timeoutSeconds = 300,
     maxAttempts = 60,
     pollDelayMs = 2000,
   }: SorobanClientConfig) {
-    this.server = new StellarSDK.rpc.Server(rpcUrl);
-    this.keypair = StellarSDK.Keypair.fromSecret(sourceSecret);
+    this.server = new rpc.Server(rpcUrl);
+    this.keypair = Keypair.fromSecret(sourceSecret);
     this.config = {
       fee,
       timeoutSeconds,
@@ -49,10 +64,18 @@ export class SorobanClient {
     return this.keypair.publicKey();
   }
 
-  nativeAddress(address: string) {
-    return StellarSDK.nativeToScVal(new StellarSDK.Address(address), {
+  nativeAddress(address: string): ScVal {
+    return nativeToScVal(new Address(address), {
       type: "address",
     });
+  }
+
+  nativeString(value: string): ScVal {
+    return xdr.ScVal.scvString(value);
+  }
+
+  nativeU32(value: number): ScVal {
+    return xdr.ScVal.scvU32(value);
   }
 
   async uploadContractWasm(wasm: Buffer, label: string) {
@@ -60,7 +83,7 @@ export class SorobanClient {
       (account) =>
         this.buildBaseTx(account)
           .addOperation(
-            StellarSDK.Operation.uploadContractWasm({
+            Operation.uploadContractWasm({
               wasm,
             }),
           )
@@ -73,7 +96,7 @@ export class SorobanClient {
       throw new Error(`${label} did not return a hash`);
     }
 
-    return Buffer.from(StellarSDK.scValToNative(result.returnValue) as Buffer);
+    return Buffer.from(scValToNative(result.returnValue) as Buffer);
   }
 
   async createContract(
@@ -85,9 +108,9 @@ export class SorobanClient {
       (account) =>
         this.buildBaseTx(account)
           .addOperation(
-            StellarSDK.Operation.createCustomContract({
+            Operation.createCustomContract({
               wasmHash,
-              address: new StellarSDK.Address(this.publicKey),
+              address: new Address(this.publicKey),
               salt: SorobanClient.randomSalt(),
               constructorArgs,
             }),
@@ -101,7 +124,7 @@ export class SorobanClient {
       throw new Error(`${label} did not return an address`);
     }
 
-    return StellarSDK.Address.fromScVal(result.returnValue).toString();
+    return Address.fromScVal(result.returnValue).toString();
   }
 
   async callContract(
@@ -111,7 +134,7 @@ export class SorobanClient {
     label: string,
   ) {
     await this.submitTransaction((account) => {
-      const contract = new StellarSDK.Contract(contractId);
+      const contract = new Contract(contractId);
       return this.buildBaseTx(account)
         .addOperation(contract.call(method, ...args))
         .setTimeout(this.config.timeoutSeconds)
@@ -120,18 +143,18 @@ export class SorobanClient {
   }
 
   private buildBaseTx(account: AccountLike) {
-    return new StellarSDK.TransactionBuilder(account, {
+    return new TransactionBuilder(account, {
       fee: this.config.fee,
-      networkPassphrase: StellarSDK.Networks.TESTNET,
+      networkPassphrase: Networks.TESTNET,
     });
   }
 
   private static randomSalt() {
-    return StellarSDK.hash(crypto.randomBytes(32));
+    return hash(randomBytes(32));
   }
 
   private async submitTransaction(
-    buildTx: (account: AccountLike) => StellarSDK.Transaction,
+    buildTx: (account: AccountLike) => ReturnType<TransactionBuilder["build"]>,
     label: string,
   ) {
     const account = (await this.server.getAccount(
