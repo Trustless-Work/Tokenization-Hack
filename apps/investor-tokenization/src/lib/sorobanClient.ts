@@ -162,6 +162,24 @@ export class SorobanClient {
   }
 
   /**
+   * Get contract address from salt and wasm hash (deterministic calculation)
+   * This is used when simulation fails because contract already exists
+   */
+  async getContractAddressFromSalt(
+    wasmHash: Buffer,
+    salt: Buffer,
+  ): Promise<string> {
+    // When a contract already exists, we cannot simulate its creation
+    // The address is deterministic, but we can't easily calculate it without the network
+    // The best we can do is throw a helpful error
+    throw new Error(
+      `Cannot determine address for existing contract. ` +
+      `Contracts are already deployed for this escrowContractId. ` +
+      `Please use a different escrowContractId or check if the contracts are already deployed.`
+    );
+  }
+
+  /**
    * Create contract with a specific salt (for deterministic addresses)
    */
   async createContractWithSalt(
@@ -170,27 +188,68 @@ export class SorobanClient {
     constructorArgs: ScVal[],
     label: string,
   ) {
-    const result = await this.submitTransaction(
-      (account) =>
-        this.buildBaseTx(account)
-          .addOperation(
-            Operation.createCustomContract({
-              wasmHash,
-              address: new Address(this.publicKey),
-              salt,
-              constructorArgs,
-            }),
-          )
-          .setTimeout(this.config.timeoutSeconds)
-          .build(),
-      label,
-    );
+    try {
+      const result = await this.submitTransaction(
+        (account) =>
+          this.buildBaseTx(account)
+            .addOperation(
+              Operation.createCustomContract({
+                wasmHash,
+                address: new Address(this.publicKey),
+                salt,
+                constructorArgs,
+              }),
+            )
+            .setTimeout(this.config.timeoutSeconds)
+            .build(),
+        label,
+      );
 
-    if (!result.returnValue) {
-      throw new Error(`${label} did not return an address`);
+      if (!result.returnValue) {
+        throw new Error(`${label} did not return an address`);
+      }
+
+      return Address.fromScVal(result.returnValue).toString();
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStr = errorMessage.toLowerCase();
+      
+      // Check for contract already exists error (can appear in different formats)
+      // Also check for the special marker we added in submitTransaction
+      // The error can be: "HostError: Error(Storage, ExistingValue)" or "contract already exists"
+      const isExistingContractError = 
+        errorMessage.includes("CONTRACT_ALREADY_EXISTS") ||
+        errorStr.includes("contract already exists") || 
+        errorStr.includes("existingvalue") ||
+        (errorStr.includes("storage") && errorStr.includes("existing")) ||
+        (errorStr.includes("hosterror") && errorStr.includes("storage") && errorStr.includes("existing"));
+      
+      if (isExistingContractError) {
+        console.log(`${label} already exists, attempting to get address via simulation...`);
+        // Try to get the address by simulating with the same parameters
+        try {
+          return await this.simulateContractCreation(wasmHash, salt, constructorArgs);
+        } catch (simError) {
+          const simErrorMsg = simError instanceof Error ? simError.message : String(simError);
+          const simErrorStr = simErrorMsg.toLowerCase();
+          // If simulation also fails with same error, the contract definitely exists
+          // We can't easily get its address, so suggest using deploymentId
+          if (simErrorStr.includes("contract already exists") || 
+              simErrorStr.includes("existingvalue") ||
+              (simErrorStr.includes("storage") && simErrorStr.includes("existing"))) {
+            throw new Error(
+              `Contracts are already deployed for this escrowContractId. ` +
+              `To redeploy, please provide a 'deploymentId' parameter in your request ` +
+              `(e.g., {"deploymentId": "v2"}) to create unique contract addresses. ` +
+              `Alternatively, use a different escrowContractId.`
+            );
+          }
+          // If simulation fails for other reason, throw original error
+          throw error;
+        }
+      }
+      throw error;
     }
-
-    return Address.fromScVal(result.returnValue).toString();
   }
 
   /**
@@ -220,7 +279,12 @@ export class SorobanClient {
 
     // Handle both success and error response types
     if ("error" in simulation) {
-      throw new Error(`Simulation failed: ${JSON.stringify(simulation.error)}`);
+      const errorStr = JSON.stringify(simulation.error);
+      // If contract already exists, try with empty args to get address
+      if (errorStr.includes("contract already exists") || errorStr.includes("ExistingValue")) {
+        return this.getContractAddressFromSalt(wasmHash, salt);
+      }
+      throw new Error(`Simulation failed: ${errorStr}`);
     }
 
     // Access result from success response
@@ -241,11 +305,52 @@ export class SorobanClient {
     const tx = buildTx(account);
     const preparedTx = await this.server.prepareTransaction(tx);
     preparedTx.sign(this.keypair);
-    const sendResponse = await this.server.sendTransaction(preparedTx);
+    
+    let sendResponse;
+    try {
+      sendResponse = await this.server.sendTransaction(preparedTx);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStr = errorMessage.toLowerCase();
+      // Check if this is a "contract already exists" error from sendTransaction
+      if (errorStr.includes("existingvalue") || 
+          errorStr.includes("contract already exists") ||
+          (errorStr.includes("storage") && errorStr.includes("existing"))) {
+        throw new Error(`CONTRACT_ALREADY_EXISTS: ${errorMessage}`);
+      }
+      throw error;
+    }
+    
     const result = await this.waitForTransaction(sendResponse.hash, label);
 
     if (result.status !== "SUCCESS") {
-      throw new Error(`${label} failed: ${result.resultXdr}`);
+      // Parse the error to extract useful information
+      // The error is in resultXdr for failed transactions
+      // Also check the entire result object for error information
+      let errorDetails = "Unknown error";
+      if (result.resultXdr) {
+        errorDetails = String(result.resultXdr);
+      }
+      
+      // Also check if there's error information in the result object itself
+      const resultStr = JSON.stringify(result);
+      const errorMessage = `${label} failed: ${errorDetails}`;
+      
+      // Check if this is a "contract already exists" error
+      // The error can appear as: "Error(Storage, ExistingValue)" or "contract already exists"
+      // Check both errorDetails and the full result string
+      const errorStr = (errorDetails + " " + resultStr).toLowerCase();
+      const isExistingContractError = 
+        errorStr.includes("existingvalue") || 
+        errorStr.includes("contract already exists") ||
+        (errorStr.includes("storage") && errorStr.includes("existing")) ||
+        (errorStr.includes("hosterror") && errorStr.includes("storage"));
+      
+      if (isExistingContractError) {
+        throw new Error(`CONTRACT_ALREADY_EXISTS: ${errorMessage}`);
+      }
+      
+      throw new Error(errorMessage);
     }
 
     return result;

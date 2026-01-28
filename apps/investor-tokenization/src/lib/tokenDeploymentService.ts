@@ -38,69 +38,49 @@ export const deployTokenContracts = async (
     ),
   ]);
 
-  // SOLUTION: Use deterministic salts to break the circular dependency
-  // We calculate both contract addresses before deployment using deterministic salts
-  // This allows us to deploy TokenFactory first with the calculated TokenSale address,
-  // then deploy TokenSale with the real TokenFactory address
+  // SOLUTION: Deploy TokenSale first with placeholder, then deploy TokenFactory,
+  // then update TokenSale with the real TokenFactory address using set_token
   
-  // Use deterministic salts based on escrowContractId to ensure reproducible addresses
-  const tokenSaleSalt = client.calculateDeterministicSalt(`token-sale-${escrowContractId}`);
-  const tokenFactorySalt = client.calculateDeterministicSalt(`token-factory-${escrowContractId}`);
-  
-  // Step 1: Simulate TokenSale deployment to get its address
-  // We use a placeholder for the token address in the simulation
-  const simulatedTokenSaleAddress = await client.simulateContractCreation(
+  // Step 1: Deploy TokenSale first with placeholder token address (deployer address)
+  // This allows us to get the TokenSale address for TokenFactory deployment
+  console.log("Deploying TokenSale...");
+  const tokenSaleAddress = await client.createContract(
     tokenSaleWasmHash,
-    tokenSaleSalt,
     [
       client.nativeAddress(escrowContractId), // escrow_contract
-      client.nativeAddress(client.publicKey), // sale_token (placeholder for simulation)
+      client.nativeAddress(client.publicKey), // sale_token (placeholder - will be updated)
+      client.nativeAddress(client.publicKey), // admin (deployer can update token address)
     ],
+    "TokenSale contract creation",
   );
-  
+  console.log(`TokenSale deployed at: ${tokenSaleAddress}`);
+
+  // Step 2: Deploy TokenFactory with TokenSale address as mint_authority
   console.log("Deploying TokenFactory...");
   console.log(`Deployer public address: ${client.publicKey}`);
-  console.log(`Simulated TokenSale address (will be mint_authority): ${simulatedTokenSaleAddress}`);
-  
-  // Step 2: Deploy TokenFactory first with simulated TokenSale address as mint_authority
-  const tokenFactoryAddress = await client.createContractWithSalt(
+  console.log(`Mint authority: ${tokenSaleAddress}`);
+  const tokenFactoryAddress = await client.createContract(
     tokenFactoryWasmHash,
-    tokenFactorySalt,
     [
       client.nativeString(tokenName), // name (user-provided)
       client.nativeString(tokenSymbol), // symbol (user-provided)
       client.nativeString(escrowContractId), // escrow_id
       client.nativeU32(7), // decimal
-      client.nativeAddress(simulatedTokenSaleAddress), // mint_authority (simulated Token Sale address)
+      client.nativeAddress(tokenSaleAddress), // mint_authority (Token Sale contract)
     ],
     "TokenFactory contract creation",
   );
-  
   console.log(`TokenFactory deployed at: ${tokenFactoryAddress}`);
-  
-  // Step 3: Deploy TokenSale with real TokenFactory address
-  console.log("Deploying TokenSale...");
-  const tokenSaleAddress = await client.createContractWithSalt(
-    tokenSaleWasmHash,
-    tokenSaleSalt,
-    [
-      client.nativeAddress(escrowContractId), // escrow_contract
-      client.nativeAddress(tokenFactoryAddress), // sale_token (real TokenFactory address)
-    ],
-    "TokenSale contract creation",
+
+  // Step 3: Update TokenSale with the real TokenFactory address
+  console.log("Updating TokenSale with correct token address...");
+  await client.callContract(
+    tokenSaleAddress,
+    "set_token",
+    [client.nativeAddress(tokenFactoryAddress)],
+    "Update TokenSale token address",
   );
-  
-  console.log(`TokenSale deployed at: ${tokenSaleAddress}`);
-  
-  // Verify addresses match
-  if (tokenSaleAddress !== simulatedTokenSaleAddress) {
-    throw new Error(
-      `TokenSale address mismatch! Expected ${simulatedTokenSaleAddress}, got ${tokenSaleAddress}. ` +
-      `This means the deterministic salt calculation failed.`
-    );
-  }
-  
-  console.log("✅ Success! Both contracts deployed with correct addresses.");
+  console.log("✅ TokenSale updated successfully with correct token address.");
 
   return { tokenFactoryAddress, tokenSaleAddress };
 };

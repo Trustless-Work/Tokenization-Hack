@@ -41,7 +41,10 @@ export async function POST(request: Request) {
     try {
       const server = new (await import("@stellar/stellar-sdk")).rpc.Server(RPC_URL);
       const account = await server.getAccount(sorobanClient.publicKey);
-      console.log(`Account verified. Balance: ${account.balances[0]?.balance || "unknown"}`);
+      const balance = account.balances && account.balances.length > 0 
+        ? account.balances[0]?.balance || "unknown"
+        : "unknown";
+      console.log(`Account verified. Balance: ${balance}`);
     } catch (accountError) {
       console.warn("Could not verify account balance:", accountError);
       // Continue anyway, the transaction will fail with a clearer error if account doesn't exist
@@ -81,6 +84,23 @@ export async function POST(request: Request) {
       userFriendlyMessage = 
         "Insufficient balance. Please ensure your account has enough XLM to pay for transaction fees. " +
         `Error details: ${errorMessage}`;
+    } else {
+      const errorStr = errorMessage.toLowerCase();
+      const isExistingContractError = 
+        errorStr.includes("contract already exists") || 
+        errorStr.includes("existingvalue") || 
+        errorStr.includes("already deployed") ||
+        (errorStr.includes("storage") && errorStr.includes("existing")) ||
+        (errorStr.includes("hosterror") && errorStr.includes("storage") && errorStr.includes("existing"));
+      
+      if (isExistingContractError) {
+        userFriendlyMessage = 
+          "Contracts are already deployed for this escrowContractId. " +
+          "To redeploy, you can either: " +
+          "1. Use a different escrowContractId, or " +
+          "2. Provide a 'deploymentId' parameter in your request (e.g., {\"deploymentId\": \"v2\"}) to create unique contract addresses. " +
+          `Error details: ${errorMessage}`;
+      }
     }
     
     return new Response(
