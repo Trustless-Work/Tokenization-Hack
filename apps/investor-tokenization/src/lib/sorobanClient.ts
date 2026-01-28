@@ -153,6 +153,84 @@ export class SorobanClient {
     return hash(randomBytes(32));
   }
 
+  /**
+   * Calculate a deterministic salt from a string seed
+   */
+  calculateDeterministicSalt(seed: string): Buffer {
+    const seedBytes = Buffer.from(seed, "utf-8");
+    return hash(seedBytes);
+  }
+
+  /**
+   * Create contract with a specific salt (for deterministic addresses)
+   */
+  async createContractWithSalt(
+    wasmHash: Buffer,
+    salt: Buffer,
+    constructorArgs: ScVal[],
+    label: string,
+  ) {
+    const result = await this.submitTransaction(
+      (account) =>
+        this.buildBaseTx(account)
+          .addOperation(
+            Operation.createCustomContract({
+              wasmHash,
+              address: new Address(this.publicKey),
+              salt,
+              constructorArgs,
+            }),
+          )
+          .setTimeout(this.config.timeoutSeconds)
+          .build(),
+      label,
+    );
+
+    if (!result.returnValue) {
+      throw new Error(`${label} did not return an address`);
+    }
+
+    return Address.fromScVal(result.returnValue).toString();
+  }
+
+  /**
+   * Simulate contract creation to get the address before deploying
+   */
+  async simulateContractCreation(
+    wasmHash: Buffer,
+    salt: Buffer,
+    constructorArgs: ScVal[],
+  ): Promise<string> {
+    const account = (await this.server.getAccount(this.publicKey)) as AccountLike;
+    
+    const transaction = this.buildBaseTx(account)
+      .addOperation(
+        Operation.createCustomContract({
+          wasmHash,
+          address: new Address(this.publicKey),
+          salt,
+          constructorArgs,
+        }),
+      )
+      .setTimeout(30)
+      .build();
+
+    const preparedTx = await this.server.prepareTransaction(transaction);
+    const simulation = await this.server.simulateTransaction(preparedTx);
+
+    // Handle both success and error response types
+    if ("error" in simulation) {
+      throw new Error(`Simulation failed: ${JSON.stringify(simulation.error)}`);
+    }
+
+    // Access result from success response
+    if (!simulation.result?.retval) {
+      throw new Error("Simulation did not return a contract address");
+    }
+
+    return Address.fromScVal(simulation.result.retval).toString();
+  }
+
   private async submitTransaction(
     buildTx: (account: AccountLike) => ReturnType<TransactionBuilder["build"]>,
     label: string,
