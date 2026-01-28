@@ -43,17 +43,20 @@ export async function POST(request: Request) {
 
       const simulation = await server.simulateTransaction(transaction);
       
-      if (simulation?.result?.retval || simulation?.results?.[0]?.retval) {
-        const retval = simulation.result?.retval || simulation.results?.[0]?.retval;
-        const balanceVal = StellarSDK.scValToNative(retval);
-        const balance = typeof balanceVal === "bigint" 
-          ? Number(balanceVal) 
-          : Number(balanceVal);
-        
-        return NextResponse.json({
-          success: true,
-          balance: balance.toString(),
-        });
+      // Check if simulation was successful and has results
+      if ('results' in simulation && Array.isArray(simulation.results) && simulation.results.length > 0) {
+        const result = simulation.results[0];
+        if (result && 'retval' in result && result.retval) {
+          const balanceVal = StellarSDK.scValToNative(result.retval);
+          const balance = typeof balanceVal === "bigint" 
+            ? Number(balanceVal) 
+            : Number(balanceVal);
+          
+          return NextResponse.json({
+            success: true,
+            balance: balance.toString(),
+          });
+        }
       }
     } catch (functionCallError) {
       // If function call fails, fall back to reading from storage

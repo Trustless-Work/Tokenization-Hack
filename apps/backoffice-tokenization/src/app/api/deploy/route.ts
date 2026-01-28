@@ -39,10 +39,13 @@ export async function POST(request: Request) {
     
     // Verify account exists and has balance
     try {
-      const server = new (await import("@stellar/stellar-sdk")).rpc.Server(RPC_URL);
+      const StellarSDK = await import("@stellar/stellar-sdk");
+      const server = new StellarSDK.rpc.Server(RPC_URL);
       const account = await server.getAccount(sorobanClient.publicKey);
-      const balance = account.balances && account.balances.length > 0 
-        ? account.balances[0]?.balance || "unknown"
+      // Account object has balances property, but TypeScript types may not include it
+      const balances = (account as any).balances;
+      const balance = balances && Array.isArray(balances) && balances.length > 0 
+        ? balances[0]?.balance || "unknown"
         : "unknown";
       console.log(`Account verified. Balance: ${balance}`);
     } catch (accountError) {
