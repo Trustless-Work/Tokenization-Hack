@@ -20,7 +20,50 @@ export async function POST(request: Request) {
   try {
     const server = new StellarSDK.rpc.Server(RPC_URL);
     
-    // Read balance directly from contract storage
+    // Try to get balance using contract function call first (works for Stellar Asset Contracts)
+    // This is the preferred method as it works for both custom contracts and SAC
+    try {
+      const sourceAccount = await server.getAccount(address);
+      const contract = new StellarSDK.Contract(tokenFactoryAddress);
+      
+      const transaction = new StellarSDK.TransactionBuilder(sourceAccount, {
+        fee: StellarSDK.BASE_FEE,
+        networkPassphrase: StellarSDK.Networks.TESTNET,
+      })
+        .addOperation(
+          contract.call(
+            "balance",
+            StellarSDK.nativeToScVal(new StellarSDK.Address(address), {
+              type: "address",
+            })
+          )
+        )
+        .setTimeout(30)
+        .build();
+
+      const simulation = await server.simulateTransaction(transaction);
+      
+      // Check if simulation was successful and has results
+      if ('results' in simulation && Array.isArray(simulation.results) && simulation.results.length > 0) {
+        const result = simulation.results[0];
+        if (result && 'retval' in result && result.retval) {
+          const balanceVal = StellarSDK.scValToNative(result.retval);
+          const balance = typeof balanceVal === "bigint" 
+            ? Number(balanceVal) 
+            : Number(balanceVal);
+          
+          return NextResponse.json({
+            success: true,
+            balance: balance.toString(),
+          });
+        }
+      }
+    } catch (functionCallError) {
+      // If function call fails, fall back to reading from storage
+      console.log("Balance function call failed, trying storage read:", functionCallError);
+    }
+    
+    // Fallback: Read balance directly from contract storage
     // The balance is stored in persistent storage with key DataKey::Balance(address)
     const contractAddress = StellarSDK.Address.fromString(tokenFactoryAddress);
     const userAddress = StellarSDK.Address.fromString(address);

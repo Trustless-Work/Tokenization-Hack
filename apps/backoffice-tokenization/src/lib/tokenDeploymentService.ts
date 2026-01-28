@@ -26,17 +26,21 @@ export const deployTokenContracts = async (
   const tokenFactoryWasm = fs.readFileSync(tokenFactoryPath);
   const tokenSaleWasm = fs.readFileSync(tokenSalePath);
 
-  // Upload WASM files in parallel for better performance
-  const [tokenFactoryWasmHash, tokenSaleWasmHash] = await Promise.all([
-    client.uploadContractWasm(
-      tokenFactoryWasm,
-      "TokenFactory WASM upload",
-    ),
-    client.uploadContractWasm(
-      tokenSaleWasm,
-      "TokenSale WASM upload",
-    ),
-  ]);
+  // Upload WASM files sequentially to avoid overwhelming the network
+  // and to get better error messages if one fails
+  console.log("Starting TokenFactory WASM upload...");
+  const tokenFactoryWasmHash = await client.uploadContractWasm(
+    tokenFactoryWasm,
+    "TokenFactory WASM upload",
+  );
+  console.log("TokenFactory WASM uploaded successfully");
+
+  console.log("Starting TokenSale WASM upload...");
+  const tokenSaleWasmHash = await client.uploadContractWasm(
+    tokenSaleWasm,
+    "TokenSale WASM upload",
+  );
+  console.log("TokenSale WASM uploaded successfully");
 
   // SOLUTION: Deploy TokenSale first with placeholder, then deploy TokenFactory,
   // then update TokenSale with the real TokenFactory address using set_token

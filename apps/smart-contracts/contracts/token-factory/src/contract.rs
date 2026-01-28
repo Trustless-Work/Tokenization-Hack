@@ -1,13 +1,15 @@
-//! This contract demonstrates a sample implementation of the Soroban token
-//! interface.
-use crate::admin::{read_administrator, write_administrator};
+//! T-REX-aligned Soroban Fungible Token implementation.
+//! This contract implements the standard Soroban token interface with immutable
+//! metadata including escrow_id and mint_authority set at initialization.
 use crate::allowance::{read_allowance, spend_allowance, write_allowance};
 use crate::balance::{read_balance, receive_balance, spend_balance};
-use crate::metadata::{read_decimal, read_name, read_symbol, write_metadata};
+use crate::metadata::{
+    read_decimal, read_escrow_id, read_mint_authority, read_name, read_symbol,
+    write_escrow_id, write_mint_authority, write_metadata,
+};
 use crate::storage_types::{INSTANCE_BUMP_AMOUNT, INSTANCE_LIFETIME_THRESHOLD};
 use soroban_sdk::{
-    contract, contractevent, contractimpl, token::TokenInterface, Address, Env, MuxedAddress,
-    String,
+    contract, contractimpl, token::TokenInterface, Address, Env, MuxedAddress, String,
 };
 use soroban_token_sdk::events;
 use soroban_token_sdk::metadata::TokenMetadata;
@@ -21,36 +23,54 @@ fn check_nonnegative_amount(amount: i128) {
 #[contract]
 pub struct Token;
 
-// SetAdmin is not a standardized token event, so we just define a custom event
-// for our token.
-#[contractevent(data_format = "single-value")]
-pub struct SetAdmin {
-    #[topic]
-    admin: Address,
-    new_admin: Address,
-}
-
 #[contractimpl]
 impl Token {
-    pub fn __constructor(e: Env, admin: Address, decimal: u32, name: String, symbol: String) {
+    /// Initialize the token with immutable metadata.
+    /// This function is called during contract deployment (constructor).
+    /// All metadata is immutable after initialization.
+    ///
+    /// # Arguments
+    /// * `name` - Token name
+    /// * `symbol` - Token symbol
+    /// * `escrow_id` - Escrow contract ID (as String)
+    /// * `decimal` - Token decimals (default: 7, max: 18)
+    /// * `mint_authority` - Address authorized to mint tokens (Token Sale contract)
+    pub fn __constructor(
+        e: Env,
+        name: String,
+        symbol: String,
+        escrow_id: String,
+        decimal: u32,
+        mint_authority: Address,
+    ) {
         if decimal > 18 {
             panic!("Decimal must not be greater than 18");
         }
-        write_administrator(&e, &admin);
+
+        // Write standard metadata (name, symbol, decimals)
         write_metadata(
             &e,
             TokenMetadata {
                 decimal,
-                name,
-                symbol,
+                name: name.clone(),
+                symbol: symbol.clone(),
             },
-        )
+        );
+
+        // Write immutable metadata (escrow_id, mint_authority)
+        // These functions will panic if called twice (immutability enforced)
+        write_escrow_id(&e, &escrow_id);
+        write_mint_authority(&e, &mint_authority);
     }
 
+    /// Mint new tokens. Only the mint_authority (Token Sale contract) can mint.
+    /// This function enforces that only the mint_authority set at initialization can mint.
     pub fn mint(e: Env, to: Address, amount: i128) {
         check_nonnegative_amount(amount);
-        let admin = read_administrator(&e);
-        admin.require_auth();
+
+        // CRITICAL: Only mint_authority can mint (never deployer, never open mint)
+        let mint_authority = read_mint_authority(&e);
+        mint_authority.require_auth();
 
         e.storage()
             .instance()
@@ -58,18 +78,6 @@ impl Token {
 
         receive_balance(&e, to.clone(), amount);
         events::MintWithAmountOnly { to, amount }.publish(&e);
-    }
-
-    pub fn set_admin(e: Env, new_admin: Address) {
-        let admin = read_administrator(&e);
-        admin.require_auth();
-
-        e.storage()
-            .instance()
-            .extend_ttl(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
-
-        write_administrator(&e, &new_admin);
-        SetAdmin { admin, new_admin }.publish(&e);
     }
 }
 
@@ -188,5 +196,18 @@ impl TokenInterface for Token {
 
     fn symbol(e: Env) -> String {
         read_symbol(&e)
+    }
+}
+
+// Additional getters for T-REX-aligned metadata
+#[contractimpl]
+impl Token {
+    /// Get the escrow contract ID associated with this token.
+    /// This is immutable metadata set at initialization.
+    pub fn escrow_id(e: Env) -> String {
+        e.storage()
+            .instance()
+            .extend_ttl(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
+        read_escrow_id(&e)
     }
 }

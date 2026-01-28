@@ -30,6 +30,7 @@ import { SendTransactionService } from "@/lib/sendTransactionService";
 import { useWalletContext } from "@tokenization/tw-blocks-shared/src/wallet-kit/WalletProvider";
 import { signTransaction } from "@tokenization/tw-blocks-shared/src/wallet-kit/wallet-kit";
 import { useSelectedEscrow } from "@/features/tokens/context/SelectedEscrowContext";
+import { InvestmentService } from "@/features/investments/services/investment.service";
 import { Card } from "@tokenization/ui/card";
 import { cn } from "@/lib/utils";
 import { MultiReleaseMilestone } from "@trustless-work/escrow";
@@ -91,6 +92,26 @@ export function InvestDialog({
     setSubmitting(true);
 
     try {
+      // Check USDC balance before attempting purchase
+      const investmentService = new InvestmentService();
+      const adjustedAmount = Math.floor(values.amount * 1_000_000); // Convert to microUSDC
+      
+      const balanceResponse = await investmentService.getTokenBalance({
+        tokenFactoryAddress: DEFAULT_USDC_ADDRESS,
+        address: walletAddress,
+      });
+
+      const currentBalance = balanceResponse.success 
+        ? parseFloat(balanceResponse.balance || "0")
+        : 0;
+
+      if (currentBalance < adjustedAmount) {
+        const balanceInUSDC = currentBalance / 1_000_000;
+        throw new Error(
+          `Insufficient USDC balance. You have ${balanceInUSDC.toFixed(2)} USDC but need ${values.amount.toFixed(2)} USDC. Please add more USDC to your wallet.`
+        );
+      }
+
       const tokenService = new TokenService();
 
       const payload: BuyTokenPayload = {
@@ -145,10 +166,20 @@ export function InvestDialog({
       setSuccessMessage("Your investment transaction was sent successfully.");
       form.reset({ amount: 0 });
     } catch (err) {
-      const message =
+      let message =
         err instanceof Error
           ? err.message
           : "Unexpected error while processing your investment.";
+      
+      // Check if error is due to insufficient USDC balance
+      if (
+        message.includes("resulting balance is not within the allowed range") ||
+        message.includes("balance is not within") ||
+        message.includes("insufficient balance")
+      ) {
+        message = "Insufficient USDC balance. Please ensure your wallet has enough USDC to complete this transaction. You can get testnet USDC from a Stellar testnet faucet.";
+      }
+      
       setErrorMessage(message);
     } finally {
       setSubmitting(false);

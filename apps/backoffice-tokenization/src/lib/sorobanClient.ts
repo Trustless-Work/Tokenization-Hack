@@ -47,8 +47,8 @@ export class SorobanClient {
     sourceSecret,
     fee = BASE_FEE,
     timeoutSeconds = 300,
-    maxAttempts = 60,
-    pollDelayMs = 2000,
+    maxAttempts = 120, // Increased from 60 to allow more time for WASM uploads
+    pollDelayMs = 3000, // Increased from 2000ms to 3000ms to reduce RPC load
   }: SorobanClientConfig) {
     this.server = new rpc.Server(rpcUrl);
     this.keypair = Keypair.fromSecret(sourceSecret);
@@ -357,19 +357,46 @@ export class SorobanClient {
   }
 
   private async waitForTransaction(hash: string, label: string) {
+    const startTime = Date.now();
     for (let attempt = 0; attempt < this.config.maxAttempts; attempt += 1) {
-      const txResult = await this.server.getTransaction(hash);
-      if (txResult.status === "SUCCESS" || txResult.status === "FAILED") {
-        return txResult;
+      try {
+        const txResult = await this.server.getTransaction(hash);
+        
+        if (txResult.status === "SUCCESS" || txResult.status === "FAILED") {
+          const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+          console.log(`${label} completed after ${elapsed}s (attempt ${attempt + 1})`);
+          return txResult;
+        }
+        
+        // Log progress every 10 attempts
+        if (attempt > 0 && attempt % 10 === 0) {
+          const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+          console.log(`${label} still pending... (${elapsed}s elapsed, attempt ${attempt + 1}/${this.config.maxAttempts})`);
+        }
+      } catch (error) {
+        // If transaction not found, continue polling (it might not be included yet)
+        if (error instanceof Error && error.message.includes("not found")) {
+          // This is expected during early polling, continue
+        } else {
+          // Log unexpected errors but continue polling
+          console.warn(`${label} polling error (attempt ${attempt + 1}):`, error instanceof Error ? error.message : String(error));
+        }
       }
+      
       // Continue polling while the transaction is not yet finalized on chain
       // Some RPCs may report PENDING or NOT_FOUND until the transaction is included
-
       await new Promise((resolve) =>
         setTimeout(resolve, this.config.pollDelayMs),
       );
     }
 
-    throw new Error(`${label} timeout: transaction not found on network`);
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    const maxWaitTime = ((this.config.maxAttempts * this.config.pollDelayMs) / 1000).toFixed(1);
+    throw new Error(
+      `${label} timeout after ${elapsed}s (max wait: ${maxWaitTime}s). ` +
+      `Transaction hash: ${hash}. ` +
+      `The transaction may still be processing on the network. ` +
+      `Please check the transaction status manually or try again later.`
+    );
   }
 }

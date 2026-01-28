@@ -1,6 +1,5 @@
 #![no_std]
 
-mod admin;
 mod allowance;
 mod balance;
 mod contract;

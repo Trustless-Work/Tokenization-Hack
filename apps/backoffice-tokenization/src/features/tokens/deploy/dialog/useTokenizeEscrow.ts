@@ -7,6 +7,8 @@ import {
 
 export type TokenizeEscrowFormValues = {
   escrowId: string;
+  tokenName: string;
+  tokenSymbol: string;
 };
 
 type UseTokenizeEscrowParams = {
@@ -17,6 +19,8 @@ export function useTokenizeEscrow(params?: UseTokenizeEscrowParams) {
   const form = useForm<TokenizeEscrowFormValues>({
     defaultValues: {
       escrowId: "",
+      tokenName: "",
+      tokenSymbol: "",
     },
     mode: "onSubmit",
   });
@@ -32,7 +36,11 @@ export function useTokenizeEscrow(params?: UseTokenizeEscrowParams) {
     setIsSubmitting(true);
     try {
       const tokenService = new TokenService();
-      const tokenResponse = await tokenService.deployToken(values.escrowId);
+      const tokenResponse = await tokenService.deployToken({
+        escrowContractId: values.escrowId,
+        tokenName: values.tokenName,
+        tokenSymbol: values.tokenSymbol,
+      });
       setResponse(tokenResponse);
       params?.onSuccess?.(tokenResponse);
     } catch (e) {
