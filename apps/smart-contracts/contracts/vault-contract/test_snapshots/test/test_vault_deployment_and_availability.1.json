@@ -311,7 +311,11 @@
                     "storage": [
                       {
                         "key": {
-                          "string": "admin"
+                          "vec": [
+                            {
+                              "symbol": "Admin"
+                            }
+                          ]
                         },
                         "val": {
                           "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
@@ -319,7 +323,11 @@
                       },
                       {
                         "key": {
-                          "string": "enabled"
+                          "vec": [
+                            {
+                              "symbol": "Enabled"
+                            }
+                          ]
                         },
                         "val": {
                           "bool": false
@@ -327,7 +335,11 @@
                       },
                       {
                         "key": {
-                          "string": "price"
+                          "vec": [
+                            {
+                              "symbol": "RoiPercentage"
+                            }
+                          ]
                         },
                         "val": {
                           "i128": "10"
@@ -335,7 +347,11 @@
                       },
                       {
                         "key": {
-                          "string": "token"
+                          "vec": [
+                            {
+                              "symbol": "TokenAddress"
+                            }
+                          ]
                         },
                         "val": {
                           "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
@@ -343,7 +359,23 @@
                       },
                       {
                         "key": {
-                          "string": "usdc"
+                          "vec": [
+                            {
+                              "symbol": "TotalTokensRedeemed"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "i128": "0"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "UsdcAddress"
+                            }
+                          ]
                         },
                         "val": {
                           "address": "CBUSYNQKASUYFWYC3M2GUEDMX4AIVWPALDBYJPNK6554BREHTGZ2IUNF"
@@ -494,5 +526,43 @@
       ]
     ]
   },
-  "events": []
+  "events": [
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM",
+        "type_": "contract",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "avail"
+              }
+            ],
+            "data": {
+              "map": [
+                {
+                  "key": {
+                    "symbol": "admin"
+                  },
+                  "val": {
+                    "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+                  }
+                },
+                {
+                  "key": {
+                    "symbol": "enabled"
+                  },
+                  "val": {
+                    "bool": false
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": false
+    }
+  ]
 }

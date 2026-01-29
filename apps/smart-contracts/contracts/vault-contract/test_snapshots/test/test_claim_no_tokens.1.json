@@ -202,7 +202,11 @@
                     "storage": [
                       {
                         "key": {
-                          "string": "admin"
+                          "vec": [
+                            {
+                              "symbol": "Admin"
+                            }
+                          ]
                         },
                         "val": {
                           "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
@@ -210,7 +214,11 @@
                       },
                       {
                         "key": {
-                          "string": "enabled"
+                          "vec": [
+                            {
+                              "symbol": "Enabled"
+                            }
+                          ]
                         },
                         "val": {
                           "bool": true
@@ -218,7 +226,11 @@
                       },
                       {
                         "key": {
-                          "string": "price"
+                          "vec": [
+                            {
+                              "symbol": "RoiPercentage"
+                            }
+                          ]
                         },
                         "val": {
                           "i128": "10"
@@ -226,7 +238,11 @@
                       },
                       {
                         "key": {
-                          "string": "token"
+                          "vec": [
+                            {
+                              "symbol": "TokenAddress"
+                            }
+                          ]
                         },
                         "val": {
                           "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM"
@@ -234,7 +250,23 @@
                       },
                       {
                         "key": {
-                          "string": "usdc"
+                          "vec": [
+                            {
+                              "symbol": "TotalTokensRedeemed"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "i128": "0"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "UsdcAddress"
+                            }
+                          ]
                         },
                         "val": {
                           "address": "CCABDO7UZXYE4W6GVSEGSNNZTKSLFQGKXXQTH6OX7M7GKZ4Z6CUJNGZN"
